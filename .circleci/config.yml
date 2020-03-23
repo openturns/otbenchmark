@@ -1,13 +1,18 @@
-version: 2
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
 
 jobs:
-  build:
-    docker:
-      - image: circleci/python
+  build-and-test:
+    executor: python/default
     steps:
       - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
       - run:
-          name: Install
+          name: Test
           command: |
             curl -s -o Miniconda3-latest-Linux-x86_64.sh "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh"
             bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
