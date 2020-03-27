@@ -14,6 +14,7 @@ cd ..
 cd tests
 python demo_axialbeam.py
 python demo_ishigami.py
+python test_DrawEvent.py
 cd ..
 
 # Notebooks in all subdirectories
