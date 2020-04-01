@@ -17,6 +17,7 @@ python demo_ishigami.py
 python -m unittest test_axialbeam
 python -m unittest test_DrawEvent
 python -m unittest test_RminusS
+python -m unittest test_ishigami
 cd ..
 
 # Notebooks in all subdirectories
