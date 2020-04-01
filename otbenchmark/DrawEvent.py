@@ -32,8 +32,10 @@ def LinearSample(xmin, xmax, npoints = 100):
 
 class DrawEvent:
     def __init__(self, event, 
-                 insideEventColor = "forestgreen",
-                 outsideEventColor = "orange"):
+                 insideEventPointColor = "lightsalmon3",
+                 outsideEventPointColor = "darkseagreen3", 
+                 insideEventFillColor = "lightsalmon1",
+                 outsideEventFillColor = "darkseagreen1"):
         """
         Create an event with draw services.
         
@@ -44,11 +46,19 @@ class DrawEvent:
         event : an ot.Event
             The event we want to draw.
             
-        insideEventColor : a string
+        insideEventPointColor : a string
             The color of the points inside the event.
+            Suggested colors: "forestgreen", "darkolivegreen".
     
-        outsideEventColor : a string
+        outsideEventPointColor : a string
             The color of the points outside of the event.
+            Suggested colors: "orange", "orangered".
+            
+        insideEventFillColor : a string
+            The color of the filled domains inside the event.
+    
+        outsideEventFillColor : a string
+            The color of the filled domains outside of the event.
     
         Returns
         -------
@@ -61,8 +71,10 @@ class DrawEvent:
         inputDimension = g.getInputDimension()
         if inputDimension != 2:
             raise ValueError("The input dimension of the function is equal to %d but should be 2." % (inputDimension))
-        self.insideEventColor = insideEventColor
-        self.outsideEventColor = outsideEventColor
+        self.insideEventPointColor = insideEventPointColor
+        self.outsideEventPointColor = outsideEventPointColor
+        self.insideEventFillColor = insideEventFillColor
+        self.outsideEventFillColor = outsideEventFillColor
         return None
     
     def drawLimitState(self, bounds, nX = 50, nY = 50):
@@ -160,10 +172,10 @@ class DrawEvent:
                          description[0], description[1], 
                          True, '')
         if len(insideIndices) > 0:
-            cloud = ot.Cloud(insideSample, self.insideEventColor, 'fsquare', 'In')
+            cloud = ot.Cloud(insideSample, self.insideEventPointColor, 'fsquare', 'In')
             graph.add(cloud)
         if len(outsideIndices) > 0:
-            cloud = ot.Cloud(outsideSample, self.outsideEventColor, 'fsquare', 'Out')
+            cloud = ot.Cloud(outsideSample, self.outsideEventPointColor, 'fsquare', 'Out')
             graph.add(cloud)
         graph.setLegendPosition("topright")
         return graph
@@ -204,7 +216,8 @@ class DrawEvent:
         vertices = mesh.getVertices()
         numberOfSimplices = mesh.getSimplicesNumber()
         #
-        polyData = []
+        polyDataInside = []
+        polyDataOutside = []
         for i in range(numberOfSimplices):
             simplex = simplices[i]
             corners = [vertices[simplex[0]], vertices[simplex[1]], 
@@ -213,18 +226,25 @@ class DrawEvent:
             sampleOutput = g(sampleInput)
             mean = sampleOutput.computeMean()[0]
             if operator(mean, threshold):
-                polyData.append(corners)
-        # Create PolygonArray from list of polygons
-        numberOfPolygons = len(polyData)
-        polygonList = [
-            ot.Polygon(polyData[i], self.insideEventColor, 
-                       self.insideEventColor) for i in range(numberOfPolygons)]
-        polygonArray = ot.PolygonArray(polygonList)
+                polyDataInside.append(corners)
+            else:
+                polyDataOutside.append(corners)
+        # Create PolygonArray from list of polygons inside event
+        def CreatePolygonArray(polyData, color):
+            numberOfPolygons = len(polyData)
+            polygonList = [
+                ot.Polygon(polyData[i], color, 
+                           color) for i in range(numberOfPolygons)]
+            polygonArray = ot.PolygonArray(polygonList)
+            return polygonArray
+        polygonArrayInside = CreatePolygonArray(polyDataInside, self.insideEventFillColor)
+        polygonArrayOutside = CreatePolygonArray(polyDataOutside, self.outsideEventFillColor)
         #
         description = g.getInputDescription()
         title = "Domain where g(x) %s %s" % (operator, threshold)
-        graph = ot.Graph(title, description[0], description[1], True)
-        graph.add(polygonArray)
-        graph.setLegends(["In"])
+        graph = ot.Graph(title, description[0], description[1], True, "topright")
+        graph.add(polygonArrayInside)
+        graph.add(polygonArrayOutside)
+        graph.setLegends(["In", "Out"])
         return graph
     

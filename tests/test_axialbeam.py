@@ -12,6 +12,7 @@ class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
 
     def test_AxialStressedBeamReliabilityBenchmarkProblem(self):
         problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
+        print(problem)
         
         # Check probability
         pf = problem.getProbability()

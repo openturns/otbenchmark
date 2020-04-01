@@ -92,11 +92,12 @@ class ReliabilityBenchmarkProblem:
     
     def __str__(self):
         g = self.thresholdEvent.getFunction()
-        beta = ot.Normal().computeQuantile(self.probability, True)[0]
+        operator = self.thresholdEvent.getOperator()
         threshold = self.thresholdEvent.getThreshold()
+        beta = ot.Normal().computeQuantile(self.probability, True)[0]
         inputVector = self.thresholdEvent.getAntecedent()
         distribution = inputVector.getDistribution()
-        s = "Name: %s \nFunction: %s\nProbability= %s\nThreshold= %s\nDistribution=%s" % (
-            self.name, g, self.probability, threshold, distribution)
+        s = "Name = %s \nFunction = %s\nOperator = %s\nThreshold = %s\nProbability = %s\nDistribution=%s" % (
+            self.name, g, operator, threshold, self.probability, distribution)
         return s
     

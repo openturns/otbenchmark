@@ -12,6 +12,7 @@ class CheckFourBranchSerialSystemReliabilityBenchmarkProblem(unittest.TestCase):
 
     def test_FourBranchSerialSystemReliabilityBenchmarkProblem(self):
         problem = otb.FourBranchSerialSystemReliabilityBenchmarkProblem()
+        print(problem)
         
         # Check probability
         pf = problem.getProbability()

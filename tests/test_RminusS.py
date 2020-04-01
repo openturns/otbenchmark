@@ -12,6 +12,7 @@ class CheckRminusSReliabilityBenchmarkProblem(unittest.TestCase):
 
     def test_RminusSReliabilityBenchmarkProblem(self):
         problem = otb.RminusSReliabilityBenchmarkProblem()
+        print(problem)
         
         # Check probability
         pf = problem.getProbability()
