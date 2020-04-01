@@ -12,9 +12,19 @@ class CheckRminusSReliabilityBenchmarkProblem(unittest.TestCase):
 
     def test_RminusSReliabilityBenchmarkProblem(self):
         problem = otb.RminusSReliabilityBenchmarkProblem()
+        
+        # Check probability
         pf = problem.getProbability()
         pf_exacte = 0.07864960352514257
         np.testing.assert_allclose(pf, pf_exacte, rtol=1.e-15)
+        
+        # Check function
+        event = problem.getEvent()
+        function = event.getFunction()
+        X = [4.0, 2.0]
+        Y = function(X)
+        assert(type(Y) is ot.Point)
+        np.testing.assert_allclose(Y[0], 2.0)
 
     def test_UseCase(self):
         problem = otb.RminusSReliabilityBenchmarkProblem()

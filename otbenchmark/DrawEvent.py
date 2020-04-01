@@ -31,7 +31,9 @@ def LinearSample(xmin, xmax, npoints = 100):
     return vertices
 
 class DrawEvent:
-    def __init__(self, event):
+    def __init__(self, event, 
+                 insideEventColor = "forestgreen",
+                 outsideEventColor = "orange"):
         """
         Create an event with draw services.
         
@@ -42,6 +44,12 @@ class DrawEvent:
         event : an ot.Event
             The event we want to draw.
             
+        insideEventColor : a string
+            The color of the points inside the event.
+    
+        outsideEventColor : a string
+            The color of the points outside of the event.
+    
         Returns
         -------
         self:
@@ -53,7 +61,9 @@ class DrawEvent:
         inputDimension = g.getInputDimension()
         if inputDimension != 2:
             raise ValueError("The input dimension of the function is equal to %d but should be 2." % (inputDimension))
-        return None    
+        self.insideEventColor = insideEventColor
+        self.outsideEventColor = outsideEventColor
+        return None
     
     def drawLimitState(self, bounds, nX = 50, nY = 50):
         """
@@ -104,9 +114,7 @@ class DrawEvent:
         graph.add(contour)
         return graph
     
-    def drawSample(self, inputSample, outputSample, 
-                   insideEventColor = "green", 
-                   outsideEventColor = "red"):
+    def drawSample(self, inputSample, outputSample):
         """
         Draw the sample of an event.
         
@@ -120,12 +128,6 @@ class DrawEvent:
         outputSample: an ot.Sample
             The output 1D sample.
             
-        insideEventColor : a string
-            The color of the points inside the event.
-    
-        outsideEventColor : a string
-            The color of the points outside of the event.
-    
         Returns
         -------
         None.
@@ -158,16 +160,15 @@ class DrawEvent:
                          description[0], description[1], 
                          True, '')
         if len(insideIndices) > 0:
-            cloud = ot.Cloud(insideSample, insideEventColor, 'fsquare', 'In')
+            cloud = ot.Cloud(insideSample, self.insideEventColor, 'fsquare', 'In')
             graph.add(cloud)
         if len(outsideIndices) > 0:
-            cloud = ot.Cloud(outsideSample, outsideEventColor, 'fsquare', 'Out')
+            cloud = ot.Cloud(outsideSample, self.outsideEventColor, 'fsquare', 'Out')
             graph.add(cloud)
         graph.setLegendPosition("topright")
         return graph
 
-    def fillEvent(self, bounds, nX = 50, nY = 50, 
-                   insideEventColor = "green"):
+    def fillEvent(self, bounds, nX = 50, nY = 50):
         """
         Fill the space inside an event with a color.
     
@@ -181,9 +182,6 @@ class DrawEvent:
     
         nY : an int
             The number of points in the Y axis.
-            
-        insideEventColor : a string
-            The color of the space inside the event.
     
         Returns
         -------
@@ -219,8 +217,8 @@ class DrawEvent:
         # Create PolygonArray from list of polygons
         numberOfPolygons = len(polyData)
         polygonList = [
-            ot.Polygon(polyData[i], insideEventColor, 
-                       insideEventColor) for i in range(numberOfPolygons)]
+            ot.Polygon(polyData[i], self.insideEventColor, 
+                       self.insideEventColor) for i in range(numberOfPolygons)]
         polygonArray = ot.PolygonArray(polygonList)
         #
         description = g.getInputDescription()

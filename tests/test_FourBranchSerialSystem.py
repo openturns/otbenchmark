@@ -1,40 +1,33 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 EDF
 """
-Test for AxialStressedBeamReliabilityBenchmarkProblem class.
+Test for FourBranchSerialSystemReliabilityBenchmarkProblem class.
 """
 import otbenchmark as otb
 import unittest
 import numpy as np
 import openturns as ot
 
-class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
+class CheckFourBranchSerialSystemReliabilityBenchmarkProblem(unittest.TestCase):
 
-    def test_AxialStressedBeamReliabilityBenchmarkProblem(self):
-        problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
+    def test_FourBranchSerialSystemReliabilityBenchmarkProblem(self):
+        problem = otb.FourBranchSerialSystemReliabilityBenchmarkProblem()
         
         # Check probability
         pf = problem.getProbability()
-        print("pf=", pf)
-        pf_exacte = 0.029198194624830955
+        pf_exacte = 0.0021859614549132322
         np.testing.assert_allclose(pf, pf_exacte, rtol=1.e-15)
         
         # Check function
         event = problem.getEvent()
         function = event.getFunction()
-        X = [300.0, 75000.0]
+        X = [1.0, -1.0]
         Y = function(X)
         assert(type(Y) is ot.Point)
-        np.testing.assert_allclose(Y[0], 61.26758536215701)
-
-        # Check distribution
-        inputVector = event.getAntecedent()
-        distribution = inputVector.getDistribution()
-        X = distribution.getMean()
-        np.testing.assert_allclose(X, [300.0, 75000.0])
+        np.testing.assert_allclose(Y[0], 2.9497474683058327)
 
     def test_UseCase(self):
-        problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
+        problem = otb.RminusSReliabilityBenchmarkProblem()
         event = problem.getEvent()
         
         # Create a Monte Carlo algorithm

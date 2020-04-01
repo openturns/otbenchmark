@@ -5,6 +5,7 @@ from .SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
 from .IshigamiSensitivityBenchmarkProblem import IshigamiSensitivityBenchmarkProblem
 from .DrawEvent import DrawEvent
 from .RminusSReliabilityBenchmarkProblem import RminusSReliabilityBenchmarkProblem
+from .FourBranchSerialSystemReliabilityBenchmarkProblem import FourBranchSerialSystemReliabilityBenchmarkProblem
 #from .CentralDispersionBenchmarkProblem import CentralDispersionBenchmarkProblem
 
 __all__ = ['ReliabilityBenchmarkProblem',\
@@ -13,5 +14,6 @@ __all__ = ['ReliabilityBenchmarkProblem',\
            'IshigamiSensitivityBenchmarkProblem', 
            'DrawLimitState', 
            'DrawEvent', 
-           'RminusSReliabilityBenchmarkProblem']
+           'RminusSReliabilityBenchmarkProblem', 
+           'FourBranchSerialSystemReliabilityBenchmarkProblem']
 __version__ = '1.0'

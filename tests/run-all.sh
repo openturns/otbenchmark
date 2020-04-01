@@ -18,6 +18,7 @@ python -m unittest test_axialbeam
 python -m unittest test_DrawEvent
 python -m unittest test_RminusS
 python -m unittest test_ishigami
+python -m unittest test_FourBranchSerialSystem
 cd ..
 
 # Notebooks in all subdirectories
