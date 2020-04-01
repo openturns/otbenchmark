@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+# Copyright 2020 EDF
 """
 Class to define a axial stressed beam benchmark problem.
 """
@@ -8,20 +9,20 @@ from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
 
 class AxialStressedBeamReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
-    def __init__(self):
+    def __init__(self, threshold = 0.0):
         """
-        Creates a axial stressed beam reliability problem.
+        Creates a axial stressed beam reliability problem. 
         
         Parameters
-        none
-        
-        Description
-        Creates a axial stressed beam reliability problem.
+        ----------
+        threshold : float
+            The threshold. 
         
         Example
+        -------
         problem  = AxialStressedBeamReliabilityBenchmarkProblem()
         """
-        limitStateFunction = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])
+        limitStateFunction = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_ * 100.0)'])
         
         R_dist = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
         R_dist.setName('Yield strength')
@@ -38,7 +39,8 @@ class AxialStressedBeamReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), 0.0)
 
         name = "Axial stressed beam"
-        probability = 0.02920
+        diff = R_dist - F_dist / (3.141592653589793 * 100.0)
+        probability = diff.computeCDF(threshold)        
         super(AxialStressedBeamReliabilityBenchmarkProblem, self).__init__(name, thresholdEvent, probability)
         
         return None

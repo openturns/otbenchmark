@@ -4,6 +4,7 @@ from .AxialStressedBeamReliabilityBenchmarkProblem import AxialStressedBeamRelia
 from .SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
 from .IshigamiSensitivityBenchmarkProblem import IshigamiSensitivityBenchmarkProblem
 from .DrawEvent import DrawEvent
+from .RminusSReliabilityBenchmarkProblem import RminusSReliabilityBenchmarkProblem
 #from .CentralDispersionBenchmarkProblem import CentralDispersionBenchmarkProblem
 
 __all__ = ['ReliabilityBenchmarkProblem',\
@@ -11,5 +12,6 @@ __all__ = ['ReliabilityBenchmarkProblem',\
            'SensitivityBenchmarkProblem', \
            'IshigamiSensitivityBenchmarkProblem', 
            'DrawLimitState', 
-           'DrawEvent']
+           'DrawEvent', 
+           'RminusSReliabilityBenchmarkProblem']
 __version__ = '1.0'

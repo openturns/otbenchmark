@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+# Copyright 2020 EDF
 """
 Class to define a sensitivity benchmark problem.
 """
@@ -11,16 +12,24 @@ class SensitivityBenchmarkProblem:
         Creates a reliability problem.
         
         Parameters
-        thresholdEvent : a ThresholdEvent, the event
-        distribution : a Distribution, the input distribution
-        function : a Function, the model
-        firstOrderIndices : a Point, the first order indices
-        totalOrderIndices : a Point, the total order indices
-        
-        Description
-        Creates a reliability problem.
-        
+        ----------
+        thresholdEvent : ot.ThresholdEvent
+            The event.
+
+        distribution : ot.Distribution
+            The input distribution.
+            
+        function : ot.Function
+            The model.
+
+        firstOrderIndices : ot.Point
+            The first order indices.
+            
+        totalOrderIndices : ot.Point
+            The total order indices.
+                
         Example
+        -------
         problem  = ReliabilityBenchmarkProblem(thresholdEvent)
         """
         self.name = name

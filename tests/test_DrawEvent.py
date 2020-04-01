@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 EDF-CERFACS.
+# Copyright 2020 EDF.
 """
-Test for ProcessHighDensityRegionAlgorithm class.
+Test for DrawEvent class.
 """
 import openturns as ot
 import otbenchmark

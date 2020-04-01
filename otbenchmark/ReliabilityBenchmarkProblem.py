@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+# Copyright 2020 EDF
 """
 Class to define a benchmark problem.
 """
@@ -10,12 +11,12 @@ class ReliabilityBenchmarkProblem:
         Creates a reliability problem.
         
         Parameters
-        thresholdEvent : a ThresholdEvent, the event
-        
-        Description
-        Creates a reliability problem.
+        ----------
+        thresholdEvent : ot.ThresholdEvent
+            The event.
         
         Example
+        -------
         problem  = ReliabilityBenchmarkProblem(name, thresholdEvent, probability)
         """
         self.name = name
