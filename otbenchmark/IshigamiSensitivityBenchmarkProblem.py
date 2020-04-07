@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+# Copyright 2020 EDF
 """
 Class to define a Ishigami sensitivity benchmark problem.
 """
@@ -37,13 +38,15 @@ class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
         Creates a Ishigami sensitivity problem.
         
         Parameters
-        a : a float, the first parameter
-        b : a float, the second parameter
-        
-        Description
-        Creates a Ishigami sensitivity problem.
+        ----------
+        a : float
+            The first parameter.
+            
+        b : float
+            The second parameter.
         
         Example
+        -------
         problem  = IshigamiSensitivityBenchmarkProblem()
         """
 

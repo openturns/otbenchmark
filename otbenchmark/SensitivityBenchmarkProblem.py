@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+# Copyright 2020 EDF
 """
 Class to define a sensitivity benchmark problem.
 """
@@ -11,16 +12,24 @@ class SensitivityBenchmarkProblem:
         Creates a reliability problem.
         
         Parameters
-        thresholdEvent : a ThresholdEvent, the event
-        distribution : a Distribution, the input distribution
-        function : a Function, the model
-        firstOrderIndices : a Point, the first order indices
-        totalOrderIndices : a Point, the total order indices
-        
-        Description
-        Creates a reliability problem.
-        
+        ----------
+        thresholdEvent : ot.ThresholdEvent
+            The event.
+
+        distribution : ot.Distribution
+            The input distribution.
+            
+        function : ot.Function
+            The model.
+
+        firstOrderIndices : ot.Point
+            The first order indices.
+            
+        totalOrderIndices : ot.Point
+            The total order indices.
+                
         Example
+        -------
         problem  = ReliabilityBenchmarkProblem(thresholdEvent)
         """
         self.name = name
@@ -31,16 +40,76 @@ class SensitivityBenchmarkProblem:
         return None
 
     def getInputDistribution(self):
+        """
+        Returns the input distribution.
+        
+        Parameters
+        ----------
+        None.
+        
+        Returns
+        -------
+        distribution: ot.Distribution
+            The distribution.
+        """
         return self.distribution
     
     def getFunction(self):
+        """
+        Returns the function.
+        
+        Parameters
+        ----------
+        None.
+        
+        Returns
+        -------
+        function: ot.Function
+            The function.
+        """
         return self.function
 
     def getName(self):
+        """
+        Returns the name of the problem.
+        
+        Parameters
+        ----------
+        None.
+        
+        Returns
+        -------
+        name: str
+            The name.
+        """
         return self.name
 
     def getFirstOrderIndices(self):
+        """
+        Returns the first order Sobol' sensitivity indices.
+        
+        Parameters
+        ----------
+        None.
+        
+        Returns
+        -------
+        firstOrderIndices: ot.Point
+            The first order sensitivity indices.
+        """
         return self.firstOrderIndices
     
     def getTotalOrderIndices(self):
+        """
+        Returns the total order Sobol' sensitivity indices.
+        
+        Parameters
+        ----------
+        None.
+        
+        Returns
+        -------
+        totalOrderIndices: ot.Point
+            The total order sensitivity indices.
+        """
         return self.totalOrderIndices

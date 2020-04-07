@@ -14,9 +14,8 @@ cd ..
 cd tests
 python demo_axialbeam.py
 python demo_ishigami.py
-python test_DrawEvent.py
+python -m unittest discover .
 cd ..
 
 # Notebooks in all subdirectories
 python tests/find-ipynb-files.py
-
