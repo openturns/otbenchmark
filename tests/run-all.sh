@@ -14,11 +14,7 @@ cd ..
 cd tests
 python demo_axialbeam.py
 python demo_ishigami.py
-python -m unittest test_axialbeam
-python -m unittest test_DrawEvent
-python -m unittest test_RminusS
-python -m unittest test_ishigami
-python -m unittest test_FourBranchSerialSystem
+python -m unittest discover .
 cd ..
 
 # Notebooks in all subdirectories
