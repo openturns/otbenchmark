@@ -1,9 +1,7 @@
 #!/usr/bin/python
 # coding:utf-8
 # Copyright 2020 EDF
-"""
-Class to define a sensitivity benchmark problem.
-"""
+"""Class to define a sensitivity benchmark problem."""
 
 
 class SensitivityBenchmarkProblem:

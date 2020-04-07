@@ -28,10 +28,7 @@ class CheckReliabilityBenchmarkProblem(unittest.TestCase):
 
         name = "R-S"
         probability = 0.123456789
-        description = "This is a long description"
-        problem = otb.ReliabilityBenchmarkProblem(
-            name, thresholdEvent, probability, description
-        )
+        problem = otb.ReliabilityBenchmarkProblem(name, thresholdEvent, probability)
         #
         print(problem)
         print(problem.toFullString())
@@ -39,8 +36,6 @@ class CheckReliabilityBenchmarkProblem(unittest.TestCase):
         assert p == probability
         s = problem.getName()
         assert s == name
-        s = problem.getDescription()
-        assert s == description
 
 
 if __name__ == "__main__":

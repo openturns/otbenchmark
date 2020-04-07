@@ -1,9 +1,7 @@
 #!/usr/bin/python
 # coding:utf-8
 # Copyright 2020 EDF
-"""
-Class to define a Ishigami sensitivity benchmark problem.
-"""
+"""Class to define a Ishigami sensitivity benchmark problem."""
 
 from otbenchmark.SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
 import openturns as ot
@@ -11,8 +9,27 @@ import numpy as np
 
 
 class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
+    """Class to define a Ishigami sensitivity benchmark problem."""
+
     @staticmethod
     def ComputeIndices(a, b):
+        """
+        Compute the exact Sobol' indices of the Ishigami test case.
+
+        Parameters
+        ----------
+        a : float
+            The first parameter.
+        b : float
+            The second parameter.
+
+        Returns
+        -------
+        exact : dict
+            The exact expectation, variance, first order Sobol' indices,
+            total order Sobol' indices.
+
+        """
         var = 1.0 / 2 + a ** 2 / 8 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8 / 18
         S1 = (1.0 / 2 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8 / 50) / var
         S2 = (a ** 2 / 8) / var
@@ -36,7 +53,7 @@ class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
 
     def __init__(self, a=7.0, b=0.1):
         """
-        Creates a Ishigami sensitivity problem.
+        Create a Ishigami sensitivity problem.
 
         Parameters
         ----------
