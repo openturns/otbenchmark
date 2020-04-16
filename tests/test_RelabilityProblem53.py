@@ -27,7 +27,7 @@ class CheckReliabilityProblem53(unittest.TestCase):
         # Check function
         event = problem.getEvent()
         function = event.getFunction()
-        X = [4.0, 2.0]
+        X = [0.0, 1.0]
         Y = function(X)
         assert(type(Y) is ot.Point)
         np.testing.assert_allclose(Y[0], 2.0)
