@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # coding:utf-8
 """
+Youssef Jebroun
+EDF
+
 Class to define the ReliabilityProblem53 benchmark problem.
 """
 
