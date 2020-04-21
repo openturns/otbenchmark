@@ -2,7 +2,7 @@
 """
 Created on Wed Apr 15 16:02:56 2020
 
-@author: Jebroun
+@author: Jebroun Youssef
 """
 """
 Test for ReliabilityProblem53 class.
