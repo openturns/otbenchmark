@@ -1,10 +1,15 @@
-#!/usr/bin/python
-# coding:utf-8
+
 """
 Youssef Jebroun
 EDF
 
 Class to define the ReliabilityProblem53 benchmark problem.
+
+
+Created on Thu Apr 23 12:39:59 2020
+
+@author: Jebroun
+
 """
 
 from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
@@ -53,13 +58,14 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
         myDistribution = ot.ComposedDistribution([X1, X2])
 
         inputRandomVector = ot.RandomVector(myDistribution)
-        outputRandomVector = ot.CompositeRandomVector(
-            limitStateFunction, inputRandomVector
-        )
-        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
+        outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
+        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(),
+                                           threshold)
 
         name = "RP53"
         probability = 0.0313
         super(ReliabilityProblem53, self).__init__(name, thresholdEvent, probability)
 
+
         return None
+
