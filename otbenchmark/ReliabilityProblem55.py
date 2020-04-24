@@ -36,19 +36,16 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         a2 , b2 : float
             Parameters of the X2 uniform distribution. 
         """
-        def f(x):
-             g1 = 0.2 + 0.6 * (x[0] - x[1]) ** 4 - (x[0] - x[1]) / np.sqrt(2)
-             g2 = 0.2 + 0.6 * (x[0] - x[1]) ** 4 + (x[ 0] - x[ 1]) / np.sqrt(2)
-             g3 = (x[0] - x[1]) + 5 / np.sqrt(2) - 2.2
-             g4 = (x[1] - x[0]) + 5 / np.sqrt(2) - 2.2
-             g = np.min([g1, g2, g3, g4])
-    
-             y = [g]
-             return y
-            
-   
-        limitStateFunction = ot.PythonFunction(2, 1, f)                                        
-                                                 
+        
+        equations = ["var g1 := 0.2 + 0.6 * (x0 - x1)^4 - (x0 - x1) / sqrt(2)"]
+        equations.append("var g2 := 0.2 + 0.6 * (x0 - x1)^4 + (x0 - x1) / sqrt(2)")
+        equations.append("var g3 := (x0 - x1) + 5 / sqrt(2) - 2.2")
+        equations.append("var g4 := (x1 - x0) + 5 / sqrt(2) - 2.2")
+        equations.append("gsys := min(g1, g2, g3, g4)")
+        formula = ";".join(equations)
+        limitStateFunction = ot.SymbolicFunction(['x0', 'x1'],
+                                                 ["gsys"],
+                                                 formula)
         X1 = ot.Uniform(a1, b1)
         X1.setDescription(["X1"])
         X2 = ot.Uniform(a2, b2)
@@ -56,7 +53,8 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
 
         myDistribution = ot.ComposedDistribution([X1, X2])
         inputRandomVector = ot.RandomVector(myDistribution)
-        outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
+        outputRandomVector = ot.CompositeRandomVector(limitStateFunction,
+                                                      inputRandomVector)
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(),
                                            threshold)
 

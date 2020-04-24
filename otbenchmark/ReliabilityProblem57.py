@@ -44,8 +44,15 @@ class ReliabilityProblem57(ReliabilityBenchmarkProblem):
             The standard deviation of the X2 gaussian distribution. 
         """
         
-        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["min(max(-x1^2 + x2^3 + 3, 2 - x1 - 8 * x2), (x1 + 3)^2 + (x2 + 3)^2 - 4)"])
-
+        equations = ["var g1 := -x1^2 + x2^3 + 3"]
+        equations.append("var g2 := 2 - x1 - 8 * x2")
+        equations.append("var g3 := (x1 + 3)^2 + (x2 + 3)^2 - 4")
+        equations.append("gsys := min(max(g1, g2), g3) ")
+        formula = ";".join(equations)
+        limitStateFunction = ot.SymbolicFunction(['x1', 'x2'], 
+                                                 ["gsys"], 
+                                                 formula)
+    
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)
