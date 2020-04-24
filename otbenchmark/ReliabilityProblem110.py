@@ -57,25 +57,26 @@ class ReliabilityProblem110(ReliabilityBenchmarkProblem):
         sigma2 : float
             The standard deviation of the X2 gaussian distribution. 
         """
-        def f(x):
-            if x[0] <= 3.5:
-                g1 = 0.85 - 0.1 * x[0]
-
-            else :
-                g1 = 4 - x[0]
-            if x[1] <= 2:
-                g2 = 2.3 - x[1]
-            else :
-                g2 = 0.5 - 0.1 * x[1]
-    
-            g = np.amin(np.stack((g1, g2)), 0)
-            y = [g]
-            
-            return y
         
+        equations = ["if (x0 <= 3.5)",
+             "  var g1 := 0.85 - 0.1 * x0;",
+             "else",
+             "  g1 := 4 - x0;",
+             "if (x1 <= 2.0)",
+             "  var g2 := 2.3 - x1;",
+             "else",
+             "  g2 := 0.5 - 0.1 * x1;",
+             "gsys := min(g1, g2);"
+             ]
+        program = "\n".join(equations)
         
+        print(program)
         
-        limitStateFunction = ot.PythonFunction(2, 1, f)
+        limitStateFunction = ot.SymbolicFunction(['x0', 'x1'],
+                                                 ["gsys"],
+                                                 program)
+                                                 
+                                         
 
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
