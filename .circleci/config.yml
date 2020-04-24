@@ -12,6 +12,18 @@ jobs:
       - run:
           name: Test
           command: ./.circleci/run_docker_linux.sh
+      - run:
+          name: Check style of Python Scripts with black
+          command: |
+            black --check otbenchmark
+      - run:
+          name: Check style of Python Scripts with flake8
+          command: |
+            flake8 otbenchmark
+      - run:
+          name: Check style of Notebooks with black-nb
+          command: |
+            black-nb --check .
 
 workflows:
   main:

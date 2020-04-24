@@ -6,4 +6,6 @@ jupyterlab
 nbconvert
 black
 pre-commit
+flake8
+black-nb
 
