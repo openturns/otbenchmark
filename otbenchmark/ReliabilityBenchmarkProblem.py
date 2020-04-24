@@ -136,11 +136,17 @@ class ReliabilityBenchmarkProblem:
         s: str
             The string corresponding to the object.
         """
-        s = ("name = %s\n"
-             "event = %s\n"
-             "probability = %s\n"
-             "description = %s") % (
-            self.name, self.thresholdEvent, self.probability, self.description)
+        s = (
+            "name = %s\n"
+            "event = %s\n"
+            "probability = %s\n"
+            "description = %s"
+        ) % (
+            self.name,
+            self.thresholdEvent,
+            self.probability,
+            self.description,
+        )
         return s
 
     def toFullString(self):
@@ -162,15 +168,23 @@ class ReliabilityBenchmarkProblem:
         beta = ot.Normal().computeQuantile(self.probability, True)[0]
         inputVector = self.thresholdEvent.getAntecedent()
         distribution = inputVector.getDistribution()
-        s = ("name = %s \n"
-             "description = %s\n"
-             "function = %s\n"
-             "operator = %s\n"
-             "threshold = %s\n"
-             "probability = %s\n"
-             "beta = %s\n"
-             "distribution = %s") % (
-            self.name, self.description,
-            g, operator, threshold, self.probability, beta,
-            distribution)
+        s = (
+            "name = %s \n"
+            "description = %s\n"
+            "function = %s\n"
+            "operator = %s\n"
+            "threshold = %s\n"
+            "probability = %s\n"
+            "beta = %s\n"
+            "distribution = %s"
+        ) % (
+            self.name,
+            self.description,
+            g,
+            operator,
+            threshold,
+            self.probability,
+            beta,
+            distribution,
+        )
         return s
