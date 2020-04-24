@@ -18,11 +18,11 @@ algo.run()
 # Retrieve results
 result = algo.getResult()
 computed_pf = result.getProbabilityEstimate()
-print('Computed Pf=', computed_pf)
+print("Computed Pf=", computed_pf)
 
 # Compare with exact results
 exact_pf = problem.getProbability()
-print('Exact Pf=', exact_pf)
+print("Exact Pf=", exact_pf)
 # Compute log-relative error
-log_relative_error = -np.log10(abs(computed_pf - exact_pf)/exact_pf)
-print('Number of correct digits=', log_relative_error)
+log_relative_error = -np.log10(abs(computed_pf - exact_pf) / exact_pf)
+print("Number of correct digits=", log_relative_error)

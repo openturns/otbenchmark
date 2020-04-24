@@ -10,7 +10,6 @@ import openturns as ot
 
 
 class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
-
     def test_AxialStressedBeamReliabilityBenchmarkProblem(self):
         problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
         print(problem)
@@ -19,14 +18,14 @@ class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
         pf = problem.getProbability()
         print("pf=", pf)
         pf_exacte = 0.029198194624830955
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.e-15)
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
 
         # Check function
         event = problem.getEvent()
         function = event.getFunction()
         X = [300.0, 75000.0]
         Y = function(X)
-        assert(type(Y) is ot.Point)
+        assert type(Y) is ot.Point
         np.testing.assert_allclose(Y[0], 61.26758536215701)
 
         # Check distribution
@@ -50,8 +49,8 @@ class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
         result = algo.getResult()
         computed_pf = result.getProbabilityEstimate()
         exact_pf = problem.getProbability()
-        print('exact_pf=', exact_pf)
-        print('computed_pf=', computed_pf)
+        print("exact_pf=", exact_pf)
+        print("computed_pf=", computed_pf)
         samplesize = result.getOuterSampling() * result.getBlockSize()
         print("Sample size : ", samplesize)
         atol = 1.0 / np.sqrt(samplesize)
