@@ -43,7 +43,13 @@ class ReliabilityProblem35(ReliabilityBenchmarkProblem):
         sigma2 : float
             The standard deviation of the X2 gaussian distribution. 
         """
-        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [" min ( 2 - x2 + exp(-0.1 * x1^2) + (0.2 * x1) ^ 4 , 4.5 - x1 * x2 ) "])
+        equations = ["var g1 := 2 - x2 + exp(-0.1 * x1^2) + (0.2 * x1) ^ 4"]
+        equations.append("var g2 := 4.5 - x1 * x2")
+        equations.append("gsys := min(g1, g2)")
+        formula = ";".join(equations)
+        limitStateFunction = ot.SymbolicFunction(['x1', 'x2'],
+                                                 ["gsys"],
+                                                 formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

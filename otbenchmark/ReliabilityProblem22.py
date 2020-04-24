@@ -46,6 +46,7 @@ class ReliabilityProblem22(ReliabilityBenchmarkProblem):
             The standard deviation of the X2 gaussian distribution. 
         """
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["2.5 - 1 / sqrt(2) * (x1 + x2) + 0.1 * (x1 - x2) ^2"])
+        print("2.5 - 1 / sqrt(2) * (x1 + x2) + 0.1 * (x1 - x2) ^2")
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

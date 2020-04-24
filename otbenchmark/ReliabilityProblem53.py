@@ -17,7 +17,14 @@ import openturns as ot
 
 
 class ReliabilityProblem53(ReliabilityBenchmarkProblem):
-    def __init__(self, threshold=0.0, mu1=1.5, sigma1=1.0, mu2=2.5, sigma2=1.0):
+
+
+    def __init__(self, threshold = 0.0, 
+                 mu1 = 1.5,
+                 sigma1 = 1.0,
+                 mu2 = 2.5,
+                 sigma2 = 1.0):
+
         """
         Creates a reliability problem RP53.
 
@@ -45,9 +52,9 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
             The standard deviation of the X2 gaussian distribution.
         """
 
-        limitStateFunction = ot.SymbolicFunction(
-            ["x1", "x2"], [" sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20 "],
-        )
+        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20"],)
+
+        print("sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20")
 
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
