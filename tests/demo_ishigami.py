@@ -15,9 +15,7 @@ inputDesign = ot.SobolIndicesExperiment(distribution, size, True).generate()
 outputDesign = model(inputDesign)
 
 # Compute first order indices using the Saltelli estimator
-sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesign, outputDesign, size
-)
+sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 computed_first_order = sensitivityAnalysis.getFirstOrderIndices()
 
 # Compare with exact results

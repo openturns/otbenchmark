@@ -4,13 +4,9 @@ from .AxialStressedBeamReliabilityBenchmarkProblem import (
     AxialStressedBeamReliabilityBenchmarkProblem,
 )
 from .SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
-from .IshigamiSensitivityBenchmarkProblem import (
-    IshigamiSensitivityBenchmarkProblem,
-)
+from .IshigamiSensitivityBenchmarkProblem import IshigamiSensitivityBenchmarkProblem
 from .DrawEvent import DrawEvent
-from .RminusSReliabilityBenchmarkProblem import (
-    RminusSReliabilityBenchmarkProblem,
-)
+from .RminusSReliabilityBenchmarkProblem import RminusSReliabilityBenchmarkProblem
 from .ReliabilityProblem53 import ReliabilityProblem53
 from .FourBranchSerialSystemReliabilityBenchmarkProblem import (
     FourBranchSerialSystemReliabilityBenchmarkProblem,

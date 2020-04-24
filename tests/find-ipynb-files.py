@@ -15,9 +15,7 @@ def findIpythonNotebookfiles(dirname, maximumNumberOfFiles=100):
     for dirpath, dirnames, filenames in os.walk(dirname):
         for shortfilename in filenames:
             filename, fileExtension = os.path.splitext(shortfilename)
-            if (fileExtension == ".ipynb") and (
-                ".ipynb_checkpoints" not in dirpath
-            ):
+            if (fileExtension == ".ipynb") and (".ipynb_checkpoints" not in dirpath):
                 fullfile = os.path.join(dirpath, shortfilename)
                 print("(%d) %-40s" % (nbfiles, fullfile))
                 nbfiles = nbfiles + 1

@@ -62,28 +62,16 @@ def run_MonteCarlo(
                 sample = np.array(sample)
                 for i in range(n_event):
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Less"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "LessOrEqual"
                     ):
                         sample[:, i] = sample[:, i] < event[i].getThreshold()
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Greater"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "GreaterOrEqual"
                     ):
                         sample[:, i] = sample[:, i] >= event[i].getThreshold()
@@ -107,28 +95,16 @@ def run_MonteCarlo(
                 sample = np.array(sample)
                 for i in range(n_event):
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Less"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "LessOrEqual"
                     ):
                         sample[:, i] = sample[:, i] < event[i].getThreshold()
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Greater"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "GreaterOrEqual"
                     ):
                         sample[:, i] = sample[:, i] >= event[i].getThreshold()
@@ -171,14 +147,11 @@ def run_MonteCarlo(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()],
-            index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getConfidenceLength()], index=["95 % Confidence length"]
-        )
+        pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])
     )
     dfResult = dfResult.append(
         pd.DataFrame(
@@ -256,28 +229,16 @@ def run_ImportanceSampling(
                 sample = np.array(sample)
                 for i in range(n_event):
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Less"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "LessOrEqual"
                     ):
                         sample[:, i] = sample[:, i] < event[i].getThreshold()
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Greater"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "GreaterOrEqual"
                     ):
                         sample[:, i] = sample[:, i] >= event[i].getThreshold()
@@ -301,28 +262,16 @@ def run_ImportanceSampling(
                 sample = np.array(sample)
                 for i in range(n_event):
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Less"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "LessOrEqual"
                     ):
                         sample[:, i] = sample[:, i] < event[i].getThreshold()
                     if (
-                        event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        event[i].getOperator().getImplementation().getClassName()
                         == "Greater"
-                        or event[i]
-                        .getOperator()
-                        .getImplementation()
-                        .getClassName()
+                        or event[i].getOperator().getImplementation().getClassName()
                         == "GreaterOrEqual"
                     ):
                         sample[:, i] = sample[:, i] >= event[i].getThreshold()
@@ -381,14 +330,11 @@ def run_ImportanceSampling(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()],
-            index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getConfidenceLength()], index=["95 % Confidence length"]
-        )
+        pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])
     )
     dfResult = dfResult.append(
         pd.DataFrame(
@@ -454,14 +400,11 @@ def run_LHS(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()],
-            index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getConfidenceLength()], index=["95 % Confidence length"]
-        )
+        pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])
     )
     dfResult = dfResult.append(
         pd.DataFrame(
@@ -514,14 +457,11 @@ def run_SubSet(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()],
-            index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getConfidenceLength()], index=["95 % Confidence length"]
-        )
+        pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])
     )
     dfResult = dfResult.append(
         pd.DataFrame(

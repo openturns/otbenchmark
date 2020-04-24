@@ -89,9 +89,7 @@ def run_FORM_simple(
 
     dfResult = pd.DataFrame()
     dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getEventProbability()], index=["Probability of failure"]
-        )
+        pd.DataFrame([result.getEventProbability()], index=["Probability of failure"])
     )
     dfResult = dfResult.append(
         pd.DataFrame(
@@ -140,9 +138,7 @@ class FORMsystem:
     def __init__(self, FORMruns, failure_domain="union"):
 
         self._nFORM = len(FORMruns)
-        self._FORMresult = [
-            FORMruns[i].getResult() for i in range(self._nFORM)
-        ]
+        self._FORMresult = [FORMruns[i].getResult() for i in range(self._nFORM)]
         self._beta = None
         self._ustar = None
         self._alpha = None
@@ -270,9 +266,7 @@ def run_FORM(event, distribution, failure_domain=None, **kwargs):
     if type(event) is list:
         FORMruns = []
         for event_solo in event:
-            FORMruns.append(
-                run_FORM_simple(event_solo, distribution, **kwargs)
-            )
+            FORMruns.append(run_FORM_simple(event_solo, distribution, **kwargs))
 
         return FORMsystem(FORMruns, failure_domain)
     else:

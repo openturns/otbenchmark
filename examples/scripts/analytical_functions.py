@@ -42,11 +42,7 @@ def gfun_22(x):
         msg = f"The number of random variables (x, columns) is expected "
         "to be {nrv_e} but {nrv_p} is provided!"
     else:
-        g = (
-            2.5
-            - 1 / np.sqrt(2) * (x[:, 0] + x[:, 1])
-            + 0.1 * (x[:, 0] - x[:, 1]) ** 2
-        )
+        g = 2.5 - 1 / np.sqrt(2) * (x[:, 0] + x[:, 1]) + 0.1 * (x[:, 0] - x[:, 1]) ** 2
 
     g_val_comp = g
     return g_val_comp
@@ -92,14 +88,7 @@ def gfun_8(x):
         msg = f"The number of random variables (x, columns) is expected "
         "to be {nrv_e} but {nrv_p} is provided!"
     else:
-        g = (
-            x[:, 0]
-            + 2 * x[:, 1]
-            + 2 * x[:, 2]
-            + x[:, 3]
-            - 5 * x[:, 4]
-            - 5 * x[:, 5]
-        )
+        g = x[:, 0] + 2 * x[:, 1] + 2 * x[:, 2] + x[:, 3] - 5 * x[:, 4] - 5 * x[:, 5]
 
     g_val_comp = g
     return g_val_comp

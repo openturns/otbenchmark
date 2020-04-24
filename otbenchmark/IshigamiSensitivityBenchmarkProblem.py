@@ -13,12 +13,7 @@ import numpy as np
 class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
     @staticmethod
     def ComputeIndices(a, b):
-        var = (
-            1.0 / 2
-            + a ** 2 / 8
-            + b * np.pi ** 4 / 5
-            + b ** 2 * np.pi ** 8 / 18
-        )
+        var = 1.0 / 2 + a ** 2 / 8 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8 / 18
         S1 = (1.0 / 2 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8 / 50) / var
         S2 = (a ** 2 / 8) / var
         S3 = 0
@@ -26,8 +21,7 @@ class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
         exact = {
             "expectation": a / 2,
             "variance": var,
-            "S1": (1.0 / 2 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8.0 / 50)
-            / var,
+            "S1": (1.0 / 2 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8.0 / 50) / var,
             "S2": (a ** 2 / 8) / var,
             "S3": 0,
             "S12": 0,

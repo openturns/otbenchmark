@@ -9,9 +9,7 @@ import numpy as np
 import openturns as ot
 
 
-class CheckFourBranchSerialSystemReliabilityBenchmarkProblem(
-    unittest.TestCase
-):
+class CheckFourBranchSerialSystemReliabilityBenchmarkProblem(unittest.TestCase):
     def test_FourBranchSerialSystemReliabilityBenchmarkProblem(self):
         problem = otb.FourBranchSerialSystemReliabilityBenchmarkProblem()
         print(problem)

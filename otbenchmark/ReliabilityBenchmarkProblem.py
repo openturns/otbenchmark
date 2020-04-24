@@ -136,12 +136,7 @@ class ReliabilityBenchmarkProblem:
         s: str
             The string corresponding to the object.
         """
-        s = (
-            "name = %s\n"
-            "event = %s\n"
-            "probability = %s\n"
-            "description = %s"
-        ) % (
+        s = ("name = %s\n" "event = %s\n" "probability = %s\n" "description = %s") % (
             self.name,
             self.thresholdEvent,
             self.probability,

@@ -9,9 +9,7 @@ from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
 
 
-class FourBranchSerialSystemReliabilityBenchmarkProblem(
-    ReliabilityBenchmarkProblem
-):
+class FourBranchSerialSystemReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
     def __init__(self):
         """
         Creates the four-branch serial system from Waarts.
@@ -58,8 +56,8 @@ class FourBranchSerialSystemReliabilityBenchmarkProblem(
         name = "Four-branch serial system (Waarts, 2000)"
         beta = 2.85
         probability = ot.Normal().computeComplementaryCDF(beta)
-        super(
-            FourBranchSerialSystemReliabilityBenchmarkProblem, self
-        ).__init__(name, thresholdEvent, probability)
+        super(FourBranchSerialSystemReliabilityBenchmarkProblem, self).__init__(
+            name, thresholdEvent, probability
+        )
 
         return None

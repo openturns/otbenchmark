@@ -14,11 +14,7 @@ class IshigamiFunction(ot.OpenTURNSPythonFunction):
         self._b = b
 
     def _exec(self, X):
-        y = (
-            sin(X[0])
-            + self._a * sin(X[1]) ** 2
-            + self._b * X[2] ** 4 * sin(X[0])
-        )
+        y = sin(X[0]) + self._a * sin(X[1]) ** 2 + self._b * X[2] ** 4 * sin(X[0])
         return [y]
 
 

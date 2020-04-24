@@ -12,9 +12,7 @@ import openturns as ot
 
 
 class ReliabilityProblem53(ReliabilityBenchmarkProblem):
-    def __init__(
-        self, threshold=0.0, mu1=1.5, sigma1=1.0, mu2=2.5, sigma2=1.0
-    ):
+    def __init__(self, threshold=0.0, mu1=1.5, sigma1=1.0, mu2=2.5, sigma2=1.0):
         """
         Creates a reliability problem RP53.
 
@@ -43,8 +41,7 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
         """
 
         limitStateFunction = ot.SymbolicFunction(
-            ["x1", "x2"],
-            [" sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20 "],
+            ["x1", "x2"], [" sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20 "],
         )
 
         X1 = ot.Normal(mu1, sigma1)
@@ -59,14 +56,10 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector
         )
-        thresholdEvent = ot.ThresholdEvent(
-            outputRandomVector, ot.Less(), threshold
-        )
+        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP53"
         probability = 0.0313
-        super(ReliabilityProblem53, self).__init__(
-            name, thresholdEvent, probability
-        )
+        super(ReliabilityProblem53, self).__init__(name, thresholdEvent, probability)
 
         return None

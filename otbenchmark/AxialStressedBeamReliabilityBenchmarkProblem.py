@@ -8,9 +8,7 @@ import openturns as ot
 import numpy as np
 
 
-class AxialStressedBeamReliabilityBenchmarkProblem(
-    ReliabilityBenchmarkProblem
-):
+class AxialStressedBeamReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
     """Class to define a axial stressed beam benchmark problem."""
 
     def __init__(self, threshold=0.0):
@@ -26,9 +24,7 @@ class AxialStressedBeamReliabilityBenchmarkProblem(
         -------
         problem  = AxialStressedBeamReliabilityBenchmarkProblem()
         """
-        limitStateFunction = ot.SymbolicFunction(
-            ["R", "F"], ["R - F/(pi_ * 100.0)"]
-        )
+        limitStateFunction = ot.SymbolicFunction(["R", "F"], ["R - F/(pi_ * 100.0)"])
 
         R_dist = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
         R_dist.setName("Yield strength")

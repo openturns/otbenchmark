@@ -159,8 +159,7 @@ class DrawEvent:
         if inputSample.getDimension() != 2:
             raise ValueError(
                 "The input dimension of the input sample "
-                "is equal to %d but should be 2."
-                % (inputSample.getDimension())
+                "is equal to %d but should be 2." % (inputSample.getDimension())
             )
         #
         threshold = self.event.getThreshold()
@@ -185,9 +184,7 @@ class DrawEvent:
         title = "Points X s.t. g(X) %s %s" % (operator, threshold)
         graph = ot.Graph(title, description[0], description[1], True, "")
         if len(insideIndices) > 0:
-            cloud = ot.Cloud(
-                insideSample, self.insideEventPointColor, "fsquare", "In"
-            )
+            cloud = ot.Cloud(insideSample, self.insideEventPointColor, "fsquare", "In")
             graph.add(cloud)
         if len(outsideIndices) > 0:
             cloud = ot.Cloud(
@@ -258,8 +255,7 @@ class DrawEvent:
         def CreatePolygonArray(polyData, color):
             numberOfPolygons = len(polyData)
             polygonList = [
-                ot.Polygon(polyData[i], color, color)
-                for i in range(numberOfPolygons)
+                ot.Polygon(polyData[i], color, color) for i in range(numberOfPolygons)
             ]
             polygonArray = ot.PolygonArray(polygonList)
             return polygonArray
@@ -273,9 +269,7 @@ class DrawEvent:
         #
         description = g.getInputDescription()
         title = "Domain where g(x) %s %s" % (operator, threshold)
-        graph = ot.Graph(
-            title, description[0], description[1], True, "topright"
-        )
+        graph = ot.Graph(title, description[0], description[1], True, "topright")
         graph.add(polygonArrayInside)
         graph.add(polygonArrayOutside)
         graph.setLegends(["In", "Out"])

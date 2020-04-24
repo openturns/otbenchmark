@@ -7,9 +7,7 @@ import openturns as ot
 
 
 class RminusSReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
-    def __init__(
-        self, threshold=0.0, muR=4.0, sigmaR=1.0, muS=2.0, sigmaS=1.0
-    ):
+    def __init__(self, threshold=0.0, muR=4.0, sigmaR=1.0, muS=2.0, sigmaS=1.0):
         """
         Creates a R-S reliability problem.
 
@@ -57,9 +55,7 @@ class RminusSReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector
         )
-        thresholdEvent = ot.ThresholdEvent(
-            outputRandomVector, ot.Less(), threshold
-        )
+        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "R-S"
         diff = R - S

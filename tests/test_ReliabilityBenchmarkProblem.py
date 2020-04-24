@@ -24,9 +24,7 @@ class CheckReliabilityBenchmarkProblem(unittest.TestCase):
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector
         )
-        thresholdEvent = ot.ThresholdEvent(
-            outputRandomVector, ot.Less(), threshold
-        )
+        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "R-S"
         probability = 0.123456789
