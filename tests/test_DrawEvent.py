@@ -6,7 +6,6 @@ Test for DrawEvent class.
 import openturns as ot
 import otbenchmark
 import unittest
-import openturns.viewer as otv
 
 
 class CheckDrawEvent(unittest.TestCase):
@@ -35,7 +34,7 @@ class CheckDrawEvent(unittest.TestCase):
         #
         drawEvent = otbenchmark.DrawEvent(eventF)
         graph = drawEvent.drawLimitState(bounds)
-        otv.View(graph)
+        assert type(graph) is ot.Graph
 
     def test_DrawSample(self):
         # Distribution
@@ -56,7 +55,7 @@ class CheckDrawEvent(unittest.TestCase):
         #
         drawEvent = otbenchmark.DrawEvent(eventF)
         graph = drawEvent.drawSample(inputSample, outputSample)
-        otv.View(graph)
+        assert type(graph) is ot.Graph
 
     def test_DrawFilledEvent(self):
         # Distribution
@@ -84,7 +83,7 @@ class CheckDrawEvent(unittest.TestCase):
         #
         drawEvent = otbenchmark.DrawEvent(eventF)
         graph = drawEvent.fillEvent(bounds)
-        otv.View(graph)
+        assert type(graph) is ot.Graph
 
 
 if __name__ == "__main__":
