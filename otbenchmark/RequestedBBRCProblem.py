@@ -22,15 +22,12 @@ class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
         ----------
         username: str
             Username required to login the BBRC challenge.
-
         password: str
             Password required to login the BBRC challenge.
-
         set_id: int
             First item defining the reliability problem selected. 
         problem_id: int
             Second item defining the reliability problem selected.
-            TO DO : add a table of all the problems.
         """
         self.username = username
         self.password = password
