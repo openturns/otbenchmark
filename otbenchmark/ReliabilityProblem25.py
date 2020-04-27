@@ -3,56 +3,47 @@
 Created on Mon Apr 20 11:18:59 2020
 
 @author: Jebroun
-"""
 
-"""
 Class to define the ReliabilityProblem25 benchmark problem.
 """
 
 from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
-import numpy as np
+
 
 class ReliabilityProblem25(ReliabilityBenchmarkProblem):
-    def __init__(self, threshold = 0.0, 
-                 mu1 = 0.0,
-                 sigma1 = 1.0,
-                 mu2 = 0.0,
-                 sigma2 = 1.0):
+    def __init__(self, threshold=0.0, mu1=0.0, sigma1=1.0, mu2=0.0, sigma2=1.0):
         """
         Creates a reliability problem RP25.
 
-        The event is {g(X) < threshold} where 
-        
+        The event is {g(X) < threshold} where
+        ---
         g(x1, x2) = max(x1^2 -8 * x2 + 16, -16 * x1 + x2 + 32)
-        
-        We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2). 
-        
+        ---
+        We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
+        ---
         Parameters
         ----------
         threshold : float
-            The threshold. 
-        
+            The threshold.
+        ***
         mu1 : float
-            The mean of the X1 gaussian distribution. 
-        
+            The mean of the X1 gaussian distribution.
+        ***
         sigma1 : float
-            The standard deviation of the X1 gaussian distribution. 
-        
+            The standard deviation of the X1 gaussian distribution.
+        ***
         mu2 : float
-            The mean of the X2 gaussian distribution. 
-        
+            The mean of the X2 gaussian distribution.
+        ***
         sigma2 : float
-            The standard deviation of the X2 gaussian distribution. 
+            The standard deviation of the X2 gaussian distribution.
         """
         equations = ["var g1 := x1^2 -8 * x2 + 16"]
         equations.append("var g2 := -16 * x1 + x2 + 32")
         equations.append("gsys := max(g1, g2)")
         formula = ";".join(equations)
-        limitStateFunction = ot.SymbolicFunction(['x1', 'x2'],
-                                                 ["gsys"],
-                                                 formula)
-        
+        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)
@@ -60,14 +51,12 @@ class ReliabilityProblem25(ReliabilityBenchmarkProblem):
 
         myDistribution = ot.ComposedDistribution([X1, X2])
         inputRandomVector = ot.RandomVector(myDistribution)
-        outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
-        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(),
-                                           threshold)
+        outputRandomVector = ot.CompositeRandomVector(
+            limitStateFunction, inputRandomVector
+        )
+        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP25"
-        
         probability = 0.00000614
         super(ReliabilityProblem25, self).__init__(name, thresholdEvent, probability)
-        
         return None
-
