@@ -1,10 +1,8 @@
-
 """
 Youssef Jebroun
 EDF
 
 Class to define the ReliabilityProblem53 benchmark problem.
-
 
 Created on Thu Apr 23 12:39:59 2020
 
@@ -17,14 +15,7 @@ import openturns as ot
 
 
 class ReliabilityProblem53(ReliabilityBenchmarkProblem):
-
-
-    def __init__(self, threshold = 0.0, 
-                 mu1 = 1.5,
-                 sigma1 = 1.0,
-                 mu2 = 2.5,
-                 sigma2 = 1.0):
-
+    def __init__(self, threshold=0.0, mu1=1.5, sigma1=1.0, mu2=2.5, sigma2=1.0):
         """
         Creates a reliability problem RP53.
 
@@ -51,8 +42,8 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
         sigma2 : float
             The standard deviation of the X2 gaussian distribution.
         """
-
-        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20"],)
+        formula = "sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20"
+        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
 
         print("sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20")
 
@@ -65,14 +56,12 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
         myDistribution = ot.ComposedDistribution([X1, X2])
 
         inputRandomVector = ot.RandomVector(myDistribution)
-        outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
-        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(),
-                                           threshold)
+        outputRandomVector = ot.CompositeRandomVector(
+            limitStateFunction, inputRandomVector
+        )
+        thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP53"
         probability = 0.0313
         super(ReliabilityProblem53, self).__init__(name, thresholdEvent, probability)
-
-
         return None
-

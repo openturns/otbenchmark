@@ -20,8 +20,6 @@ from .ReliabilityProblem75 import ReliabilityProblem75
 from .ReliabilityProblem89 import ReliabilityProblem89
 from .ReliabilityProblem110 import ReliabilityProblem110
 from .ReliabilityProblem111 import ReliabilityProblem111
-from .FourBranchSerialSystemReliabilityBenchmarkProblem import FourBranchSerialSystemReliabilityBenchmarkProblem
-
 from .FourBranchSerialSystemReliabilityBenchmarkProblem import (
     FourBranchSerialSystemReliabilityBenchmarkProblem,
 )
@@ -37,17 +35,18 @@ __all__ = [
     "DrawEvent",
     "RminusSReliabilityBenchmarkProblem",
     "ReliabilityProblem53",
-	"ReliabilityProblem22",
+    "ReliabilityProblem22",
     "ReliabilityProblem24",
     "ReliabilityProblem25",
     "ReliabilityProblem28",
     "ReliabilityProblem31",
     "ReliabilityProblem35",
-	"ReliabilityProblem55",
+    "ReliabilityProblem55",
     "ReliabilityProblem57",
     "ReliabilityProblem75",
     "ReliabilityProblem89",
     "ReliabilityProblem111",
     "ReliabilityProblem110",
-    "FourBranchSerialSystemReliabilityBenchmarkProblem"]
+    "FourBranchSerialSystemReliabilityBenchmarkProblem",
+]
 __version__ = "1.0"
