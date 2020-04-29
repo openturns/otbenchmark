@@ -1,9 +1,7 @@
 #!/usr/bin/python
 # coding:utf-8
 # Copyright 2020 EDF
-"""
-Class to define the four-branch serial system from Waarts.
-"""
+"""Class to define the four-branch serial system from Waarts."""
 
 from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot

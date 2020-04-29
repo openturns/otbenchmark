@@ -9,7 +9,7 @@ import openturns as ot
 class ReliabilityBenchmarkProblem:
     """Class to define a benchmark problem."""
 
-    def __init__(self, name, thresholdEvent, probability, description=""):
+    def __init__(self, name, thresholdEvent, probability):
         """
         Create a reliability problem.
 
@@ -25,11 +25,6 @@ class ReliabilityBenchmarkProblem:
         probability : float
             The exact probability.
 
-        description : str
-            The description of the benchmark problem.
-            This is a long string, typically longer than a sentence.
-            It typically contains the bibliographical references.
-
         Example
         -------
         problem  = ReliabilityBenchmarkProblem(name, thresholdEvent,
@@ -38,7 +33,6 @@ class ReliabilityBenchmarkProblem:
         self.name = name
         self.thresholdEvent = thresholdEvent
         self.probability = probability
-        self.description = description
 
         return None
 
@@ -87,21 +81,6 @@ class ReliabilityBenchmarkProblem:
         """
         return self.name
 
-    def getDescription(self):
-        """
-        Return the description of the problem.
-
-        Parameters
-        ----------
-        None.
-
-        Returns
-        -------
-        description: str
-            The description of the problem.
-        """
-        return self.description
-
     def computeBeta(self):
         """
         Return the beta of the reliability problem.
@@ -136,11 +115,10 @@ class ReliabilityBenchmarkProblem:
         s: str
             The string corresponding to the object.
         """
-        s = ("name = %s\n" "event = %s\n" "probability = %s\n" "description = %s") % (
+        s = ("name = %s\n" "event = %s\n" "probability = %s\n") % (
             self.name,
             self.thresholdEvent,
             self.probability,
-            self.description,
         )
         return s
 
@@ -165,21 +143,11 @@ class ReliabilityBenchmarkProblem:
         distribution = inputVector.getDistribution()
         s = (
             "name = %s \n"
-            "description = %s\n"
             "function = %s\n"
             "operator = %s\n"
             "threshold = %s\n"
             "probability = %s\n"
             "beta = %s\n"
             "distribution = %s"
-        ) % (
-            self.name,
-            self.description,
-            g,
-            operator,
-            threshold,
-            self.probability,
-            beta,
-            distribution,
-        )
+        ) % (self.name, g, operator, threshold, self.probability, beta, distribution,)
         return s
