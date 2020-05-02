@@ -31,6 +31,7 @@ from .ReliabilityProblem63 import ReliabilityProblem63
 from .FourBranchSerialSystemReliabilityBenchmarkProblem import (
     FourBranchSerialSystemReliabilityBenchmarkProblem,
 )
+from .RequestedBBRCProblem import RequestedBBRCProblem
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -64,5 +65,6 @@ __all__ = [
     "ReliabilityProblem91",
     "ReliabilityProblem63",
     "FourBranchSerialSystemReliabilityBenchmarkProblem",
+    "RequestedBBRCProblem",
 ]
 __version__ = "1.0"
