@@ -34,6 +34,7 @@ class ReliabilityProblem24(ReliabilityBenchmarkProblem):
         """
         formula = "2.5 - 0.2357 * (x1 - x2) + 0.00463 * (x1 + x2 - 20)^4"
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
+        print(formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

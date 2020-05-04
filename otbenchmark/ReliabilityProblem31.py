@@ -33,8 +33,9 @@ class ReliabilityProblem31(ReliabilityBenchmarkProblem):
         sigma2 : float
             The standard deviation of the X2 gaussian distribution.
         """
-        formula = "2 - x2 + 256 * x1 * x1 * x1 * x1"
+        formula = "2 - x2 + 256 * x1^4"
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
+        print(formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

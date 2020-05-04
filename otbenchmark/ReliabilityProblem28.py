@@ -37,6 +37,7 @@ class ReliabilityProblem28(ReliabilityBenchmarkProblem):
         """
         formula = " x1 * x2 - 146.14 "
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
+        print(formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

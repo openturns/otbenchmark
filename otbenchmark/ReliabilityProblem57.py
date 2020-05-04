@@ -41,6 +41,7 @@ class ReliabilityProblem57(ReliabilityBenchmarkProblem):
         equations.append("gsys := min(max(g1, g2), g3) ")
         formula = ";".join(equations)
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
+        print(formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

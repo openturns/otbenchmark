@@ -33,6 +33,7 @@ class ReliabilityProblem75(ReliabilityBenchmarkProblem):
             The standard deviation of the X2 gaussian distribution.
         """
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["3 - x1 * x2"])
+        print("3 - x1 * x2")
 
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
