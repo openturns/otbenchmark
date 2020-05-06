@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon May  4 13:14:25 2020
+Created on Tue May  5 12:56:49 2020
 
 @author: Jebroun
 
-Test for ReliabilityBenchmarkProblem63 class.
+Test for ReliabilityBenchmarkProblem60 class.
 """
 import otbenchmark as otb
 import unittest
@@ -12,26 +12,26 @@ import numpy as np
 import openturns as ot
 
 
-class CheckReliabilityProblem63(unittest.TestCase):
-    def test_ReliabilityBenchmarkProblem63(self):
-        problem = otb.ReliabilityProblem63()
+class CheckReliabilityProblem60(unittest.TestCase):
+    def test_ReliabilityBenchmarkProblem60(self):
+        problem = otb.ReliabilityProblem60()
         print(problem)
 
         # Check probability
         pf = problem.getProbability()
-        pf_exacte = 0.000379
+        pf_exacte = 0.0456
         np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
 
         # Check function
         event = problem.getEvent()
         function = event.getFunction()
-        X = [0.0] * 100
+        X = [0.0] * 5
         Y = function(X)
         assert type(Y) is ot.Point
-        np.testing.assert_allclose(Y[0], -4.5)
+        np.testing.assert_allclose(Y[0], 0)
 
     def test_UseCase(self):
-        problem = otb.ReliabilityProblem63()
+        problem = otb.ReliabilityProblem60()
         event = problem.getEvent()
 
         # Create a Monte Carlo algorithm
