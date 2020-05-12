@@ -15,10 +15,13 @@ class ReliabilityProblem24(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu1=10.0, sigma1=3.0, mu2=10.0, sigma2=3.0):
         """
         Creates a reliability problem RP24.
+
         The event is {g(X) < threshold} where
+
         g(x1, x2) = 2.5 - 0.2357 * (x1 - x2) + 0.00463 * (x1 + x2 - 20)^4
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float

@@ -17,9 +17,11 @@ class ReliabilityProblem111(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP111.
 
         The event is {g(X) < threshold} where
+
         g(x1, x2) = 12.5 - abs(x1 * x2)
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float

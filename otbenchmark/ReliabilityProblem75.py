@@ -16,9 +16,11 @@ class ReliabilityProblem75(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP75.
 
         The event is {g(X) < threshold} where
-        g(x1, x2) = 3 - x1* x2
+
+        g(x1, x2) = 3 - x1 * x2
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float

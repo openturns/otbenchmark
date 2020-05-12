@@ -15,8 +15,9 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP55.
 
         The event is {g(X) < threshold} where
+
         We have x1 ~ Uniform(a1, b1) and x2 ~ Uniform(a2, b2).
-        ***
+
         Parameters
         ----------
         threshold : float

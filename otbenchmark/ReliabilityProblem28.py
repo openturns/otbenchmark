@@ -19,9 +19,11 @@ class ReliabilityProblem28(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP28.
 
         The event is {g(X) < threshold} where
+
         g(x1, x2) = x1 * x2 - 146.14
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float

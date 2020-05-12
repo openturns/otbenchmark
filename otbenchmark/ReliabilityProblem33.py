@@ -23,17 +23,23 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
         sigma3=1.0,
     ):
         """
-        Creates a reliability problem RP110.
+        Creates a reliability problem RP33.
 
         The event is {g(X) < threshold} where
-        g(x1, x2) = min(g1, g2) with :
-            g1 = -x1 - x2 - x3 + 3 * sqrt(3)
-            g2 = -x3 + 3
+
+        g(x1, x2) = min(g1, g2) with
+
+        g1 = -x1 - x2 - x3 + 3 * sqrt(3)
+
+        g2 = -x3 + 3
+
         We have :
             x1 ~ Normal(mu1, sigma1)
+
             x2 ~ Normal(mu2, sigma2)
+
             x3 ~ Normal(mu3, sigma3).
-        ***
+
         Parameters
         ----------
         threshold : float

@@ -17,9 +17,11 @@ class ReliabilityProblem89(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP89.
 
         The event is {g(X) < threshold} where
+
         g(x1, x2) = min(-x1^2 - x2 + 8, -x1 / 5 - x2 + 6)
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float

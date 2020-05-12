@@ -29,25 +29,47 @@ class ReliabilityProblem60(ReliabilityBenchmarkProblem):
         """
         Creates a reliability problem RP60.
 
-        The event is {g(X) < threshold}
-        We have x1 ~ LogNormal(mu1, sigma1)
-                x2 ~ LogNormal(mu2, sigma2)
-                x3 ~ LogNormal(mu3, sigma3)
-                x4 ~ LogNormal(mu4, sigma4)
-                x5 ~ LogNormal(mu5, sigma5)
-        ***
+        The event is {g(X) < threshold} with
+
+        you can use this line :
+
+            "https://rprepo.readthedocs.io/en/latest/reliability_problems.html#rp60"
+
+        We have :
+            x1 ~ LogNormalMuSigma(mu1, sigma1)
+
+            x2 ~ LogNormalMuSigma(mu2, sigma2)
+
+            x3 ~ LogNormalMuSigma(mu3, sigma3)
+
+            x4 ~ LogNormalMuSigma(mu4, sigma4)
+
+            x5 ~ LogNormalMuSigma(mu5, sigma5)
+
         Parameters
         ----------
         threshold : float
             The threshold.
         mu1 : float
-            The mean of the X1 gaussian distribution.
+            The mean of the underlying gaussian distribution of X1.
         sigma1 : float
-            The standard deviation of the X1 gaussian distribution.
+            The standard deviation of the underlying gaussian distribution of X1.
         mu2 : float
-            The mean of the X2 gaussian distribution.
+            The mean of the underlying gaussian distribution of X2.
         sigma2 : float
-            The standard deviation of the X2 gaussian distribution.
+            The standard deviation of the underlying gaussian distribution of X2.
+        mu3 : float
+            The mean of the underlying gaussian distribution of X3.
+        sigma3 : float
+            The standard deviation of the underlying gaussian distribution of X3.
+        mu4 : float
+            The mean of the underlying gaussian distribution of X4.
+        sigma4 : float
+            The standard deviation of the underlying gaussian distribution of X4.
+        mu5 : float
+            The mean of the underlying gaussian distribution of X5.
+        sigma5 : float
+            The standard deviation of the underlying gaussian distribution of X5.
         """
         equations = ["var g1 := x1 - x5"]
         equations.append("var g2 := x2 - x5 / 2")

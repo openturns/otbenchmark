@@ -26,15 +26,20 @@ class ReliabilityProblem77(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP77.
 
         The event is {g(X) < threshold} where
-        g(x1, x2, x3) = g1 with :
-            "if (x3 <= 5.0)",
-            "g1 := x1 - x2 - x3;",
-            "else",
-            "  g1 := x3 - x2;".
-        We have x1 ~ Normal(mu1, sigma1)
-                x2 ~ Normal(mu2, sigma2)
-                x3 ~ Normal(mu3, sigma3)
-        ***
+
+        if (x3 <= 5.0):
+            g(x1, x2, x3) = x1 - x2 - x3
+
+        else :
+            g(x1, x2, x3) = x3 - x2
+
+        We have :
+            x1 ~ Normal(mu1, sigma1)
+
+            x2 ~ Normal(mu2, sigma2)
+
+            x3 ~ Normal(mu3, sigma3)
+
         Parameters
         ----------
         threshold : float

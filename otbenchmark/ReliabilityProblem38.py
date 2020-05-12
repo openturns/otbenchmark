@@ -35,18 +35,28 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP38.
 
         The event is {g(X) < threshold} where
+
         X = (x1, x2, x3, x4, x5, x6, x7)
-        g(X)
-        use this link :
+
+        g(X) too complexe
+
+        use can this line :
             "https://rprepo.readthedocs.io/en/latest/reliability_problems.html#rp38"
         We have :
             x1 ~ Normal(mu1, sigma1)
+
             x2 ~ Normal(mu2, sigma2)
+
             x3 ~ Normal(mu3, sigma3)
+
             x4 ~ Normal(mu4, sigma4)
+
             x5 ~ Normal(mu5, sigma5)
+
             x6 ~ Normal(mu6, sigma6)
+
             x7 ~ Normal(mu7, sigma7)
+
         Parameters
         ----------
         threshold : float
@@ -81,10 +91,10 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
             The standard deviation of the X7 Normal distribution.
         """
 
-        formula = "15.59*1e4 - x1*x2^3/(2*x3^3) *"
-        formula = (
-            formula
-            + "((x4^2-4*x5*x6*x7^2+x4*(x6+4*x5+2*x6*x7))/(x4*x5*(x4+x6+2*x6*x7)))"
+        formula = "15.59 * 1e4 - x1 *x2^3 / (2 * x3^3) *"
+        formula += "((x4^2 - 4 * x5 * x6 * x7^2 + "
+        formula += (
+            "x4 * (x6 + 4 * x5 + 2 *x6 * x7)) / (x4 * x5 * (x4 + x6 + 2 *x6 *x7)))"
         )
 
         print(formula)

@@ -17,25 +17,21 @@ class ReliabilityProblem25(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP25.
 
         The event is {g(X) < threshold} where
-        ---
-        g(x1, x2) = max(x1^2 -8 * x2 + 16, -16 * x1 + x2 + 32)
-        ---
+
+        g(x1, x2) = max(x1^2 - 8 * x2 + 16, -16 * x1 + x2 + 32)
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ---
+
         Parameters
         ----------
         threshold : float
             The threshold.
-        ***
         mu1 : float
             The mean of the X1 gaussian distribution.
-        ***
         sigma1 : float
             The standard deviation of the X1 gaussian distribution.
-        ***
         mu2 : float
             The mean of the X2 gaussian distribution.
-        ***
         sigma2 : float
             The standard deviation of the X2 gaussian distribution.
         """

@@ -16,12 +16,17 @@ class ReliabilityProblem57(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP57.
 
         The event is {g(X) < threshold} where
+
         g(x1, x2) = min(max(g1, g2), g3) with
+
         g1 = -x1^2 + x2^3 + 3
+
         g2 = 2 - x1 - 8 * x2
+
         g3 = (x1 + 3)^2 + (x2 + 3)^2 - 4
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float
