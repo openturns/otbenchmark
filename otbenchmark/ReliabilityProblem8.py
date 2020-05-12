@@ -32,43 +32,52 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP8.
 
         The event is {g(X) < threshold} where
+
         X = (x1, x2, x3, x4, x5, x6)
+
         g(X) = x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6
+
         We have :
-                x1 ~ LogNormal(mu1, sigma1)
-                x2 ~ LogNormal(mu2, sigma2)
-                x3 ~ LogNormal(mu3, sigma3)
-                x4 ~ LogNormal(mu4, sigma4)
-                x5 ~ LogNormal(mu5, sigma5)
-                x6 ~ LogNormal(mu6, sigma6)
+            x1 ~ LogNormalMuSigma(mu1, sigma1)
+
+            x2 ~ LogNormalMuSigma(mu2, sigma2)
+
+            x3 ~ LogNormalMuSigma(mu3, sigma3)
+
+            x4 ~ LogNormalMuSigma(mu4, sigma4)
+
+            x5 ~ LogNormalMuSigma(mu5, sigma5)
+
+            x6 ~ LogNormalMuSigma(mu6, sigma6)
+
         Parameters
         ----------
         threshold : float
             The threshold.
         mu1 : float
-            The mean of the X1 LogNormal distribution.
+            The mean of the underlying gaussian distribution of X1.
         sigma1 : float
-            The standard deviation of the X1 LogNormal distribution.
+            The standard deviation of the underlying gaussian distribution of X1.
         mu2 : float
-            The mean of the X2 LogNormal distribution.
+            The mean of the underlying gaussian distribution of X2.
         sigma2 : float
-            The standard deviation of the X2 LogNormal distribution.
+            The standard deviation of the underlying gaussian distribution of X2.
         mu3 : float
-            The mean of the X3 LogNormal distribution.
+            The mean of the underlying gaussian distribution of X3.
         sigma3 : float
-            The standard deviation of the X3 LogNormal distribution.
+            The standard deviation of the underlying gaussian distribution of X3.
         mu4 : float
-            The mean of the X4 LogNormal distribution.
+            The mean of the underlying gaussian distribution of X4.
         sigma4 : float
-            The standard deviation of the X4 LogNormal distribution.
+            The standard deviation of the underlying gaussian distribution of X4.
         mu5 : float
-            The mean of the X5 LogNormal distribution.
+            The mean of the underlying gaussian distribution of X5.
         sigma5 : float
-            The standard deviation of the X5 LogNormal distribution.
+            The standard deviation of the underlying gaussian distribution of X5.
         mu6 : float
-            The mean of the X6 LogNormal distribution.
+            The mean of the underlying gaussian distribution of X6.
         sigma6 : float
-            The standard deviation of the X6 LogNormal distribution.
+            The standard deviation of the underlying gaussian distribution of X6.
         """
 
         formula = "x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6"
