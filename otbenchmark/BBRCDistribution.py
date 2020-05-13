@@ -14,7 +14,7 @@ class BBRCDistribution:
 
     def __init__(self, set_id, problem_id):
         """
-        Creates an ot.CcomposedDistribution from the BBRC 2019 distribution table.
+        Creates an ot.ComposedDistribution from the BBRC 2019 distribution table.
         References
         ----------
         https://rprepo.readthedocs.io/en/latest/
@@ -29,21 +29,31 @@ class BBRCDistribution:
         self.problem_id = problem_id
         return None
 
-    def switch_build_dist(self, dist_name, a, b, mean, std):
-        if dist_name == "uniform":
-            a_dist = ot.Uniform(a, b)
-        elif dist_name == "exponential":
-            a_dist = ot.Exponential(a)
-        elif dist_name == "normal":
-            a_dist = ot.Normal(a, b)
-        elif dist_name == "gumbel_max":
-            a_dist = ot.ParametrizedDistribution(ot.GumbelMuSigma(mean, std))
-        elif dist_name == "lognormal":
-            a_dist = ot.ParametrizedDistribution(ot.LogNormalMuSigma(mean, std))
-        return a_dist
-
     def build_composed_dist(self):
-        bbrc_dist_table = pd.read_csv("./distributions/probabilistic_models_up.csv")
+        """
+        Builds an ot.ComposedDistribution from the BBRC 2019 distribution table for the
+        corresponding set_id and problem_id defined in the constructor.
+        """
+
+        def switch_build_dist(dist_name, a, b, mean, std):
+            if dist_name == "uniform":
+                a_dist = ot.Uniform(a, b)
+            elif dist_name == "exponential":
+                a_dist = ot.Exponential(a)
+            elif dist_name == "normal":
+                a_dist = ot.Normal(a, b)
+            elif dist_name == "gumbel_max":
+                a_dist = ot.ParametrizedDistribution(ot.GumbelMuSigma(mean, std))
+            elif dist_name == "lognormal":
+                a_dist = ot.ParametrizedDistribution(ot.LogNormalMuSigma(mean, std))
+            else:
+                raise ValueError(
+                    "Distribution not defined correctly in \
+                                    probabilistic_models.csv file"
+                )
+            return a_dist
+
+        bbrc_dist_table = pd.read_csv("./distributions/probabilistic_models.csv")
         my_dist_table = bbrc_dist_table[
             (bbrc_dist_table["problem_id"] == self.problem_id)
             & (bbrc_dist_table["set_id"] == self.set_id)
@@ -53,7 +63,7 @@ class BBRCDistribution:
         for raw_index in my_dist_table.index:
             raw = my_dist_table.loc[raw_index]
             ot_dist_list.append(
-                self.switch_build_dist(
+                switch_build_dist(
                     raw["distribution_type"],
                     raw["theta_1"],
                     raw["theta_2"],

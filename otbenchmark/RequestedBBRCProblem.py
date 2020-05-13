@@ -8,6 +8,7 @@ from otbenchmark.BBRCDistribution import BBRCDistribution
 from otbenchmark import evaluate
 import openturns as ot
 import numpy as np
+import pandas as pd
 
 
 class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
@@ -45,13 +46,15 @@ class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
         inputDistribution = my_dist.build_composed_dist()
         inputRandomVector = ot.RandomVector(inputDistribution)
         input_dim = inputDistribution.getDimension()
-        # TO DO ##################
-        # BBRCFunction
-        name = "RP8"
-        beta = 3.16
-        output_dim = 1
-        ##########################
-        limitStateFunction = ot.PythonFunction(input_dim, output_dim, g_fun)
+        # BBRCResults
+        bbrc_result_table = pd.read_csv("./distributions/beta_results.csv")
+        my_result = bbrc_result_table[
+            (bbrc_result_table["problem_id"] == self.problem_id)
+            & (bbrc_result_table["set_id"] == self.set_id)
+        ]
+        name = "RP" + str(my_result["reliability_problem_id"].values[0])
+        beta = my_result["beta"].values[0]
+        limitStateFunction = ot.PythonFunction(input_dim, 1, g_fun)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector
         )
