@@ -113,3 +113,33 @@ class SensitivityBenchmarkProblem:
             The total order sensitivity indices.
         """
         return self.totalOrderIndices
+
+    def __str__(self):
+        """
+        Convert the object into a string.
+
+        This method is typically called with the "print" statement.
+
+        Parameters
+        ----------
+        None.
+
+        Returns
+        -------
+        s: str
+            The string corresponding to the object.
+        """
+        s = (
+            "name = %s\n"
+            "distribution = %s\n"
+            "function = %s\n"
+            "firstOrderIndices = %s\n"
+            "totalOrderIndices = %s"
+        ) % (
+            self.name,
+            self.distribution,
+            self.function,
+            self.firstOrderIndices,
+            self.totalOrderIndices,
+        )
+        return s

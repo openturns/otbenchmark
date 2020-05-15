@@ -29,6 +29,8 @@ from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
+from .GaussianSumSensitivity import GaussianSumSensitivity
+from .GaussianProductSensitivity import GaussianProductSensitivity
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -64,5 +66,7 @@ __all__ = [
     "ReliabilityProblem60",
     "ReliabilityProblem77",
     "FourBranchSerialSystemReliability",
+    "GaussianSumSensitivity",
+    "GaussianProductSensitivity",
 ]
 __version__ = "1.0"

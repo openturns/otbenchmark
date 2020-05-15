@@ -9,9 +9,10 @@ import unittest
 import numpy as np
 
 
-class CheckDrawEvent(unittest.TestCase):
-    def test_DrawLimitState(self):
+class CheckIshigami(unittest.TestCase):
+    def test_Ishigami(self):
         problem = otb.IshigamiSensitivity()
+        print(problem)
         distribution = problem.getInputDistribution()
         model = problem.getFunction()
 
