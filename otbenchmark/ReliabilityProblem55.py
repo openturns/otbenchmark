@@ -15,8 +15,21 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP55.
 
         The event is {g(X) < threshold} where
+
+        X = (x1, x2)
+
+        g1 = 0.2 + 0.6 * (x1 - x2)^4 - (x1 - x2) / sqrt(2)
+
+        g2 = 0.2 + 0.6 * (x1 - x2)^4 + (x1 - x2) / sqrt(2)
+
+        g3 = (x1 - x2) + 5 / sqrt(2) - 2.2
+
+        g4 = (x2 - x1) + 5 / sqrt(2) - 2.2
+
+        g(X) = min(g1, g2, g3, g4)
+
         We have x1 ~ Uniform(a1, b1) and x2 ~ Uniform(a2, b2).
-        ***
+
         Parameters
         ----------
         threshold : float
@@ -26,13 +39,13 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         a2 , b2 : float
             Parameters of the X2 uniform distribution.
         """
-        equations = ["var g1 := 0.2 + 0.6 * (x0 - x1)^4 - (x0 - x1) / sqrt(2)"]
-        equations.append("var g2 := 0.2 + 0.6 * (x0 - x1)^4 + (x0 - x1) / sqrt(2)")
-        equations.append("var g3 := (x0 - x1) + 5 / sqrt(2) - 2.2")
-        equations.append("var g4 := (x1 - x0) + 5 / sqrt(2) - 2.2")
+        equations = ["var g1 := 0.2 + 0.6 * (x1 - x2)^4 - (x1 - x2) / sqrt(2)"]
+        equations.append("var g2 := 0.2 + 0.6 * (x1 - x2)^4 + (x1 - x2) / sqrt(2)")
+        equations.append("var g3 := (x1 - x2) + 5 / sqrt(2) - 2.2")
+        equations.append("var g4 := (x2 - x1) + 5 / sqrt(2) - 2.2")
         equations.append("gsys := min(g1, g2, g3, g4)")
         formula = ";".join(equations)
-        limitStateFunction = ot.SymbolicFunction(["x0", "x1"], ["gsys"], formula)
+        limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
         print(formula)
         X1 = ot.Uniform(a1, b1)
         X1.setDescription(["X1"])

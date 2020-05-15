@@ -28,6 +28,8 @@ from .ReliabilityProblem54 import ReliabilityProblem54
 from .ReliabilityProblem107 import ReliabilityProblem107
 from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
+from .ReliabilityProblem60 import ReliabilityProblem60
+from .ReliabilityProblem77 import ReliabilityProblem77
 from .FourBranchSerialSystemReliabilityBenchmarkProblem import (
     FourBranchSerialSystemReliabilityBenchmarkProblem,
 )
@@ -63,6 +65,8 @@ __all__ = [
     "ReliabilityProblem107",
     "ReliabilityProblem91",
     "ReliabilityProblem63",
+    "ReliabilityProblem60",
+    "ReliabilityProblem77",
     "FourBranchSerialSystemReliabilityBenchmarkProblem",
 ]
 __version__ = "1.0"

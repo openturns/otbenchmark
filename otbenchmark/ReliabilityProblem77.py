@@ -1,44 +1,46 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr 28 10:21:03 2020
+Created on Wed May  6 10:58:15 2020
 
 @author: Jebroun
 
-Class to define the ReliabilityProblem33 benchmark problem.
+Class to define the ReliabilityProblem77 benchmark problem.
 """
 
 from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
 
 
-class ReliabilityProblem33(ReliabilityBenchmarkProblem):
+class ReliabilityProblem77(ReliabilityBenchmarkProblem):
     def __init__(
         self,
         threshold=0.0,
-        mu1=0.0,
-        sigma1=1.0,
+        mu1=10.0,
+        sigma1=0.5,
         mu2=0.0,
         sigma2=1.0,
-        mu3=0.0,
+        mu3=4.0,
         sigma3=1.0,
     ):
         """
-        Creates a reliability problem RP33.
+        Creates a reliability problem RP77.
 
         The event is {g(X) < threshold} where
 
-        g(x1, x2, x3) = min(g1, g2) with
+        X = (x1, x2, x3)
 
-        g1 = -x1 - x2 - x3 + 3 * sqrt(3)
+        if (x3 <= 5.0):
+            g(x1, x2, x3) = x1 - x2 - x3
 
-        g2 = -x3 + 3
+        else :
+            g(x1, x2, x3) = x3 - x2
 
         We have :
             x1 ~ Normal(mu1, sigma1)
 
             x2 ~ Normal(mu2, sigma2)
 
-            x3 ~ Normal(mu3, sigma3).
+            x3 ~ Normal(mu3, sigma3)
 
         Parameters
         ----------
@@ -57,10 +59,16 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
         sigma3 : float
             The standard deviation of the X3 gaussian distribution.
         """
-        formula = "min(-x1 - x2 - x3 + 3 * sqrt(3), -x3 + 3)"
-
-        print(formula)
-        limitStateFunction = ot.SymbolicFunction(["x1", "x2", "x3"], [formula])
+        equations = [
+            "if (x3 <= 5.0)",
+            "var g1 := x1 - x2 - x3;",
+            "else",
+            "  g1 := x3 - x2;",
+            "gsys := g1;",
+        ]
+        program = "\n".join(equations)
+        print(program)
+        limitStateFunction = ot.SymbolicFunction(["x1", "x2", "x3"], ["gsys"], program)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)
@@ -75,7 +83,7 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
         )
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
-        name = "RP33"
-        probability = 0.00257
-        super(ReliabilityProblem33, self).__init__(name, thresholdEvent, probability)
+        name = "RP77"
+        probability = 0.000000287
+        super(ReliabilityProblem77, self).__init__(name, thresholdEvent, probability)
         return None

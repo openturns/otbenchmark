@@ -15,10 +15,12 @@ class ReliabilityProblem22(ReliabilityBenchmarkProblem):
         """
         Creates a reliability problem RP22.
 
-        The event is {g(X) < threshold} where :
+        The event is {g(X) < threshold} where
+
         g(x1, x2) = 2.5 - 1 / sqrt(2) * (x1 + x2) + 0.1 * (x1 - x2) ^2
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***********************
+
         Parameters
         ----------
         threshold : float

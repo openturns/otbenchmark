@@ -17,8 +17,11 @@ class ReliabilityProblem54(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP54.
 
         The event is {g(X) < threshold} where
-        X = (x1, x2, ...., x20)
+
+        X = (x1, x2, ..., x20)
+
         g(X) = (x1 + x2 + ... + x20) - 8.951
+
         Parameters
         ----------
         threshold : float
@@ -28,8 +31,10 @@ class ReliabilityProblem54(ReliabilityBenchmarkProblem):
             for i in {1, 2, ..., 20}.
         """
 
-        formula = "x1+x2+x3+x4+x5+x6+x7+x8+x9+x10"
-        formula = formula + " + x11+x12+x13+x14+x15+x16+x17+x18+x19+x20-8.951"
+        formula = "x1 + x2 + x3 + x4 + x5 + "
+        formula += "x6 + x7 + x8 + x9 + x10"
+        formula += "+ x11 + x12 + x13 + x14 + x15 +"
+        formula += "x16 + x17 + x18 + x19 + x20 - 8.951"
 
         print(formula)
         limitStateFunction = ot.SymbolicFunction(

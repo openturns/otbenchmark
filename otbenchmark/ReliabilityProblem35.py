@@ -14,14 +14,18 @@ import openturns as ot
 class ReliabilityProblem35(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu1=0.0, sigma1=1.0, mu2=0.0, sigma2=1.0):
         """
-        Creates a reliability problem RP31.
+        Creates a reliability problem RP35.
 
-        The event is {g(X) < threshold} where:
+        The event is {g(X) < threshold} where
+
         g(x1, x2) = min(g1, g2) with
+
         g1 = 2 - x2 + exp(-0.1 * x1^2) + (0.2 * x1) ^ 4
+
         g2 = 4.5 - x1 * x2
+
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
-        ***
+
         Parameters
         ----------
         threshold : float

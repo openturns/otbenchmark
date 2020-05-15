@@ -1,41 +1,61 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 29 11:26:53 2020
+Created on Tue May  5 12:56:49 2020
 
 @author: Jebroun
 
-Class to define the ReliabilityProblem8 benchmark problem.
+Class to define the ReliabilityProblem60 benchmark problem.
 """
 
 from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
 
 
-class ReliabilityProblem8(ReliabilityBenchmarkProblem):
+class ReliabilityProblem60(ReliabilityBenchmarkProblem):
     def __init__(
         self,
         threshold=0.0,
-        mu1=120.0,
-        sigma1=12.0,
-        mu2=120.0,
-        sigma2=12.0,
-        mu3=120.0,
-        sigma3=12.0,
-        mu4=120.0,
-        sigma4=12.0,
-        mu5=50.0,
-        sigma5=10.0,
-        mu6=40.0,
-        sigma6=8.0,
+        mu1=2200,
+        sigma1=220,
+        mu2=2100,
+        sigma2=210,
+        mu3=2300,
+        sigma3=230,
+        mu4=2000,
+        sigma4=200,
+        mu5=1200,
+        sigma5=480,
     ):
         """
-        Creates a reliability problem RP8.
+        Creates a reliability problem RP60.
 
-        The event is {g(X) < threshold} where
+        The event is {g(X) < threshold} with:
 
-        X = (x1, x2, x3, x4, x5, x6)
+            X = (x1, x2, x3, x4, x5)
 
-        g(X) = x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6
+            g1 = x1 - x5
+
+            g2 = x2 - x5 / 2
+
+            g3 = x3 - x5 / 2
+
+            g4 = x4 - x5 / 2
+
+            g5 = x2 - x5
+
+            g6 = x3 - x5
+
+            g7 = x4 - x5
+
+            g8 = min(g5, g6)
+
+            g9 = max(g7, g8)
+
+            g10 = min(g2, g3, g4)
+
+            g11 = max(g10, g9)
+
+            g(X) = min(g1, g11)
 
         We have :
             x1 ~ LogNormalMuSigma(mu1, sigma1)
@@ -47,8 +67,6 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
             x4 ~ LogNormalMuSigma(mu4, sigma4)
 
             x5 ~ LogNormalMuSigma(mu5, sigma5)
-
-            x6 ~ LogNormalMuSigma(mu6, sigma6)
 
         Parameters
         ----------
@@ -74,18 +92,24 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
             The mean of the LogNormal random variable X5.
         sigma5 : float
             The standard deviation of the LogNormal random variable X5.
-        mu6 : float
-            The mean of the LogNormal random variable X6.
-        sigma6 : float
-            The standard deviation of the LogNormal random variable X6.
         """
-
-        formula = "x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6"
-
-        print(formula)
+        equations = ["var g1 := x1 - x5"]
+        equations.append("var g2 := x2 - x5 / 2")
+        equations.append("var g3 := x3 - x5 / 2")
+        equations.append("var g4 := x4 - x5 / 2")
+        equations.append("var g5 := x2 - x5")
+        equations.append("var g6 := x3 - x5")
+        equations.append("var g7 := x4 - x5")
+        equations.append("var g8 := min(g5, g6)")
+        equations.append("var g9 := max(g7, g8)")
+        equations.append("var g10 := min(g2, g3, g4)")
+        equations.append("var g11 := max(g10, g9)")
+        equations.append("gsys := min(g1, g11)")
+        formula = ";".join(equations)
         limitStateFunction = ot.SymbolicFunction(
-            ["x1", "x2", "x3", "x4", "x5", "x6"], [formula]
+            ["x1", "x2", "x3", "x4", "x5"], ["gsys"], formula
         )
+        print(formula)
         parameters1 = ot.LogNormalMuSigma(mu1, sigma1, 0.0)
         X1 = ot.ParametrizedDistribution(parameters1)
         X1.setDescription(["X1"])
@@ -101,18 +125,15 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         parameters5 = ot.LogNormalMuSigma(mu5, sigma5, 0.0)
         X5 = ot.ParametrizedDistribution(parameters5)
         X5.setDescription(["X5"])
-        parameters6 = ot.LogNormalMuSigma(mu6, sigma6, 0.0)
-        X6 = ot.ParametrizedDistribution(parameters6)
-        X6.setDescription(["X6"])
 
-        myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5, X6])
+        myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5])
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector
         )
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
-        name = "RP8"
-        probability = 0.000784
-        super(ReliabilityProblem8, self).__init__(name, thresholdEvent, probability)
+        name = "RP60"
+        probability = 0.0456
+        super(ReliabilityProblem60, self).__init__(name, thresholdEvent, probability)
         return None

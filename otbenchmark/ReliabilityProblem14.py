@@ -31,14 +31,22 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP14.
 
         The event is {g(X) < threshold} where
+
         X = (x1, x2, x3, x4, x5)
+
         g(X) = x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6
+
         We have :
-                x1 ~ Uniform(a, b)
-                x2 ~ Normal(mu2, sigma2)
-                x3 ~ Gumbel-max(mu3, sigma3)
-                x4 ~ Normal(mu4, sigma4)
-                x5 ~ Normal(mu5, sigma5).
+            x1 ~ Uniform(a, b)
+
+            x2 ~ Normal(mu2, sigma2)
+
+            x3 ~ Gumbel-max(mu3, sigma3)
+
+            x4 ~ Normal(mu4, sigma4)
+
+            x5 ~ Normal(mu5, sigma5)
+
         Parameters
         ----------
         threshold : float
