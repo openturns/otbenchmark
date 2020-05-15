@@ -29,11 +29,33 @@ class ReliabilityProblem60(ReliabilityBenchmarkProblem):
         """
         Creates a reliability problem RP60.
 
-        The event is {g(X) < threshold} with
+        The event is {g(X) < threshold} with:
 
-        you can use this line :
+            X = (x1, x2, x3, x4, x5)
 
-            "https://rprepo.readthedocs.io/en/latest/reliability_problems.html#rp60"
+            g1 = x1 - x5
+
+            g2 = x2 - x5 / 2
+
+            g3 = x3 - x5 / 2
+
+            g4 = x4 - x5 / 2
+
+            g5 = x2 - x5
+
+            g6 = x3 - x5
+
+            g7 = x4 - x5
+
+            g8 = min(g5, g6)
+
+            g9 = max(g7, g8)
+
+            g10 = min(g2, g3, g4)
+
+            g11 = max(g10, g9)
+
+            g(X) = min(g1, g11)
 
         We have :
             x1 ~ LogNormalMuSigma(mu1, sigma1)
@@ -51,25 +73,25 @@ class ReliabilityProblem60(ReliabilityBenchmarkProblem):
         threshold : float
             The threshold.
         mu1 : float
-            The mean of the underlying gaussian distribution of X1.
+            The mean of the LogNormal random variable X1.
         sigma1 : float
-            The standard deviation of the underlying gaussian distribution of X1.
+            The standard deviation of the LogNormal random variable X1.
         mu2 : float
-            The mean of the underlying gaussian distribution of X2.
+            The mean of the LogNormal random variable X2.
         sigma2 : float
-            The standard deviation of the underlying gaussian distribution of X2.
+            The standard deviation of the LogNormal random variable X2.
         mu3 : float
-            The mean of the underlying gaussian distribution of X3.
+            The mean of the LogNormal random variable X3.
         sigma3 : float
-            The standard deviation of the underlying gaussian distribution of X3.
+            The standard deviation of the LogNormal random variable X3.
         mu4 : float
-            The mean of the underlying gaussian distribution of X4.
+            The mean of the LogNormal random variable X4.
         sigma4 : float
-            The standard deviation of the underlying gaussian distribution of X4.
+            The standard deviation of the LogNormal random variable X4.
         mu5 : float
-            The mean of the underlying gaussian distribution of X5.
+            The mean of the LogNormal random variable X5.
         sigma5 : float
-            The standard deviation of the underlying gaussian distribution of X5.
+            The standard deviation of the LogNormal random variable X5.
         """
         equations = ["var g1 := x1 - x5"]
         equations.append("var g2 := x2 - x5 / 2")

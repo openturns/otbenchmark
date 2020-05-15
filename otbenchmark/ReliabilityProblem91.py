@@ -33,9 +33,14 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, x3, x4, x5)
 
-        g(X) you use this line :
+        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 +
+        0.11 * x2^2 + (7 / 378) * x3^2- x3 * x2 - 0.106 * x2 * x4 - 0.11
 
-            "https://rprepo.readthedocs.io/en/latest/reliability_problems.html#rp91"
+        g2 = 84000 * x1 / sqrt(x3^2 + x4^2 - x3 * x4 + 3 * x5^2) - 1
+
+        g3 = 84000 * x1 / abs(x4) - 1
+
+        g(X) = min(g1, g2, g3)
 
         We have :
             x1 ~ Normal(mu1, sigma1)

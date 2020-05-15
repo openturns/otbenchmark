@@ -27,6 +27,8 @@ class ReliabilityProblem77(ReliabilityBenchmarkProblem):
 
         The event is {g(X) < threshold} where
 
+        X = (x1, x2, x3)
+
         if (x3 <= 5.0):
             g(x1, x2, x3) = x1 - x2 - x3
 

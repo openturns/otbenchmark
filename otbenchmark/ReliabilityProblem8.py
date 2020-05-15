@@ -55,29 +55,29 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         threshold : float
             The threshold.
         mu1 : float
-            The mean of the underlying gaussian distribution of X1.
+            The mean of the LogNormal random variable X1.
         sigma1 : float
-            The standard deviation of the underlying gaussian distribution of X1.
+            The standard deviation of the LogNormal random variable X1.
         mu2 : float
-            The mean of the underlying gaussian distribution of X2.
+            The mean of the LogNormal random variable X2.
         sigma2 : float
-            The standard deviation of the underlying gaussian distribution of X2.
+            The standard deviation of the LogNormal random variable X2.
         mu3 : float
-            The mean of the underlying gaussian distribution of X3.
+            The mean of the LogNormal random variable X3.
         sigma3 : float
-            The standard deviation of the underlying gaussian distribution of X3.
+            The standard deviation of the LogNormal random variable X3.
         mu4 : float
-            The mean of the underlying gaussian distribution of X4.
+            The mean of the LogNormal random variable X4.
         sigma4 : float
-            The standard deviation of the underlying gaussian distribution of X4.
+            The standard deviation of the LogNormal random variable X4.
         mu5 : float
-            The mean of the underlying gaussian distribution of X5.
+            The mean of the LogNormal random variable X5.
         sigma5 : float
-            The standard deviation of the underlying gaussian distribution of X5.
+            The standard deviation of the LogNormal random variable X5.
         mu6 : float
-            The mean of the underlying gaussian distribution of X6.
+            The mean of the LogNormal random variable X6.
         sigma6 : float
-            The standard deviation of the underlying gaussian distribution of X6.
+            The standard deviation of the LogNormal random variable X6.
         """
 
         formula = "x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6"

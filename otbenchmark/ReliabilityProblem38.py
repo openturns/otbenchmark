@@ -38,10 +38,10 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, x3, x4, x5, x6, x7)
 
-        g(X) too complexe
+        g(X) = 15.59 * 1e4 - x1 *x2^3 / (2 * x3^3)
+        * ((x4^2 - 4 * x5 * x6 * x7^2 +x4 * (x6 + 4 * x5 + 2 *x6 * x7))
+        / (x4 * x5 * (x4 + x6 + 2 *x6 *x7)))
 
-        use can this line :
-            "https://rprepo.readthedocs.io/en/latest/reliability_problems.html#rp38"
         We have :
             x1 ~ Normal(mu1, sigma1)
 

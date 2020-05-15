@@ -27,7 +27,7 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
 
         The event is {g(X) < threshold} where
 
-        g(x1, x2) = min(g1, g2) with
+        g(x1, x2, x3) = min(g1, g2) with
 
         g1 = -x1 - x2 - x3 + 3 * sqrt(3)
 
