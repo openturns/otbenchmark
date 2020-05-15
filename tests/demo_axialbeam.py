@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""A demo of the AxialStressedBeamReliabilityBenchmarkProblem class."""
+"""A demo of the AxialStressedBeamReliability class."""
 
 import otbenchmark as otb
 import openturns as ot
 import numpy as np
 
-problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
+problem = otb.AxialStressedBeamReliability()
 event = problem.getEvent()
 
 # Create a Monte Carlo algorithm

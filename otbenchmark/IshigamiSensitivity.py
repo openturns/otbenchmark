@@ -8,7 +8,7 @@ import openturns as ot
 import numpy as np
 
 
-class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
+class IshigamiSensitivity(SensitivityBenchmarkProblem):
     """Class to define a Ishigami sensitivity benchmark problem."""
 
     @staticmethod
@@ -65,7 +65,7 @@ class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
 
         Example
         -------
-        problem  = IshigamiSensitivityBenchmarkProblem()
+        problem  = IshigamiSensitivity()
         """
 
         # Define the function
@@ -88,7 +88,7 @@ class IshigamiSensitivityBenchmarkProblem(SensitivityBenchmarkProblem):
         firstOrderIndices = ot.Point([exact["S1"], exact["S2"], exact["S3"]])
         totalOrderIndices = ot.Point([exact["T1"], exact["T2"], exact["T3"]])
 
-        super(IshigamiSensitivityBenchmarkProblem, self).__init__(
+        super(IshigamiSensitivity, self).__init__(
             name, distribution, function, firstOrderIndices, totalOrderIndices
         )
 
