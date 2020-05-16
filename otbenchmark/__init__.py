@@ -31,6 +31,7 @@ from .ReliabilityProblem77 import ReliabilityProblem77
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 from .GaussianSumSensitivity import GaussianSumSensitivity
 from .GaussianProductSensitivity import GaussianProductSensitivity
+from .GSobolSensitivity import GSobolSensitivity
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -68,5 +69,6 @@ __all__ = [
     "FourBranchSerialSystemReliability",
     "GaussianSumSensitivity",
     "GaussianProductSensitivity",
+    "GSobolSensitivity",
 ]
 __version__ = "1.0"
