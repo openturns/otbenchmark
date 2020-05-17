@@ -8,7 +8,6 @@ from otbenchmark.BBRCDistribution import BBRCDistribution
 from otbenchmark import evaluate
 import openturns as ot
 import numpy as np
-import pandas as pd
 
 
 class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
@@ -47,13 +46,16 @@ class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
         inputRandomVector = ot.RandomVector(inputDistribution)
         input_dim = inputDistribution.getDimension()
         # BBRCResults
-        bbrc_result_table = pd.read_csv("./distributions/beta_results.csv")
+        types = ["i4", "i4", "i4", "f8"]
+        bbrc_result_table = np.genfromtxt(
+            "./distributions/beta_results.csv", dtype=types, delimiter=",", names=True
+        )
         my_result = bbrc_result_table[
             (bbrc_result_table["problem_id"] == self.problem_id)
             & (bbrc_result_table["set_id"] == self.set_id)
         ]
-        name = "RP" + str(my_result["reliability_problem_id"].values[0])
-        beta = my_result["beta"].values[0]
+        name = "RP" + str(my_result["reliability_problem_id"][0])
+        beta = my_result["beta"][0]
         limitStateFunction = ot.PythonFunction(input_dim, 1, g_fun)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

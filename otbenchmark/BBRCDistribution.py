@@ -5,7 +5,7 @@
  problem"""
 
 import openturns as ot
-import pandas as pd
+import numpy as np
 
 
 class BBRCDistribution:
@@ -53,15 +53,20 @@ class BBRCDistribution:
                 )
             return a_dist
 
-        bbrc_dist_table = pd.read_csv("./distributions/probabilistic_models.csv")
+        types = ["i4", "i4", "i4", "i4", "U15", "f8", "f8", "f8", "f8", "f8", "f8"]
+        bbrc_dist_table = np.genfromtxt(
+            "./distributions/probabilistic_models.csv",
+            dtype=types,
+            delimiter=",",
+            names=True,
+        )
         my_dist_table = bbrc_dist_table[
             (bbrc_dist_table["problem_id"] == self.problem_id)
             & (bbrc_dist_table["set_id"] == self.set_id)
         ]
 
         ot_dist_list = []
-        for raw_index in my_dist_table.index:
-            raw = my_dist_table.loc[raw_index]
+        for raw in my_dist_table:
             ot_dist_list.append(
                 switch_build_dist(
                     raw["distribution_type"],
