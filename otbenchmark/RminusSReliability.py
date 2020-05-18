@@ -6,7 +6,7 @@ from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
 
 
-class RminusSReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
+class RminusSReliability(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, muR=4.0, sigmaR=1.0, muS=2.0, sigmaS=1.0):
         """
         Create a R-S reliability problem.
@@ -39,7 +39,7 @@ class RminusSReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
 
         Example
         -------
-        problem  = RminusSReliabilityBenchmarkProblem()
+        problem  = RminusSReliability()
         """
         limitStateFunction = ot.SymbolicFunction(["R", "S"], ["R - S"])
 
@@ -60,8 +60,6 @@ class RminusSReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
         name = "R-S"
         diff = R - S
         probability = diff.computeCDF(threshold)
-        super(RminusSReliabilityBenchmarkProblem, self).__init__(
-            name, thresholdEvent, probability
-        )
+        super(RminusSReliability, self).__init__(name, thresholdEvent, probability)
 
         return None

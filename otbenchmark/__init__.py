@@ -1,12 +1,10 @@
 """otbenchmark module."""
 from .ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
-from .AxialStressedBeamReliabilityBenchmarkProblem import (
-    AxialStressedBeamReliabilityBenchmarkProblem,
-)
+from .AxialStressedBeamReliability import AxialStressedBeamReliability
 from .SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
-from .IshigamiSensitivityBenchmarkProblem import IshigamiSensitivityBenchmarkProblem
+from .IshigamiSensitivity import IshigamiSensitivity
 from .DrawEvent import DrawEvent
-from .RminusSReliabilityBenchmarkProblem import RminusSReliabilityBenchmarkProblem
+from .RminusSReliability import RminusSReliability
 from .ReliabilityProblem53 import ReliabilityProblem53
 from .ReliabilityProblem22 import ReliabilityProblem22
 from .ReliabilityProblem24 import ReliabilityProblem24
@@ -30,20 +28,18 @@ from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
-from .FourBranchSerialSystemReliabilityBenchmarkProblem import (
-    FourBranchSerialSystemReliabilityBenchmarkProblem,
-)
+from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
 
 __all__ = [
     "ReliabilityBenchmarkProblem",
-    "AxialStressedBeamReliabilityBenchmarkProblem",
+    "AxialStressedBeamReliability",
     "SensitivityBenchmarkProblem",
-    "IshigamiSensitivityBenchmarkProblem",
+    "IshigamiSensitivity",
     "DrawEvent",
-    "RminusSReliabilityBenchmarkProblem",
+    "RminusSReliability",
     "ReliabilityProblem53",
     "ReliabilityProblem22",
     "ReliabilityProblem24",
@@ -67,6 +63,6 @@ __all__ = [
     "ReliabilityProblem63",
     "ReliabilityProblem60",
     "ReliabilityProblem77",
-    "FourBranchSerialSystemReliabilityBenchmarkProblem",
+    "FourBranchSerialSystemReliability",
 ]
 __version__ = "1.0"

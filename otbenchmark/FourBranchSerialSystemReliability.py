@@ -7,7 +7,7 @@ from otbenchmark.ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 import openturns as ot
 
 
-class FourBranchSerialSystemReliabilityBenchmarkProblem(ReliabilityBenchmarkProblem):
+class FourBranchSerialSystemReliability(ReliabilityBenchmarkProblem):
     def __init__(self):
         """
         Creates the four-branch serial system from Waarts.
@@ -30,7 +30,7 @@ class FourBranchSerialSystemReliabilityBenchmarkProblem(ReliabilityBenchmarkProb
 
         Example
         -------
-        problem  = FourBranchSerialSystemReliabilityBenchmarkProblem()
+        problem  = FourBranchSerialSystemReliability()
         """
         formulaList = [
             "var y0 := 3 + 0.1 * (x0 - x1)^2 - (x0 + x1) / sqrt(2)",
@@ -54,7 +54,7 @@ class FourBranchSerialSystemReliabilityBenchmarkProblem(ReliabilityBenchmarkProb
         name = "Four-branch serial system (Waarts, 2000)"
         beta = 2.85
         probability = ot.Normal().computeComplementaryCDF(beta)
-        super(FourBranchSerialSystemReliabilityBenchmarkProblem, self).__init__(
+        super(FourBranchSerialSystemReliability, self).__init__(
             name, thresholdEvent, probability
         )
 

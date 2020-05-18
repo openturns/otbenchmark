@@ -12,7 +12,6 @@ import openturns as ot
 
 
 class CheckReliabilityProblem111(unittest.TestCase):
-
     def test_ReliabilityBenchmarkProblem111(self):
         problem = otb.ReliabilityProblem111()
         print(problem)
@@ -20,14 +19,14 @@ class CheckReliabilityProblem111(unittest.TestCase):
         # Check probability
         pf = problem.getProbability()
         pf_exacte = 7.65e-7
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.e-15)
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
 
         # Check function
         event = problem.getEvent()
         function = event.getFunction()
         X = [0.0, 0.0]
         Y = function(X)
-        assert(type(Y) is ot.Point)
+        assert type(Y) is ot.Point
         np.testing.assert_allclose(Y[0], 12.5)
 
     def test_UseCase(self):
@@ -45,13 +44,13 @@ class CheckReliabilityProblem111(unittest.TestCase):
         result = algo.getResult()
         computed_pf = result.getProbabilityEstimate()
         exact_pf = problem.getProbability()
-        print('exact_pf=', exact_pf)
-        print('computed_pf=', computed_pf)
+        print("exact_pf=", exact_pf)
+        print("computed_pf=", computed_pf)
         samplesize = result.getOuterSampling() * result.getBlockSize()
         print("Sample size : ", samplesize)
         atol = 1.0 / np.sqrt(samplesize)
         np.testing.assert_allclose(computed_pf, exact_pf, atol=atol)
 
+
 if __name__ == "__main__":
     unittest.main()
-

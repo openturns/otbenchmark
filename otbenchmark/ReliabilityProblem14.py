@@ -20,8 +20,8 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
         b=80.0,
         mu2=39.0,
         sigma2=0.1,
-        beta=1342.0,
-        gamma=272.9,
+        mu3=1500.0,
+        sigma3=350.0,
         mu4=400.0,
         sigma4=0.1,
         mu5=250000.0,
@@ -56,9 +56,9 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
             The mean of the X2 Normal distribution.
         sigma2 : float
             The standard deviation of the X2 Normal distribution.
-        beta : float
+        mu3 : float
             The mean of the X3 Gumbel distribution.
-        gamma : float
+        sigma3 : float
             The standard deviation of the X3 Gumbel distribution.
         mu4 : float
             The mean of the X4 Normal distribution.
@@ -70,9 +70,8 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
             The standard deviation of the X5 Normal distribution.
         """
 
-        formula = "x1 - 32 / (pi * x2^3) * sqrt(x3^2 * x4^2 / 10 + x5^2)"
+        formula = "x1 - 32 / (pi_ * x2^3) * sqrt(x3^2 * x4^2 / 16 + x5^2)"
 
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5"], [formula]
         )
@@ -80,7 +79,7 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)
         X2.setDescription(["X2"])
-        X3 = ot.Gumbel(beta, gamma)
+        X3 = ot.ParametrizedDistribution(ot.GumbelMuSigma(mu3, sigma3))
         X3.setDescription(["X3"])
         X4 = ot.Normal(mu4, sigma4)
         X4.setDescription(["X4"])

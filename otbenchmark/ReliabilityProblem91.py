@@ -33,8 +33,8 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, x3, x4, x5)
 
-        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 +
-        0.11 * x2^2 + (7 / 378) * x3^2- x3 * x2 - 0.106 * x2 * x4 - 0.11
+        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 + 0.11
+        * x3^2 + (7 / 378) * x4^2- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4
 
         g2 = 84000 * x1 / sqrt(x3^2 + x4^2 - x3 * x4 + 3 * x5^2) - 1
 
@@ -80,8 +80,8 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         """
         s = "0.847 + 0.96 * x2 + 0.986 * x3"
         s += "- 0.216 * x4 + 0.077 * x2^2 + "
-        s += "0.11 * x2^2 + (7 / 378) * x3^2 "
-        s += "- x3 * x2 - 0.106 * x2 * x4 - 0.11"
+        s += "0.11 * x3^2 + (7 / 378) * x4^2 "
+        s += "- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4"
 
         equations = ["var g1 := " + s]
         equations.append(
@@ -98,11 +98,11 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)
         X2.setDescription(["X2"])
-        X3 = ot.Normal(mu1, sigma1)
+        X3 = ot.Normal(mu3, sigma3)
         X3.setDescription(["X3"])
-        X4 = ot.Normal(mu2, sigma2)
+        X4 = ot.Normal(mu4, sigma4)
         X4.setDescription(["X4"])
-        X5 = ot.Normal(mu1, sigma1)
+        X5 = ot.Normal(mu5, sigma5)
         X5.setDescription(["X5"])
 
         myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5])
