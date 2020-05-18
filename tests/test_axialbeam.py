@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 EDF
 """
-Test for AxialStressedBeamReliabilityBenchmarkProblem class.
+Test for AxialStressedBeamReliability class.
 """
 import otbenchmark as otb
 import unittest
@@ -9,9 +9,9 @@ import numpy as np
 import openturns as ot
 
 
-class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
-    def test_AxialStressedBeamReliabilityBenchmarkProblem(self):
-        problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
+class CheckAxialStressedBeamReliability(unittest.TestCase):
+    def test_AxialStressedBeamReliability(self):
+        problem = otb.AxialStressedBeamReliability()
         print(problem)
 
         # Check probability
@@ -35,7 +35,7 @@ class CheckAxialStressedBeamReliabilityBenchmarkProblem(unittest.TestCase):
         np.testing.assert_allclose(X, [300.0, 75000.0])
 
     def test_UseCase(self):
-        problem = otb.AxialStressedBeamReliabilityBenchmarkProblem()
+        problem = otb.AxialStressedBeamReliability()
         event = problem.getEvent()
 
         # Create a Monte Carlo algorithm

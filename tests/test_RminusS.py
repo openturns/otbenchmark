@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 EDF
 """
-Test for RminusSReliabilityBenchmarkProblem class.
+Test for RminusSReliability class.
 """
 import otbenchmark as otb
 import unittest
@@ -9,9 +9,9 @@ import numpy as np
 import openturns as ot
 
 
-class CheckRminusSReliabilityBenchmarkProblem(unittest.TestCase):
-    def test_RminusSReliabilityBenchmarkProblem(self):
-        problem = otb.RminusSReliabilityBenchmarkProblem()
+class CheckRminusSReliability(unittest.TestCase):
+    def test_RminusSReliability(self):
+        problem = otb.RminusSReliability()
         print(problem)
 
         # Check probability
@@ -28,7 +28,7 @@ class CheckRminusSReliabilityBenchmarkProblem(unittest.TestCase):
         np.testing.assert_allclose(Y[0], 2.0)
 
     def test_UseCase(self):
-        problem = otb.RminusSReliabilityBenchmarkProblem()
+        problem = otb.RminusSReliability()
         event = problem.getEvent()
 
         # Create a Monte Carlo algorithm

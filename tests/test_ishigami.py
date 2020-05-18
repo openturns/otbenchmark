@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 EDF.
 """
-Test for IshigamiSensitivityBenchmarkProblem class.
+Test for IshigamiSensitivity class.
 """
 import openturns as ot
 import otbenchmark as otb
@@ -11,7 +11,7 @@ import numpy as np
 
 class CheckDrawEvent(unittest.TestCase):
     def test_DrawLimitState(self):
-        problem = otb.IshigamiSensitivityBenchmarkProblem()
+        problem = otb.IshigamiSensitivity()
         distribution = problem.getInputDistribution()
         model = problem.getFunction()
 
