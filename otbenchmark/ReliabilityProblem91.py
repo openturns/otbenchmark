@@ -33,7 +33,7 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, x3, x4, x5)
 
-        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 +0.11
+        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 + 0.11
         * x3^2 + (7 / 378) * x4^2- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4
 
         g2 = 84000 * x1 / sqrt(x3^2 + x4^2 - x3 * x4 + 3 * x5^2) - 1
@@ -81,7 +81,7 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         s = "0.847 + 0.96 * x2 + 0.986 * x3"
         s += "- 0.216 * x4 + 0.077 * x2^2 + "
         s += "0.11 * x3^2 + (7 / 378) * x4^2 "
-        s += "- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4"
+        s += "- x3 * x2 - 0.106 * x2 * x4 - 0.11* x3 * x4"
 
         equations = ["var g1 := " + s]
         equations.append(
