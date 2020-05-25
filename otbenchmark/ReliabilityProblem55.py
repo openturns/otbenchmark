@@ -10,7 +10,7 @@ import openturns as ot
 
 
 class ReliabilityProblem55(ReliabilityBenchmarkProblem):
-    def __init__(self, threshold=0.0, a1=-1.0, b1=1.0, a2=-1.0, b2=1.0):
+    def __init__(self, threshold=0.0, a=[-1.0] * 2, b=[1.0] * 2):
         """
         Creates a reliability problem RP55.
 
@@ -28,15 +28,15 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
 
         g(X) = min(g1, g2, g3, g4)
 
-        We have x1 ~ Uniform(a1, b1) and x2 ~ Uniform(a2, b2).
+        We have x1 ~ Uniform(a[0], b[0]) and x2 ~ Uniform(a[1], b[1]).
 
         Parameters
         ----------
         threshold : float
             The threshold.
-        a1 , b1  : float
+        a[0] , b[0]  : float
             Parameters of the X1 uniform distribution.
-        a2 , b2 : float
+        a[1] , b[1] : float
             Parameters of the X2 uniform distribution.
         """
         equations = ["var g1 := 0.2 + 0.6 * (x1 - x2)^4 - (x1 - x2) / sqrt(2)"]
@@ -47,9 +47,9 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         formula = ";".join(equations)
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
         print(formula)
-        X1 = ot.Uniform(a1, b1)
+        X1 = ot.Uniform(a[0], b[0])
         X1.setDescription(["X1"])
-        X2 = ot.Uniform(a2, b2)
+        X2 = ot.Uniform(a[1], b[1])
         X2.setDescription(["X2"])
 
         myDistribution = ot.ComposedDistribution([X1, X2])

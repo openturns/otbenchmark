@@ -11,7 +11,7 @@ import openturns as ot
 
 
 class ReliabilityProblem75(ReliabilityBenchmarkProblem):
-    def __init__(self, threshold=0.0, mu1=0.0, sigma1=1.0, mu2=0.0, sigma2=1.0):
+    def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
         """
         Creates a reliability problem RP75.
 
@@ -19,7 +19,7 @@ class ReliabilityProblem75(ReliabilityBenchmarkProblem):
 
         g(x1, x2) = 3 - x1 * x2
 
-        We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
+        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------
@@ -37,9 +37,9 @@ class ReliabilityProblem75(ReliabilityBenchmarkProblem):
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["3 - x1 * x2"])
         print("3 - x1 * x2")
 
-        X1 = ot.Normal(mu1, sigma1)
+        X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])
-        X2 = ot.Normal(mu2, sigma2)
+        X2 = ot.Normal(mu[1], sigma[1])
         X2.setDescription(["X2"])
 
         myDistribution = ot.ComposedDistribution([X1, X2])
