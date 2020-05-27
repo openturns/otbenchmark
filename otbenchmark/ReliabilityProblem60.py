@@ -109,7 +109,7 @@ class ReliabilityProblem60(ReliabilityBenchmarkProblem):
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5"], ["gsys"], formula
         )
-        print(formula)
+
         parameters1 = ot.LogNormalMuSigma(mu1, sigma1, 0.0)
         X1 = ot.ParametrizedDistribution(parameters1)
         X1.setDescription(["X1"])

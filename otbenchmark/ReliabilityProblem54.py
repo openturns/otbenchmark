@@ -36,7 +36,6 @@ class ReliabilityProblem54(ReliabilityBenchmarkProblem):
         formula += "+ x11 + x12 + x13 + x14 + x15 +"
         formula += "x16 + x17 + x18 + x19 + x20 - 8.951"
 
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(
             [
                 "x1",

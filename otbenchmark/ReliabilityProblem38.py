@@ -97,7 +97,6 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
             "x4 * (x6 + 4 * x5 + 2 *x6 * x7)) / (x4 * x5 * (x4 + x6 + 2 *x6 *x7)))"
         )
 
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5", "x6", "x7"], [formula]
         )

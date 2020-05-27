@@ -67,7 +67,7 @@ class ReliabilityProblem77(ReliabilityBenchmarkProblem):
             "gsys := g1;",
         ]
         program = "\n".join(equations)
-        print(program)
+
         limitStateFunction = ot.SymbolicFunction(["x1", "x2", "x3"], ["gsys"], program)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
