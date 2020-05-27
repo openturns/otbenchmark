@@ -26,18 +26,17 @@ class ReliabilityProblem111(ReliabilityBenchmarkProblem):
         ----------
         threshold : float
             The threshold.
-        mu[0] : float
-            The mean of the X1 gaussian distribution.
-        sigma[0] : float
-            The standard deviation of the X1 gaussian distribution.
-        mu[1] : float
-            The mean of the X2 gaussian distribution.
-        sigma[1] : float
-            The standard deviation of the X2 gaussian distribution.
+        mu : sequence of floats
+            The list of two items representing the means of the gaussian distributions.
+        sigma : float
+            The list of two items representing the standard deviations of
+            the gaussian distributions.
         """
         formula = "12.5 - abs(x1 * x2)"
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
-        print(formula)
+        inputDimension = len(mu)
+        if inputDimension != 2:
+            raise Exception("Dimension problem")
 
         X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])

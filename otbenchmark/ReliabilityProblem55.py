@@ -34,10 +34,10 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         ----------
         threshold : float
             The threshold.
-        a[0] , b[0]  : float
-            Parameters of the X1 uniform distribution.
-        a[1] , b[1] : float
-            Parameters of the X2 uniform distribution.
+        b  : sequence of floats
+            Upper bounds of the Uniform distribution.
+        a : sequence of floats
+            Lower bounds of the Uniform distribution.
         """
         equations = ["var g1 := 0.2 + 0.6 * (x1 - x2)^4 - (x1 - x2) / sqrt(2)"]
         equations.append("var g2 := 0.2 + 0.6 * (x1 - x2)^4 + (x1 - x2) / sqrt(2)")
@@ -46,7 +46,10 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         equations.append("gsys := min(g1, g2, g3, g4)")
         formula = ";".join(equations)
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
-        print(formula)
+        inputDimension = len(a)
+        if inputDimension != 2:
+            raise Exception("Dimension problem")
+
         X1 = ot.Uniform(a[0], b[0])
         X1.setDescription(["X1"])
         X2 = ot.Uniform(a[1], b[1])

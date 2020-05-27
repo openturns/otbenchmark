@@ -37,14 +37,11 @@ class ReliabilityProblem110(ReliabilityBenchmarkProblem):
         ----------
         threshold : float
             The threshold.
-        mu[0] : float
-            The mean of the X1 gaussian distribution.
-        sigma[0] : float
-            The standard deviation of the X1 gaussian distribution.
-        mu[1] : float
-            The mean of the X2 gaussian distribution.
-        sigma[1] : float
-            The standard deviation of the X2 gaussian distribution.
+        mu : sequence of floats
+            The list of two items representing the means of the gaussian distributions.
+        sigma : float
+            The list of two items representing the standard deviations of
+            the gaussian distributions.
         """
         equations = [
             "if (x0 <= 3.5)",
@@ -58,8 +55,10 @@ class ReliabilityProblem110(ReliabilityBenchmarkProblem):
             "gsys := min(g1, g2);",
         ]
         program = "\n".join(equations)
-        print(program)
         limitStateFunction = ot.SymbolicFunction(["x0", "x1"], ["gsys"], program)
+        inputDimension = len(mu)
+        if inputDimension != 2:
+            raise Exception("Dimension problem")
         X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu[1], sigma[1])
