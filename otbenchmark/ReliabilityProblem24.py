@@ -37,6 +37,10 @@ class ReliabilityProblem24(ReliabilityBenchmarkProblem):
         inputDimension = len(mu)
         if inputDimension != 2:
             raise Exception("Dimension problem")
+
+        inputDimension = len(sigma)
+        if inputDimension != 2:
+            raise Exception("Dimension problem")
         X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu[1], sigma[1])

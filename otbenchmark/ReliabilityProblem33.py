@@ -38,14 +38,18 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
         threshold : float
             The threshold.
         mu : sequence of floats
-            The list of two items representing the means of the gaussian distributions.
+            The list of 3 items representing the means of the gaussian distributions.
         sigma : float
-            The list of two items representing the standard deviations of
+            The list of 3 items representing the standard deviations of
             the gaussian distributions.
         """
         formula = "min(-x1 - x2 - x3 + 3 * sqrt(3), -x3 + 3)"
         limitStateFunction = ot.SymbolicFunction(["x1", "x2", "x3"], [formula])
         inputDimension = len(mu)
+        if inputDimension != 3:
+            raise Exception("Dimension problem")
+
+        inputDimension = len(sigma)
         if inputDimension != 3:
             raise Exception("Dimension problem")
         X1 = ot.Normal(mu[0], sigma[0])

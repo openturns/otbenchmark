@@ -35,9 +35,11 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         threshold : float
             The threshold.
         b  : sequence of floats
-            Upper bounds of the Uniform distribution.
+            The list of two items representing the upper
+            bounds of the Uniform distribution.
         a : sequence of floats
-            Lower bounds of the Uniform distribution.
+            The list of two items representing the lower
+            bounds of the Uniform distribution.
         """
         equations = ["var g1 := 0.2 + 0.6 * (x1 - x2)^4 - (x1 - x2) / sqrt(2)"]
         equations.append("var g2 := 0.2 + 0.6 * (x1 - x2)^4 + (x1 - x2) / sqrt(2)")
@@ -50,6 +52,9 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         if inputDimension != 2:
             raise Exception("Dimension problem")
 
+        inputDimension = len(b)
+        if inputDimension != 2:
+            raise Exception("Dimension problem")
         X1 = ot.Uniform(a[0], b[0])
         X1.setDescription(["X1"])
         X2 = ot.Uniform(a[1], b[1])
