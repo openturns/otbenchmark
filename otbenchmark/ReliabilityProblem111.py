@@ -36,11 +36,17 @@ class ReliabilityProblem111(ReliabilityBenchmarkProblem):
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
         inputDimension = len(mu)
         if inputDimension != 2:
-            raise Exception("Dimension problem")
+            raise Exception(
+                "The dimension of mu is %d, but the expected dimension is 2."
+                % (inputDimension)
+            )
 
         inputDimension = len(sigma)
         if inputDimension != 2:
-            raise Exception("Dimension problem")
+            raise Exception(
+                "The dimension of sigma is %d, but the expected dimension is 2."
+                % (inputDimension)
+            )
 
         X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])

@@ -50,11 +50,17 @@ class ReliabilityProblem55(ReliabilityBenchmarkProblem):
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
         inputDimension = len(a)
         if inputDimension != 2:
-            raise Exception("Dimension problem")
+            raise Exception(
+                "The dimension of a is %d, but the expected dimension is 2."
+                % (inputDimension)
+            )
 
         inputDimension = len(b)
         if inputDimension != 2:
-            raise Exception("Dimension problem")
+            raise Exception(
+                "The dimension of b is %d, but the expected dimension is 2."
+                % (inputDimension)
+            )
         X1 = ot.Uniform(a[0], b[0])
         X1.setDescription(["X1"])
         X2 = ot.Uniform(a[1], b[1])
