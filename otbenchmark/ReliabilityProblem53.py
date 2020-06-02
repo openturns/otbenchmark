@@ -45,8 +45,6 @@ class ReliabilityProblem53(ReliabilityBenchmarkProblem):
         formula = "sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20"
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
 
-        print("sin(5 * x1 / 2) + 2 - ( x1 * x1 + 4 ) * ( x2 - 1 ) / 20")
-
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
 

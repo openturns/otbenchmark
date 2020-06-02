@@ -93,7 +93,6 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5"], ["gsys"], formula
         )
-        print(formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)

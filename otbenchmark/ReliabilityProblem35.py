@@ -12,7 +12,7 @@ import openturns as ot
 
 
 class ReliabilityProblem35(ReliabilityBenchmarkProblem):
-    def __init__(self, threshold=0.0, mu1=0.0, sigma1=1.0, mu2=0.0, sigma2=1.0):
+    def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
         """
         Creates a reliability problem RP35.
 
@@ -24,30 +24,39 @@ class ReliabilityProblem35(ReliabilityBenchmarkProblem):
 
         g2 = 4.5 - x1 * x2
 
-        We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
+        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------
         threshold : float
             The threshold.
-        mu1 : float
-            The mean of the X1 gaussian distribution.
-        sigma1 : float
-            The standard deviation of the X1 gaussian distribution.
-        mu2 : float
-            The mean of the X2 gaussian distribution.
-        sigma2 : float
-            The standard deviation of the X2 gaussian distribution.
+        mu : sequence of floats
+            The list of two items representing the means of the gaussian distributions.
+        sigma : float
+            The list of two items representing the standard deviations of
+            the gaussian distributions.
         """
         equations = ["var g1 := 2 - x2 + exp(-0.1 * x1^2) + (0.2 * x1) ^ 4"]
         equations.append("var g2 := 4.5 - x1 * x2")
         equations.append("gsys := min(g1, g2)")
         formula = ";".join(equations)
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], ["gsys"], formula)
-        print(formula)
-        X1 = ot.Normal(mu1, sigma1)
+        inputDimension = len(mu)
+        if inputDimension != 2:
+            raise Exception(
+                "The dimension of mu is %d, but the expected dimension is 2."
+                % (inputDimension)
+            )
+
+        inputDimension = len(sigma)
+        if inputDimension != 2:
+            raise Exception(
+                "The dimension of sigma is %d, but the expected dimension is 2."
+                % (inputDimension)
+            )
+        X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])
-        X2 = ot.Normal(mu2, sigma2)
+        X2 = ot.Normal(mu[1], sigma[1])
         X2.setDescription(["X2"])
 
         myDistribution = ot.ComposedDistribution([X1, X2])
