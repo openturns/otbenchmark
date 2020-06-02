@@ -16,7 +16,7 @@ class GaussianProductSensitivity(SensitivityBenchmarkProblem):
 
         The model is:
 
-        g(x) = x[0] * x[1] * x[d-1]
+        g(x) = x[0] * x[1] * ... * x[d-1]
 
         where d is the dimension and
 

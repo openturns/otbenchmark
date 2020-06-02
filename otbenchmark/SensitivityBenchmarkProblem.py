@@ -13,8 +13,9 @@ class SensitivityBenchmarkProblem:
 
         Parameters
         ----------
-        thresholdEvent : ot.ThresholdEvent
-            The event.
+        name : str
+            The name of the benchmark problem.
+            This is a short string, typically less than a dozen of caracters.
 
         distribution : ot.Distribution
             The input distribution.
@@ -30,7 +31,11 @@ class SensitivityBenchmarkProblem:
 
         Example
         -------
-        problem  = ReliabilityBenchmarkProblem(thresholdEvent)
+        problem  = SensitivityBenchmarkProblem(name,
+                                               distribution,
+                                               function,
+                                               firstOrderIndices,
+                                               totalOrderIndices)
         """
         self.name = name
         self.distribution = distribution
