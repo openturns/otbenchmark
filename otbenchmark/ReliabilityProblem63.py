@@ -67,7 +67,6 @@ class ReliabilityProblem63(ReliabilityBenchmarkProblem):
         )
         formula += "-4.5 - x1"
 
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(
             [
                 "x1",
