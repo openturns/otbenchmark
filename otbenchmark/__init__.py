@@ -28,6 +28,7 @@ from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
+from .mini_Benchmark import mini_Benchmark
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 from .GaussianSumSensitivity import GaussianSumSensitivity
 from .GaussianProductSensitivity import GaussianProductSensitivity
@@ -69,6 +70,7 @@ __all__ = [
     "ReliabilityProblem63",
     "ReliabilityProblem60",
     "ReliabilityProblem77",
+    "mini_Benchmark",
     "FourBranchSerialSystemReliability",
     "GaussianSumSensitivity",
     "GaussianProductSensitivity",
