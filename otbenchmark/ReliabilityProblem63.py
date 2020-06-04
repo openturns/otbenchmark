@@ -20,7 +20,7 @@ class ReliabilityProblem63(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, ...., x100)
 
-        g(X) = 0.1 * (x2 + x3 + .... + x99 + x100) - x1 - 4.5
+        g(X) = 0.1 * (x2^2 + x3^2 + .... + x99^2 + x100^2) - x1 - 4.5
 
         We have xi ~ Normal(0, 1) for i in {1, 2, ...,100}
 
