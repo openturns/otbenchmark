@@ -15,9 +15,11 @@ class BBRCDistribution:
     def __init__(self, set_id, problem_id):
         """
         Creates an ot.ComposedDistribution from the BBRC 2019 distribution table.
+
         References
         ----------
         https://rprepo.readthedocs.io/en/latest/
+
         Parameters
         ----------
         set_id: int
@@ -55,7 +57,7 @@ class BBRCDistribution:
 
         types = ["i4", "i4", "i4", "i4", "U15", "f8", "f8", "f8", "f8", "f8", "f8"]
         bbrc_dist_table = np.genfromtxt(
-            "./distributions/probabilistic_models.csv",
+            "otbenchmark/distributions/probabilistic_models.csv",
             dtype=types,
             delimiter=",",
             names=True,

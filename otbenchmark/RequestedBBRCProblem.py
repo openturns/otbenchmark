@@ -14,9 +14,11 @@ class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
     def __init__(self, username, password, set_id, problem_id):
         """
         Creates a ot.PythonFunction requesting a BBRC 2019 function using http requests.
+
         References
         ----------
         https://rprepo.readthedocs.io/en/latest/
+
         Parameters
         ----------
         username: str
@@ -48,7 +50,10 @@ class RequestedBBRCProblem(ReliabilityBenchmarkProblem):
         # BBRCResults
         types = ["i4", "i4", "i4", "f8"]
         bbrc_result_table = np.genfromtxt(
-            "./distributions/beta_results.csv", dtype=types, delimiter=",", names=True
+            "otbenchmark/distributions/beta_results.csv",
+            dtype=types,
+            delimiter=",",
+            names=True,
         )
         my_result = bbrc_result_table[
             (bbrc_result_table["problem_id"] == self.problem_id)
