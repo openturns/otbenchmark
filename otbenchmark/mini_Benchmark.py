@@ -6,14 +6,20 @@ Created on Tue Jun  2 11:37:47 2020
 """
 import openturns as ot
 import otbenchmark as otb
+import numpy as np
 
 """
-Static methods to create a liste of all reliability problems.
+Static methods to create a list of all reliability problems.
 """
+
+
+def computeLogRelativeError(exact, computed):
+    logRelativeError = -np.log10(abs(exact - computed) / abs(exact))
+    return logRelativeError
 
 
 class mini_Benchmark:
-    def problemsliste():
+    def __init__(self):
         p8 = otb.ReliabilityProblem8()
         p14 = otb.ReliabilityProblem14()
         p22 = otb.ReliabilityProblem22()
@@ -36,7 +42,9 @@ class mini_Benchmark:
         p91 = otb.ReliabilityProblem91()
         p60 = otb.ReliabilityProblem60()
         p77 = otb.ReliabilityProblem77()
-        Liste_problem = [
+        pFBS = otb.FourBranchSerialSystemReliability()
+        pRS = otb.RminusSReliability()
+        listProblems = [
             p8,
             p14,
             p22,
@@ -59,93 +67,207 @@ class mini_Benchmark:
             p91,
             p60,
             p77,
+            pFBS,
+            pRS,
         ]
-        return Liste_problem
+        self.problemslist = listProblems
+        return None
 
-    def FORM(Problem):
-        # Cobyla algorithm
-        myCobyla = ot.Cobyla()
-        # Resolution options:
-        eps = 1e-3
-        myCobyla.setMaximumEvaluationNumber(100)
-        myCobyla.setMaximumAbsoluteError(eps)
-        myCobyla.setMaximumRelativeError(eps)
-        myCobyla.setMaximumResidualError(eps)
-        myCobyla.setMaximumConstraintError(eps)
-        myEvent = Problem.getEvent()
+    def FORM(
+        problem,
+        nearestPointAlgo="AbdoRackwitz",
+        maximumEvaluationNumber=100,
+        maximumAbsoluteError=1.0e-3,
+        maximumRelativeError=1.0e-3,
+        maximumResidualError=1.0e-3,
+        maximumConstraintError=1.0e-3,
+    ):
+
+        if nearestPointAlgo == "AbdoRackwitz":
+            solver = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            solver = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            solver = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+
+        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        solver.setMaximumAbsoluteError(maximumAbsoluteError)
+        solver.setMaximumRelativeError(maximumRelativeError)
+        solver.setMaximumResidualError(maximumResidualError)
+        solver.setMaximumConstraintError(maximumConstraintError)
+        myEvent = problem.getEvent()
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
-        g = Problem.getEvent().getFunction()
-        algoFORM = ot.FORM(myCobyla, myEvent, myDistribution.getMean())
+        g = problem.getEvent().getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
+        algoFORM = ot.FORM(solver, myEvent, myDistribution.getMean())
         algoFORM.run()
         resultFORM = algoFORM.getResult()
         numberOfFunctionEvaluationsFORM = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        return [resultFORM, numberOfFunctionEvaluationsFORM]
+        probabilityEstime = resultFORM.getEventProbability()
+        AbsolueError = abs(probabilityEstime - problem.getProbability())
+        NumberCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), probabilityEstime
+        )
 
-    def SORM(Problem):
-        # Cobyla algorithm
-        myCobyla = ot.Cobyla()
-        # Resolution options:
-        eps = 1e-3
-        myCobyla.setMaximumEvaluationNumber(100)
-        myCobyla.setMaximumAbsoluteError(eps)
-        myCobyla.setMaximumRelativeError(eps)
-        myCobyla.setMaximumResidualError(eps)
-        myCobyla.setMaximumConstraintError(eps)
-        myEvent = Problem.getEvent()
+        return [
+            probabilityEstime,
+            AbsolueError,
+            NumberCorrectDigits,
+            numberOfFunctionEvaluationsFORM,
+        ]
+
+    def printResultFORM(ResultForm):
+        s = (
+            "The estimated probability  with FORM = %s \n "
+            "The Absolue error = %s\n "
+            "Number of correct digits = %s\n "
+            "number of function evaluations with FORM = %s"
+        ) % (ResultForm[0], ResultForm[1], ResultForm[2], ResultForm[3],)
+        return s
+
+    def SORM(
+        problem,
+        nearestPointAlgo="AbdoRackwitz",
+        maximumEvaluationNumber=100,
+        maximumAbsoluteError=1.0e-3,
+        maximumRelativeError=1.0e-3,
+        maximumResidualError=1.0e-3,
+        maximumConstraintError=1.0e-3,
+    ):
+        if nearestPointAlgo == "AbdoRackwitz":
+            solver = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            solver = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            solver = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+
+        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        solver.setMaximumAbsoluteError(maximumAbsoluteError)
+        solver.setMaximumRelativeError(maximumRelativeError)
+        solver.setMaximumResidualError(maximumResidualError)
+        solver.setMaximumConstraintError(maximumConstraintError)
+
+        myEvent = problem.getEvent()
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
-        g = Problem.getEvent().getFunction()
-        algoSORM = ot.SORM(myCobyla, myEvent, myDistribution.getMean())
+        g = problem.getEvent().getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
+        algoSORM = ot.SORM(solver, myEvent, myDistribution.getMean())
         algoSORM.run()
         resultSORM = algoSORM.getResult()
         numberOfFunctionEvaluationsSORM = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        return [resultSORM, numberOfFunctionEvaluationsSORM]
+        probabilityEstime = resultSORM.getEventProbabilityBreitung()
+        AbsolueError = abs(probabilityEstime - problem.getProbability())
+        NumberCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), probabilityEstime
+        )
+        return [
+            probabilityEstime,
+            AbsolueError,
+            NumberCorrectDigits,
+            numberOfFunctionEvaluationsSORM,
+        ]
 
-    def MonteCarloSampling(Problem, NBS, cv):
+    def printResultSORM(ResultSorm):
+        s = (
+            "The estimated probability  with SORM = %s \n"
+            "The Absolue error = %s\n "
+            "Number of correct digits = %s\n "
+            "number of function evaluations with SORM = %s"
+        ) % (ResultSorm[0], ResultSorm[1], ResultSorm[2], ResultSorm[3],)
+        return s
 
-        myEvent = Problem.getEvent()
-        g = Problem.getEvent().getFunction()
+    def MonteCarloSampling(
+        problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, BlockSize=1
+    ):
+
+        myEvent = problem.getEvent()
+        g = problem.getEvent().getFunction()
         experiment = ot.MonteCarloExperiment()
         myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
-        myMC.setMaximumOuterSampling(NBS)
-        myMC.setBlockSize(1)
-        myMC.setMaximumCoefficientOfVariation(cv)
+        myMC.setMaximumOuterSampling(maximumOuterSampling)
+        myMC.setBlockSize(BlockSize)
+        myMC.setMaximumCoefficientOfVariation(coefficientOfVariation)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         myMC.run()
         resultMC = myMC.getResult()
         numberOfFunctionEvaluationsMonteCarlo = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
+        graph = myMC.drawProbabilityConvergence()
+        probabilityEstime = resultMC.getProbabilityEstimate()
+        AbsolueError = abs(probabilityEstime - problem.getProbability())
+        NumberCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), probabilityEstime
+        )
         return [
-            resultMC,
+            probabilityEstime,
+            AbsolueError,
+            NumberCorrectDigits,
             numberOfFunctionEvaluationsMonteCarlo,
-            myMC.drawProbabilityConvergence(),
+            graph,
         ]
 
-    def ImportanceSampling(Problem):
-        # Cobyla algorithm
-        myCobyla = ot.Cobyla()
-        # Resolution options:
-        eps = 1e-3
-        myCobyla.setMaximumEvaluationNumber(100)
-        myCobyla.setMaximumAbsoluteError(eps)
-        myCobyla.setMaximumRelativeError(eps)
-        myCobyla.setMaximumResidualError(eps)
-        myCobyla.setMaximumConstraintError(eps)
+    def printResultMC(ResultMC):
+        s = (
+            "The estimated probability  with Monte Carlo = %s \n "
+            "The Absolue error = %s\n "
+            "Number of correct digits = %s\n "
+            "number of function evaluations with Monte Carlo = %s"
+        ) % (ResultMC[0], ResultMC[1], ResultMC[2], ResultMC[3],)
+        return s
 
-        myEvent = Problem.getEvent()
+    def FORMImportanceSampling(
+        problem,
+        nearestPointAlgo="AbdoRackwitz",
+        maximumEvaluationNumber=100,
+        maximumAbsoluteError=1.0e-3,
+        maximumRelativeError=1.0e-3,
+        maximumResidualError=1.0e-3,
+        maximumConstraintError=1.0e-3,
+        maximumOuterSampling=5000,
+        coefficientOfVariation=0.1,
+    ):
+
+        if nearestPointAlgo == "AbdoRackwitz":
+            solver = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            solver = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            solver = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+
+        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        solver.setMaximumAbsoluteError(maximumAbsoluteError)
+        solver.setMaximumRelativeError(maximumRelativeError)
+        solver.setMaximumResidualError(maximumResidualError)
+        solver.setMaximumConstraintError(maximumConstraintError)
+
+        myEvent = problem.getEvent()
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
-        g = Problem.getEvent().getFunction()
+        g = problem.getEvent().getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algoFORM = ot.FORM(myCobyla, myEvent, myDistribution.getMean())
+        algoFORM = ot.FORM(solver, myEvent, myDistribution.getMean())
         algoFORM.run()
         resultFORM = algoFORM.getResult()
         standardSpaceDesignPoint = resultFORM.getStandardSpaceDesignPoint()
@@ -156,27 +278,72 @@ class mini_Benchmark:
 
         experiment = ot.ImportanceSamplingExperiment(myImportance)
         algo = ot.ProbabilitySimulationAlgorithm(ot.StandardEvent(myEvent), experiment)
-        algo.setMaximumCoefficientOfVariation(0.1)
-        algo.setMaximumOuterSampling(50000)
+        algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
+        algo.setMaximumOuterSampling(maximumOuterSampling)
         algo.setConvergenceStrategy(ot.Full())
         algo.run()
         resultTirage = algo.getResult()
+
         graph = algo.drawProbabilityConvergence()
         numberOfFunctionEvaluationsTirage = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        return [resultTirage, numberOfFunctionEvaluationsTirage, graph]
+        probabilityEstime = resultTirage.getProbabilityEstimate()
+        AbsolueError = abs(probabilityEstime - problem.getProbability())
+        NumberCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), probabilityEstime
+        )
 
-    def SubsetSampling(Problem):
-        myEvent = Problem.getEvent()
-        g = Problem.getEvent().getFunction()
+        return [
+            probabilityEstime,
+            AbsolueError,
+            NumberCorrectDigits,
+            numberOfFunctionEvaluationsTirage,
+            graph,
+        ]
+
+    def printResultFORMIS(ResultIS):
+        s = (
+            "The estimated probability  with Importance Sampling = %s \n "
+            "The Absolue error = %s\n "
+            "Number of correct digits = %s\n "
+            "number of function evaluations with Importance Sampling = %s"
+        ) % (ResultIS[0], ResultIS[1], ResultIS[2], ResultIS[3],)
+        return s
+
+    def SubsetSampling(
+        problem, maximumOuterSampling=5000, coefficientOfVariation=0.1, BlockSize=1
+    ):
+        myEvent = problem.getEvent()
+        g = problem.getEvent().getFunction()
         mySS = ot.SubsetSampling(myEvent)
-        mySS.setMaximumOuterSampling(5000)
-        mySS.setMaximumCoefficientOfVariation(0.1)
-        mySS.setBlockSize(1)
+        mySS.setMaximumOuterSampling(maximumOuterSampling)
+
+        mySS.setMaximumCoefficientOfVariation(coefficientOfVariation)
+        mySS.setBlockSize(BlockSize)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         mySS.run()
         graph = mySS.drawProbabilityConvergence()
         resultSS = mySS.getResult()
+        probabilityEstime = resultSS.getProbabilityEstimate()
+        AbsolueError = abs(probabilityEstime - problem.getProbability())
+        NumberCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), probabilityEstime
+        )
         numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
-        return [resultSS, numberOfFunctionSS, graph]
+        return [
+            probabilityEstime,
+            AbsolueError,
+            NumberCorrectDigits,
+            numberOfFunctionSS,
+            graph,
+        ]
+
+    def printResultSubset(ResultSS):
+        s = (
+            "The estimated probability  with Subset Sampling = %s \n "
+            "The Absolue error = %s\n "
+            "Number of correct digits = %s\n "
+            "number of function evaluations with Subset Sampling = %s"
+        ) % (ResultSS[0], ResultSS[1], ResultSS[2], ResultSS[3],)
+        return s
