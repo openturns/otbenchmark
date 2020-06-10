@@ -44,6 +44,7 @@ class mini_Benchmark:
         p77 = otb.ReliabilityProblem77()
         pFBS = otb.FourBranchSerialSystemReliability()
         pRS = otb.RminusSReliability()
+        pBeam = otb.AxialStressedBeamReliability()
         listProblems = [
             p8,
             p14,
@@ -69,6 +70,7 @@ class mini_Benchmark:
             p77,
             pFBS,
             pRS,
+            pBeam,
         ]
         self.problemslist = listProblems
         return None
@@ -112,25 +114,25 @@ class mini_Benchmark:
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         probabilityEstime = resultFORM.getEventProbability()
-        AbsolueError = abs(probabilityEstime - problem.getProbability())
-        NumberCorrectDigits = computeLogRelativeError(
+        absolueError = abs(probabilityEstime - problem.getProbability())
+        numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
 
         return [
             probabilityEstime,
-            AbsolueError,
-            NumberCorrectDigits,
+            absolueError,
+            numberCorrectDigits,
             numberOfFunctionEvaluationsFORM,
         ]
 
-    def printResultFORM(ResultForm):
+    def printResultFORM(resultForm):
         s = (
-            "The estimated probability  with FORM = %s \n "
-            "The Absolue error = %s\n "
-            "Number of correct digits = %s\n "
-            "number of function evaluations with FORM = %s"
-        ) % (ResultForm[0], ResultForm[1], ResultForm[2], ResultForm[3],)
+            "probabilityEstime = %s  "
+            "absolueError = %s "
+            "numberOfCorrectDigits = %s "
+            "numberOfFunctionEvaluations = %s"
+        ) % (resultForm[0], resultForm[1], resultForm[2], resultForm[3],)
         return s
 
     def SORM(
@@ -172,28 +174,28 @@ class mini_Benchmark:
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         probabilityEstime = resultSORM.getEventProbabilityBreitung()
-        AbsolueError = abs(probabilityEstime - problem.getProbability())
-        NumberCorrectDigits = computeLogRelativeError(
+        absolueError = abs(probabilityEstime - problem.getProbability())
+        numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
         return [
             probabilityEstime,
-            AbsolueError,
-            NumberCorrectDigits,
+            absolueError,
+            numberCorrectDigits,
             numberOfFunctionEvaluationsSORM,
         ]
 
-    def printResultSORM(ResultSorm):
+    def printResultSORM(resultSorm):
         s = (
-            "The estimated probability  with SORM = %s \n"
-            "The Absolue error = %s\n "
-            "Number of correct digits = %s\n "
-            "number of function evaluations with SORM = %s"
-        ) % (ResultSorm[0], ResultSorm[1], ResultSorm[2], ResultSorm[3],)
+            "probabilityEstime = %s  "
+            "absolueError = %s "
+            "numberOfCorrectDigits = %s "
+            "numberOfFunctionEvaluations = %s"
+        ) % (resultSorm[0], resultSorm[1], resultSorm[2], resultSorm[3],)
         return s
 
     def MonteCarloSampling(
-        problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, BlockSize=1
+        problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
     ):
 
         myEvent = problem.getEvent()
@@ -201,7 +203,7 @@ class mini_Benchmark:
         experiment = ot.MonteCarloExperiment()
         myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
         myMC.setMaximumOuterSampling(maximumOuterSampling)
-        myMC.setBlockSize(BlockSize)
+        myMC.setBlockSize(blockSize)
         myMC.setMaximumCoefficientOfVariation(coefficientOfVariation)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         myMC.run()
@@ -211,25 +213,25 @@ class mini_Benchmark:
         )
         graph = myMC.drawProbabilityConvergence()
         probabilityEstime = resultMC.getProbabilityEstimate()
-        AbsolueError = abs(probabilityEstime - problem.getProbability())
-        NumberCorrectDigits = computeLogRelativeError(
+        absolueError = abs(probabilityEstime - problem.getProbability())
+        numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
         return [
             probabilityEstime,
-            AbsolueError,
-            NumberCorrectDigits,
+            absolueError,
+            numberCorrectDigits,
             numberOfFunctionEvaluationsMonteCarlo,
             graph,
         ]
 
-    def printResultMC(ResultMC):
+    def printResultMC(resultMC):
         s = (
-            "The estimated probability  with Monte Carlo = %s \n "
-            "The Absolue error = %s\n "
-            "Number of correct digits = %s\n "
-            "number of function evaluations with Monte Carlo = %s"
-        ) % (ResultMC[0], ResultMC[1], ResultMC[2], ResultMC[3],)
+            "probabilityEstime = %s  "
+            "absolueError = %s "
+            "numberOfCorrectDigits = %s "
+            "numberOfFunctionEvaluations = %s"
+        ) % (resultMC[0], resultMC[1], resultMC[2], resultMC[3],)
         return s
 
     def FORMImportanceSampling(
@@ -289,30 +291,30 @@ class mini_Benchmark:
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         probabilityEstime = resultTirage.getProbabilityEstimate()
-        AbsolueError = abs(probabilityEstime - problem.getProbability())
-        NumberCorrectDigits = computeLogRelativeError(
+        absolueError = abs(probabilityEstime - problem.getProbability())
+        numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
 
         return [
             probabilityEstime,
-            AbsolueError,
-            NumberCorrectDigits,
+            absolueError,
+            numberCorrectDigits,
             numberOfFunctionEvaluationsTirage,
             graph,
         ]
 
-    def printResultFORMIS(ResultIS):
+    def printResultFORMIS(resultIS):
         s = (
-            "The estimated probability  with Importance Sampling = %s \n "
-            "The Absolue error = %s\n "
-            "Number of correct digits = %s\n "
-            "number of function evaluations with Importance Sampling = %s"
-        ) % (ResultIS[0], ResultIS[1], ResultIS[2], ResultIS[3],)
+            "probabilityEstime = %s  "
+            "absolueError = %s "
+            "numberOfCorrectDigits = %s "
+            "numberOfFunctionEvaluations = %s"
+        ) % (resultIS[0], resultIS[1], resultIS[2], resultIS[3],)
         return s
 
     def SubsetSampling(
-        problem, maximumOuterSampling=5000, coefficientOfVariation=0.1, BlockSize=1
+        problem, maximumOuterSampling=5000, coefficientOfVariation=0.1, blockSize=1
     ):
         myEvent = problem.getEvent()
         g = problem.getEvent().getFunction()
@@ -320,30 +322,30 @@ class mini_Benchmark:
         mySS.setMaximumOuterSampling(maximumOuterSampling)
 
         mySS.setMaximumCoefficientOfVariation(coefficientOfVariation)
-        mySS.setBlockSize(BlockSize)
+        mySS.setBlockSize(blockSize)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         mySS.run()
         graph = mySS.drawProbabilityConvergence()
         resultSS = mySS.getResult()
         probabilityEstime = resultSS.getProbabilityEstimate()
-        AbsolueError = abs(probabilityEstime - problem.getProbability())
-        NumberCorrectDigits = computeLogRelativeError(
+        absolueError = abs(probabilityEstime - problem.getProbability())
+        numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
         numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
         return [
             probabilityEstime,
-            AbsolueError,
-            NumberCorrectDigits,
+            absolueError,
+            numberCorrectDigits,
             numberOfFunctionSS,
             graph,
         ]
 
-    def printResultSubset(ResultSS):
+    def printResultSubset(resultSS):
         s = (
-            "The estimated probability  with Subset Sampling = %s \n "
-            "The Absolue error = %s\n "
-            "Number of correct digits = %s\n "
-            "number of function evaluations with Subset Sampling = %s"
-        ) % (ResultSS[0], ResultSS[1], ResultSS[2], ResultSS[3],)
+            "probabilityEstime = %s  "
+            "absolueError = %s "
+            "numberOfCorrectDigits = %s "
+            "numberOfFunctionEvaluations = %s"
+        ) % (resultSS[0], resultSS[1], resultSS[2], resultSS[3],)
         return s
