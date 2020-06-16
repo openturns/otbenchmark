@@ -18,7 +18,7 @@ def computeLogRelativeError(exact, computed):
     return logRelativeError
 
 
-class mini_Benchmark:
+class OTReliabilityAlgorithmBenchmark:
     def __init__(self):
         p8 = otb.ReliabilityProblem8()
         p14 = otb.ReliabilityProblem14()
