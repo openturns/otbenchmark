@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 EDF.
 """
-Test for IshigamiSensitivity class.
+Test for GSobolSensitivity class.
 """
 import openturns as ot
 import otbenchmark as otb
@@ -9,9 +9,9 @@ import unittest
 import numpy as np
 
 
-class CheckIshigami(unittest.TestCase):
-    def test_Ishigami(self):
-        problem = otb.IshigamiSensitivity()
+class CheckGSobol(unittest.TestCase):
+    def test_GSobol(self):
+        problem = otb.GSobolSensitivity()
         print(problem)
         distribution = problem.getInputDistribution()
         model = problem.getFunction()
@@ -33,9 +33,15 @@ class CheckIshigami(unittest.TestCase):
         exact_first_order = problem.getFirstOrderIndices()
         exact_total_order = problem.getTotalOrderIndices()
 
+        # Check exact results
+        Sexact = [0.986712, 0.009867, 0.000099]
+        Texact = [0.990034, 0.013157, 0.000132]
+        np.testing.assert_allclose(Sexact, exact_first_order, atol=1.0e-5)
+        np.testing.assert_allclose(Texact, exact_total_order, atol=1.0e-5)
+
         # Compare with exact results
         print("Sample size : ", size)
-        atol = 10.0 / np.sqrt(size)
+        atol = 5.0 / np.sqrt(size)
         print("Absolute Tolerance = ", atol)
         # First order
         # Compute absolute error (the LRE cannot be computed,

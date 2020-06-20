@@ -13,8 +13,9 @@ class SensitivityBenchmarkProblem:
 
         Parameters
         ----------
-        thresholdEvent : ot.ThresholdEvent
-            The event.
+        name : str
+            The name of the benchmark problem.
+            This is a short string, typically less than a dozen of caracters.
 
         distribution : ot.Distribution
             The input distribution.
@@ -30,7 +31,11 @@ class SensitivityBenchmarkProblem:
 
         Example
         -------
-        problem  = ReliabilityBenchmarkProblem(thresholdEvent)
+        problem  = SensitivityBenchmarkProblem(name,
+                                               distribution,
+                                               function,
+                                               firstOrderIndices,
+                                               totalOrderIndices)
         """
         self.name = name
         self.distribution = distribution
@@ -113,3 +118,33 @@ class SensitivityBenchmarkProblem:
             The total order sensitivity indices.
         """
         return self.totalOrderIndices
+
+    def __str__(self):
+        """
+        Convert the object into a string.
+
+        This method is typically called with the "print" statement.
+
+        Parameters
+        ----------
+        None.
+
+        Returns
+        -------
+        s: str
+            The string corresponding to the object.
+        """
+        s = (
+            "name = %s\n"
+            "distribution = %s\n"
+            "function = %s\n"
+            "firstOrderIndices = %s\n"
+            "totalOrderIndices = %s"
+        ) % (
+            self.name,
+            self.distribution,
+            self.function,
+            self.firstOrderIndices,
+            self.totalOrderIndices,
+        )
+        return s

@@ -55,6 +55,27 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
         """
         Create a Ishigami sensitivity problem.
 
+        The function is defined by the equation:
+
+        g(x) = sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)
+
+        where X1, X2, X3 in [-pi, pi].
+
+        The distribution of the output of the Ishigami function has two modes.
+
+        The first order indice of X3 is equal to zero and the total order
+        indice of X3 is strictly posititive: this variable has an influence on the
+        output only through its interaction with X1.
+
+        References
+        ----------
+        * "Sensitivity analysis in practice", Saltelli, Tarantolla,
+          Compolongo, Ratto, Wiley, 2004
+        * "An importance quantification technique in uncertainty analysis for
+          computer models", Ishigami, Homma, 1990, Proceedings of the ISUMA'90.
+          First international symposium on uncertainty modelling and Analysis,
+          University of Maryland, USA, pp. 398-403.
+
         Parameters
         ----------
         a : float
