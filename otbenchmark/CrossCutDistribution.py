@@ -30,6 +30,9 @@ class CrossCutDistribution:
         """
         Draw the PDF of the conditional distribution.
 
+        Within the grid, duplicate X and Y axes labels are removed, so that
+        the minimum amount of labels are printed, reducing the risk of overlap.
+
         Each i-th graphics of the diagonal of the plot present the
         conditional distribution:
         X | Xi=referencePoint[i].
@@ -89,8 +92,13 @@ class CrossCutDistribution:
                 )
                 # Draw
                 graph = conditionalDistribution.drawPDF()
-                graph.setXTitle(description[j])
-                graph.setYTitle(description[i])
+                # Remove unnecessary labels
+                # Only the last bottom i-th row has a X axis title
+                if i < inputDimension - 1:
+                    graph.setXTitle("")
+                # Only the first left column has a Y axis title
+                if j > 0:
+                    graph.setYTitle("")
                 graph.setTitle("Iso-values of conditional PDF")
                 index = 1 + i * inputDimension + j
                 ax = fig.add_subplot(inputDimension, inputDimension, index)
@@ -100,6 +108,9 @@ class CrossCutDistribution:
     def drawMarginalPDF(self):
         """
         Draw the PDF of the marginal distribution.
+
+        Within the grid, duplicate X and Y axes labels are removed, so that
+        the minimum amount of labels are printed, reducing the risk of overlap.
 
         Each i-th graphics of the diagonal of the plot present the
         marginal i-th distribution X[i].
@@ -125,6 +136,13 @@ class CrossCutDistribution:
                 # We want X[j] on X-axis and X[i] on Y-axis
                 marginalDistribution = self.distribution.getMarginal([j, i])
                 graph = marginalDistribution.drawPDF()
+                # Remove unnecessary labels
+                # Only the last bottom i-th row has a X axis title
+                if i < inputDimension - 1:
+                    graph.setXTitle("")
+                # Only the first left column has a Y axis title
+                if j > 0:
+                    graph.setYTitle("")
                 graph.setTitle("Iso-values of marginal PDF")
                 index = 1 + i * inputDimension + j
                 ax = fig.add_subplot(inputDimension, inputDimension, index)

@@ -27,6 +27,9 @@ class CrossCutFunction:
         """
         Draw cross-cuts of the function in the bounds.
 
+        Within the grid, duplicate X and Y axes labels are removed, so that
+        the minimum amount of labels are printed, reducing the risk of overlap.
+
         Parameters
         ----------
         interval : ot.Interval
@@ -89,8 +92,12 @@ class CrossCutFunction:
                     crossCutLowerBound, crossCutUpperBound, numberOfPoints
                 )
                 # Remove unnecessary labels
+                # Only the last bottom i-th row has a X axis title
                 if i < inputDimension - 1:
                     graph.setXTitle("")
+                # Only the first left column has a Y axis title
+                if j > 0:
+                    graph.setYTitle("")
                 graph.setTitle("Iso-values of limit state function")
                 index = 1 + i * inputDimension + j
                 ax = fig.add_subplot(inputDimension, inputDimension, index)
