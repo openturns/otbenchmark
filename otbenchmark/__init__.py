@@ -29,6 +29,10 @@ from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
 from .OTReliabilityAlgorithmBenchmark import OTReliabilityAlgorithmBenchmark
+from .FORMFactory import FORMFactory
+from .SORMFactory import SORMFactory
+from .FORMISFactory import FORMISFactory
+from .MonteCarloFactory import MonteCarloFactory
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 from .GaussianSumSensitivity import GaussianSumSensitivity
 from .GaussianProductSensitivity import GaussianProductSensitivity
@@ -70,6 +74,10 @@ __all__ = [
     "ReliabilityProblem63",
     "ReliabilityProblem60",
     "ReliabilityProblem77",
+    "FORMFactory",
+    "SORMFactory",
+    "FORMISFactory",
+    "MonteCarloFactory",
     "OTReliabilityAlgorithmBenchmark",
     "FourBranchSerialSystemReliability",
     "GaussianSumSensitivity",

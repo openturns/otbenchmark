@@ -32,6 +32,7 @@ class OTReliabilityAlgorithmBenchmark:
         p38 = otb.ReliabilityProblem38()
         p53 = otb.ReliabilityProblem53()
         p55 = otb.ReliabilityProblem55()
+        p54 = otb.ReliabilityProblem54()
         p57 = otb.ReliabilityProblem57()
         p75 = otb.ReliabilityProblem75()
         p89 = otb.ReliabilityProblem89()
@@ -58,6 +59,7 @@ class OTReliabilityAlgorithmBenchmark:
             p38,
             p53,
             p55,
+            p54,
             p57,
             p75,
             p89,
