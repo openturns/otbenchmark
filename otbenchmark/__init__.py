@@ -33,6 +33,7 @@ from .FORMFactory import FORMFactory
 from .SORMFactory import SORMFactory
 from .FORMISFactory import FORMISFactory
 from .MonteCarloFactory import MonteCarloFactory
+from .SubsetFactory import SubsetFactory
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 
 # from .CentralDispersionBenchmarkProblem import
@@ -72,6 +73,7 @@ __all__ = [
     "SORMFactory",
     "FORMISFactory",
     "MonteCarloFactory",
+    "SubsetFactory",
     "OTReliabilityAlgorithmBenchmark",
     "FourBranchSerialSystemReliability",
 ]
