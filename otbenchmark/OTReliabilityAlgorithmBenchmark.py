@@ -210,6 +210,11 @@ class OTReliabilityAlgorithmBenchmark:
         initialNumberOfCall = g.getEvaluationCallsNumber()
         myMC.run()
         resultMC = myMC.getResult()
+        level = 0.95
+        c95 = resultMC.getConfidenceLength(level)
+        probabilityEstime = resultMC.getProbabilityEstimate()
+        pmin = probabilityEstime - 0.5 * c95
+        pmax = probabilityEstime + 0.5 * c95
         numberOfFunctionEvaluationsMonteCarlo = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
@@ -219,11 +224,19 @@ class OTReliabilityAlgorithmBenchmark:
         numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
+        print(
+            "Problem %s" % (problem.getName()),
+            "Number of function calls = %d" % (numberOfFunctionEvaluationsMonteCarlo),
+            ", Pf = %.5f" % (probabilityEstime),
+            ", %.1f %% confidence interval :[%.5f,%.5f] " % (level * 100, pmin, pmax),
+        )
         return [
             probabilityEstime,
             absolueError,
             numberCorrectDigits,
             numberOfFunctionEvaluationsMonteCarlo,
+            pmin,
+            pmax,
             graph,
         ]
 
@@ -233,7 +246,7 @@ class OTReliabilityAlgorithmBenchmark:
             "absolueError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
-        ) % (resultMC[0], resultMC[1], resultMC[2], resultMC[3],)
+        ) % (resultMC[0], resultMC[1], resultMC[2], resultMC[3])
         return s
 
     def FORMImportanceSampling(

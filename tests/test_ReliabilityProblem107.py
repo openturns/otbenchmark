@@ -19,7 +19,7 @@ class CheckReliabilityProblem107(unittest.TestCase):
 
         # Check probability
         pf = problem.getProbability()
-        pf_exacte = 0.000000292
+        pf_exacte = 1.9999999999999501e-07
         np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
 
         # Check function

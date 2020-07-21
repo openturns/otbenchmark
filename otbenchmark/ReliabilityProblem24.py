@@ -62,6 +62,6 @@ class ReliabilityProblem24(ReliabilityBenchmarkProblem):
 
         name = "RP24"
 
-        probability = 0.00286
+        probability = 2.54485303473724e-03
         super(ReliabilityProblem24, self).__init__(name, thresholdEvent, probability)
         return None
