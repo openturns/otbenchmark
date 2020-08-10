@@ -128,15 +128,6 @@ class OTReliabilityAlgorithmBenchmark:
             numberOfFunctionEvaluationsFORM,
         ]
 
-    def printResultFORM(resultForm):
-        s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (resultForm[0], resultForm[1], resultForm[2], resultForm[3],)
-        return s
-
     def SORM(
         problem,
         nearestPointAlgo="AbdoRackwitz",
@@ -187,15 +178,6 @@ class OTReliabilityAlgorithmBenchmark:
             numberOfFunctionEvaluationsSORM,
         ]
 
-    def printResultSORM(resultSorm):
-        s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (resultSorm[0], resultSorm[1], resultSorm[2], resultSorm[3],)
-        return s
-
     def MonteCarloSampling(
         problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
     ):
@@ -218,17 +200,10 @@ class OTReliabilityAlgorithmBenchmark:
         numberOfFunctionEvaluationsMonteCarlo = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        graph = myMC.drawProbabilityConvergence()
         probabilityEstime = resultMC.getProbabilityEstimate()
         absolueError = abs(probabilityEstime - problem.getProbability())
         numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
-        )
-        print(
-            "Problem %s" % (problem.getName()),
-            "Number of function calls = %d" % (numberOfFunctionEvaluationsMonteCarlo),
-            ", Pf = %.5f" % (probabilityEstime),
-            ", %.1f %% confidence interval :[%.5f,%.5f] " % (level * 100, pmin, pmax),
         )
         return [
             probabilityEstime,
@@ -237,17 +212,7 @@ class OTReliabilityAlgorithmBenchmark:
             numberOfFunctionEvaluationsMonteCarlo,
             pmin,
             pmax,
-            graph,
         ]
-
-    def printResultMC(resultMC):
-        s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (resultMC[0], resultMC[1], resultMC[2], resultMC[3])
-        return s
 
     def FORMImportanceSampling(
         problem,
@@ -300,12 +265,14 @@ class OTReliabilityAlgorithmBenchmark:
         algo.setConvergenceStrategy(ot.Full())
         algo.run()
         resultTirage = algo.getResult()
-
-        graph = algo.drawProbabilityConvergence()
         numberOfFunctionEvaluationsTirage = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         probabilityEstime = resultTirage.getProbabilityEstimate()
+        level = 0.95
+        c95 = resultTirage.getConfidenceLength(level)
+        pmin = probabilityEstime - 0.5 * c95
+        pmax = probabilityEstime + 0.5 * c95
         absolueError = abs(probabilityEstime - problem.getProbability())
         numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
@@ -316,17 +283,9 @@ class OTReliabilityAlgorithmBenchmark:
             absolueError,
             numberCorrectDigits,
             numberOfFunctionEvaluationsTirage,
-            graph,
+            pmin,
+            pmax,
         ]
-
-    def printResultFORMIS(resultIS):
-        s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (resultIS[0], resultIS[1], resultIS[2], resultIS[3],)
-        return s
 
     def SubsetSampling(
         problem, maximumOuterSampling=5000, coefficientOfVariation=0.1, blockSize=1
@@ -340,27 +299,23 @@ class OTReliabilityAlgorithmBenchmark:
         mySS.setBlockSize(blockSize)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         mySS.run()
-        graph = mySS.drawProbabilityConvergence()
+        numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
         resultSS = mySS.getResult()
         probabilityEstime = resultSS.getProbabilityEstimate()
+        level = 0.95
+        c95 = resultSS.getConfidenceLength(level)
+        pmin = probabilityEstime - 0.5 * c95
+        pmax = probabilityEstime + 0.5 * c95
         absolueError = abs(probabilityEstime - problem.getProbability())
         numberCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
-        numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
+
         return [
             probabilityEstime,
             absolueError,
             numberCorrectDigits,
             numberOfFunctionSS,
-            graph,
+            pmin,
+            pmax,
         ]
-
-    def printResultSubset(resultSS):
-        s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (resultSS[0], resultSS[1], resultSS[2], resultSS[3],)
-        return s
