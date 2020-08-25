@@ -63,6 +63,6 @@ class ReliabilityProblem89(ReliabilityBenchmarkProblem):
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP89"
-        probability = 5.636253593584516e-03
+        probability = 5.6e-03
         super(ReliabilityProblem89, self).__init__(name, thresholdEvent, probability)
         return None
