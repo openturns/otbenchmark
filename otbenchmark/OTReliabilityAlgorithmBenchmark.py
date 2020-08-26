@@ -117,14 +117,14 @@ class OTReliabilityAlgorithmBenchmark:
         )
         probabilityEstime = resultFORM.getEventProbability()
         absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
+        numberOfCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
 
         return [
             probabilityEstime,
             absolueError,
-            numberCorrectDigits,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsFORM,
         ]
 
@@ -168,13 +168,13 @@ class OTReliabilityAlgorithmBenchmark:
         )
         probabilityEstime = resultSORM.getEventProbabilityBreitung()
         absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
+        numberOfCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
         return [
             probabilityEstime,
             absolueError,
-            numberCorrectDigits,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsSORM,
         ]
 
@@ -202,13 +202,13 @@ class OTReliabilityAlgorithmBenchmark:
         )
         probabilityEstime = resultMC.getProbabilityEstimate()
         absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
+        numberOfCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
         return [
             probabilityEstime,
             absolueError,
-            numberCorrectDigits,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsMonteCarlo,
             pmin,
             pmax,
@@ -274,14 +274,14 @@ class OTReliabilityAlgorithmBenchmark:
         pmin = probabilityEstime - 0.5 * c95
         pmax = probabilityEstime + 0.5 * c95
         absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
+        numberOfCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
 
         return [
             probabilityEstime,
             absolueError,
-            numberCorrectDigits,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsTirage,
             pmin,
             pmax,
@@ -307,14 +307,14 @@ class OTReliabilityAlgorithmBenchmark:
         pmin = probabilityEstime - 0.5 * c95
         pmax = probabilityEstime + 0.5 * c95
         absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
+        numberOfCorrectDigits = computeLogRelativeError(
             problem.getProbability(), probabilityEstime
         )
 
         return [
             probabilityEstime,
             absolueError,
-            numberCorrectDigits,
+            numberOfCorrectDigits,
             numberOfFunctionSS,
             pmin,
             pmax,
