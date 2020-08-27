@@ -51,7 +51,10 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
         ----------
         threshold : float
             The threshold.
-       a, b : parameters of Uniform distribution X1
+        a : float
+            Lower bound of the Uniform distribution X1.
+        b : float
+            Upper bound of the Uniform distribution X1.
         mu2 : float
             The mean of the X2 Normal distribution.
         sigma2 : float

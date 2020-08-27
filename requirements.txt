@@ -4,7 +4,7 @@ scipy==1.*
 openturns>=1.14
 jupyterlab
 nbconvert
-black
+black==19.10b0
 pre-commit
 flake8
 black-nb
