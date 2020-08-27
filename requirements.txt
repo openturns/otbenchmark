@@ -8,4 +8,5 @@ black==19.10b0
 pre-commit
 flake8
 black-nb
+pandas
 
