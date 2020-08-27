@@ -184,7 +184,7 @@ class ConditionalDistribution(ot.PythonDistribution):
         description : ot.Description
             The description of the conditional distribution.
         """
-        # Ignored : TODO: create an issue on github/openturns
+        # Does not work, because of https://github.com/openturns/openturns/issues/1230
         description = []
         extendedDescription = self.distribution.getDescription()
         conditionalIndex = 0

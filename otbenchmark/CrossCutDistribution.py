@@ -92,6 +92,14 @@ class CrossCutDistribution:
                 )
                 # Draw
                 graph = conditionalDistribution.drawPDF()
+                # Workaround for https://github.com/openturns/openturns/issues/1230
+                # The ConditionalDistribution should manage the description, but
+                # cannot because of a limitation in OT.
+                # Explanation: j is the column number in the plot grid
+                graph.setXTitle(description[j])
+                # Explanation: i is the row number in the plot grid
+                graph.setYTitle(description[i])
+                print("Descr = ", i, j)
                 # Remove unnecessary labels
                 # Only the last bottom i-th row has a X axis title
                 if i < inputDimension - 1:

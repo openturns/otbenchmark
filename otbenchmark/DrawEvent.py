@@ -219,6 +219,13 @@ class DrawEvent:
 
         The points inside and outside the event are colored.
 
+        The algorithm uses the getMarginal() method
+        of the distribution in order to create the bivariate distribution.
+        Then the sample is generated from this bivariate distribution.
+        A more rigorous method would draw the conditional distribution,
+        but this might reduce the performance in general.
+        https://github.com/mbaudin47/otbenchmark/issues/47
+
         Parameters
         ----------
         sampleSize: int
