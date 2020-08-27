@@ -115,23 +115,23 @@ class OTReliabilityAlgorithmBenchmark:
         numberOfFunctionEvaluationsFORM = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        probabilityEstime = resultFORM.getEventProbability()
-        absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), probabilityEstime
+        computedProbability = resultFORM.getEventProbability()
+        absoluteError = abs(computedProbability - problem.getProbability())
+        numberOfCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), computedProbability
         )
 
         return [
-            probabilityEstime,
-            absolueError,
-            numberCorrectDigits,
+            computedProbability,
+            absoluteError,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsFORM,
         ]
 
     def printResultFORM(resultForm):
         s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
+            "computedProbability = %s  "
+            "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
         ) % (resultForm[0], resultForm[1], resultForm[2], resultForm[3],)
@@ -175,22 +175,22 @@ class OTReliabilityAlgorithmBenchmark:
         numberOfFunctionEvaluationsSORM = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        probabilityEstime = resultSORM.getEventProbabilityBreitung()
-        absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), probabilityEstime
+        computedProbability = resultSORM.getEventProbabilityBreitung()
+        absoluteError = abs(computedProbability - problem.getProbability())
+        numberOfCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), computedProbability
         )
         return [
-            probabilityEstime,
-            absolueError,
-            numberCorrectDigits,
+            computedProbability,
+            absoluteError,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsSORM,
         ]
 
     def printResultSORM(resultSorm):
         s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
+            "computedProbability = %s  "
+            "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
         ) % (resultSorm[0], resultSorm[1], resultSorm[2], resultSorm[3],)
@@ -214,23 +214,23 @@ class OTReliabilityAlgorithmBenchmark:
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         graph = myMC.drawProbabilityConvergence()
-        probabilityEstime = resultMC.getProbabilityEstimate()
-        absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), probabilityEstime
+        computedProbability = resultMC.getProbabilityEstimate()
+        absoluteError = abs(computedProbability - problem.getProbability())
+        numberOfCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), computedProbability
         )
         return [
-            probabilityEstime,
-            absolueError,
-            numberCorrectDigits,
+            computedProbability,
+            absoluteError,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsMonteCarlo,
             graph,
         ]
 
     def printResultMC(resultMC):
         s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
+            "computedProbability = %s  "
+            "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
         ) % (resultMC[0], resultMC[1], resultMC[2], resultMC[3],)
@@ -292,24 +292,24 @@ class OTReliabilityAlgorithmBenchmark:
         numberOfFunctionEvaluationsTirage = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        probabilityEstime = resultTirage.getProbabilityEstimate()
-        absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), probabilityEstime
+        computedProbability = resultTirage.getProbabilityEstimate()
+        absoluteError = abs(computedProbability - problem.getProbability())
+        numberOfCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), computedProbability
         )
 
         return [
-            probabilityEstime,
-            absolueError,
-            numberCorrectDigits,
+            computedProbability,
+            absoluteError,
+            numberOfCorrectDigits,
             numberOfFunctionEvaluationsTirage,
             graph,
         ]
 
     def printResultFORMIS(resultIS):
         s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
+            "computedProbability = %s  "
+            "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
         ) % (resultIS[0], resultIS[1], resultIS[2], resultIS[3],)
@@ -329,24 +329,24 @@ class OTReliabilityAlgorithmBenchmark:
         mySS.run()
         graph = mySS.drawProbabilityConvergence()
         resultSS = mySS.getResult()
-        probabilityEstime = resultSS.getProbabilityEstimate()
-        absolueError = abs(probabilityEstime - problem.getProbability())
-        numberCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), probabilityEstime
+        computedProbability = resultSS.getProbabilityEstimate()
+        absoluteError = abs(computedProbability - problem.getProbability())
+        numberOfCorrectDigits = computeLogRelativeError(
+            problem.getProbability(), computedProbability
         )
         numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
         return [
-            probabilityEstime,
-            absolueError,
-            numberCorrectDigits,
+            computedProbability,
+            absoluteError,
+            numberOfCorrectDigits,
             numberOfFunctionSS,
             graph,
         ]
 
     def printResultSubset(resultSS):
         s = (
-            "probabilityEstime = %s  "
-            "absolueError = %s "
+            "computedProbability = %s  "
+            "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
         ) % (resultSS[0], resultSS[1], resultSS[2], resultSS[3],)
