@@ -25,5 +25,6 @@ class SORMFactory(ot.SORM):
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
         solver = ot.AbdoRackwitz()
-        super(SORMFactory, self).__init__(solver, myEvent, myDistribution.getMean())
+        physicalStartingPoint = myDistribution.getMean()
+        super(SORMFactory, self).__init__(solver, myEvent, physicalStartingPoint)
         return None

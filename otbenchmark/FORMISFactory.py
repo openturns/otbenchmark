@@ -28,15 +28,15 @@ class FORMISFactory(ot.ProbabilitySimulationAlgorithm):
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
         solver = ot.AbdoRackwitz()
-        algoFORM = ot.FORM(solver, myEvent, myDistribution.getMean())
+        physicalStartingPoint = myDistribution.getMean()
+        algoFORM = ot.FORM(solver, myEvent, physicalStartingPoint)
         algoFORM.run()
         resultFORM = algoFORM.getResult()
         standardSpaceDesignPoint = resultFORM.getStandardSpaceDesignPoint()
         d = myDistribution.getDimension()
-        myImportance = ot.Normal(
-            standardSpaceDesignPoint, [1.0] * d, ot.CorrelationMatrix(d)
-        )
-
+        myImportance = ot.Normal(d)
+        myImportance.setMean(standardSpaceDesignPoint)
         experiment = ot.ImportanceSamplingExperiment(myImportance)
-        super(FORMISFactory, self).__init__(ot.StandardEvent(myEvent), experiment)
+        standardEvent = ot.StandardEvent(myEvent)
+        super(FORMISFactory, self).__init__(standardEvent, experiment)
         return None

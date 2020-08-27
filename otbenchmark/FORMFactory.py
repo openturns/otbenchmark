@@ -25,5 +25,6 @@ class FORMFactory(ot.FORM):
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
         solver = ot.AbdoRackwitz()
-        super(FORMFactory, self).__init__(solver, myEvent, myDistribution.getMean())
+        physicalStartingPoint = myDistribution.getMean()
+        super(FORMFactory, self).__init__(solver, myEvent, physicalStartingPoint)
         return None
