@@ -13,10 +13,7 @@ import openturns as ot
 
 class ReliabilityProblem33(ReliabilityBenchmarkProblem):
     def __init__(
-        self,
-        threshold=0.0,
-        mu=[0.0] * 3,
-        sigma=[1.0] * 3,
+        self, threshold=0.0, mu=[0.0] * 3, sigma=[1.0] * 3,
     ):
         """
         Creates a reliability problem RP33.

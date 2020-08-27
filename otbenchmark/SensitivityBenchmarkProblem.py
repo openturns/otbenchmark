@@ -6,12 +6,7 @@
 
 class SensitivityBenchmarkProblem:
     def __init__(
-        self,
-        name,
-        distribution,
-        function,
-        firstOrderIndices,
-        totalOrderIndices,
+        self, name, distribution, function, firstOrderIndices, totalOrderIndices,
     ):
         """
         Creates a reliability problem.
