@@ -147,7 +147,8 @@ def run_MonteCarlo(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()],
+            index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
@@ -330,7 +331,8 @@ def run_ImportanceSampling(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()],
+            index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
@@ -400,7 +402,8 @@ def run_LHS(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()],
+            index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(
@@ -457,7 +460,8 @@ def run_SubSet(
     )
     dfResult = dfResult.append(
         pd.DataFrame(
-            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
+            [result.getCoefficientOfVariation()],
+            index=["Coefficient of varation"],
         )
     )
     dfResult = dfResult.append(

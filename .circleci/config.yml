@@ -10,12 +10,9 @@ jobs:
       - checkout
       - python/install-deps
       - run:
-          name: Test
-          command: ./.circleci/run_docker_linux.sh
-      - run:
           name: Check style of Python Scripts with black
           command: |
-            black --check otbenchmark
+            black --check otbenchmark --config pyproject.toml
       - run:
           name: Check style of Python Scripts with flake8
           command: |
@@ -24,6 +21,9 @@ jobs:
           name: Check style of Notebooks with black-nb
           command: |
             black-nb --check .
+      - run:
+          name: Test
+          command: ./.circleci/run_docker_linux.sh
 
 workflows:
   main:

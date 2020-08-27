@@ -149,5 +149,13 @@ class ReliabilityBenchmarkProblem:
             "probability = %s\n"
             "beta = %s\n"
             "distribution = %s"
-        ) % (self.name, g, operator, threshold, self.probability, beta, distribution,)
+        ) % (
+            self.name,
+            g,
+            operator,
+            threshold,
+            self.probability,
+            beta,
+            distribution,
+        )
         return s
