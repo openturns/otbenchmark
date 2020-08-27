@@ -10,6 +10,17 @@ import openturns as ot
 
 class FORMFactory(ot.FORM):
     def __init__(self, problem):
+        """
+        Creates a FORM algorithm.
+
+        We create a FORM algorithm based on the problem event and the AbdoRackwitz
+        optimization solver.
+
+        Parameters
+        ----------
+        problem : ot.ReliabilityBenchmarkProblem
+            The problem.
+        """
         myEvent = problem.getEvent()
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
