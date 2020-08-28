@@ -167,306 +167,276 @@ def ReliabilityBenchmarkProblemList():
     return problemslist
 
 
-class OTReliabilityAlgorithmBenchmark:
-    def FORM(
-        problem,
-        nearestPointAlgo="AbdoRackwitz",
-        maximumEvaluationNumber=100,
-        maximumAbsoluteError=1.0e-3,
-        maximumRelativeError=1.0e-3,
-        maximumResidualError=1.0e-3,
-        maximumConstraintError=1.0e-3,
-    ):
-        """Runs the FORM algorithm and get the results."""
-        if nearestPointAlgo == "AbdoRackwitz":
-            nearestPointAlgorithm = ot.AbdoRackwitz()
-        elif nearestPointAlgo == "Cobyla":
-            nearestPointAlgorithm = ot.Cobyla()
-        elif nearestPointAlgo == "SQP":
-            nearestPointAlgorithm = ot.SQP()
-        else:
-            raise NameError(
-                "Nearest point algorithm name must be \
-                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
-            )
-        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
-        nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
-        nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
-        nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
-        nearestPointAlgorithm.setMaximumConstraintError(maximumConstraintError)
-        algo = otb.FORM(problem, nearestPointAlgorithm)
-        event = problem.getEvent()
+class ReliabilityBenchmarkMetaAlgorithm:
+    def __init__(self, problem):
+        """
+        Create a meta-algorithm to solve a reliability problem.
+
+
+        Parameters
+        ----------
+        problem : ot.ReliabilityBenchmarkProblem
+            The problem.
+        """
+        #
+        self.problem = problem
+        return None
+
+    def runFORM(self, nearestPointAlgorithm):
+        """
+        Runs the FORM algorithm and get the results.
+
+        Parameters
+        ----------
+        nearestPointAlgorithm : ot.OptimizationAlgorithm
+            Optimization algorithm used to search the design point.
+
+        Returns
+        -------
+        result : ReliabilityBenchmarkResult
+            The problem result.
+        """
+        algo = otb.FORM(self.problem, nearestPointAlgorithm)
+        event = self.problem.getEvent()
         g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algo.run()
-        resultFORM = algo.getResult()
-        numberOfFunctionEvaluationsFORM = (
-            g.getEvaluationCallsNumber() - initialNumberOfCall
+        try:
+            algo.run()
+            resultFORM = algo.getResult()
+            computedProbability = resultFORM.getEventProbability()
+        except RuntimeError:
+            computedProbability = 0.0
+        numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
+        pfReference = self.problem.getProbability()
+        result = ReliabilityBenchmarkResult(
+            pfReference, computedProbability, numberOfFunctionEvaluations
         )
-        computedProbability = resultFORM.getEventProbability()
-        pfReference = problem.getProbability()
-        absoluteError = abs(computedProbability - pfReference)
-        numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            pfReference, computedProbability
-        )
+        return result
 
-        return [
-            computedProbability,
-            absoluteError,
-            numberOfCorrectDigits,
-            numberOfFunctionEvaluationsFORM,
-        ]
+    def runSORM(self, nearestPointAlgorithm):
+        """
+        Runs the SORM algorithm and get the results.
 
-    def printResultFORM(benchmarkFORM):
-        s = (
-            "computedProbability = %s  "
-            "absoluteError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (benchmarkFORM[0], benchmarkFORM[1], benchmarkFORM[2], benchmarkFORM[3],)
-        return s
+        Parameters
+        ----------
+        nearestPointAlgorithm : ot.OptimizationAlgorithm
+            Optimization algorithm used to search the design point.
 
-    def SORM(
-        problem,
-        nearestPointAlgo="AbdoRackwitz",
-        maximumEvaluationNumber=100,
-        maximumAbsoluteError=1.0e-3,
-        maximumRelativeError=1.0e-3,
-        maximumResidualError=1.0e-3,
-        maximumConstraintError=1.0e-3,
-    ):
-        """Runs the SORM algorithm and get the results."""
-        event = problem.getEvent()
+        Returns
+        -------
+        result : ReliabilityBenchmarkResult
+            The problem result.
+        """
+        event = self.problem.getEvent()
         g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        if nearestPointAlgo == "AbdoRackwitz":
-            nearestPointAlgorithm = ot.AbdoRackwitz()
-        elif nearestPointAlgo == "Cobyla":
-            nearestPointAlgorithm = ot.Cobyla()
-        elif nearestPointAlgo == "SQP":
-            nearestPointAlgorithm = ot.SQP()
-        else:
-            raise NameError(
-                "Nearest point algorithm name must be \
-                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
-            )
-        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
-        nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
-        nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
-        nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
-        nearestPointAlgorithm.setMaximumConstraintError(maximumConstraintError)
-        algo = otb.SORM(problem, nearestPointAlgorithm)
-        algo.run()
-        resultSORM = algo.getResult()
-        numberOfFunctionEvaluationsSORM = (
-            g.getEvaluationCallsNumber() - initialNumberOfCall
+        algo = otb.SORM(self.problem, nearestPointAlgorithm)
+        try:
+            algo.run()
+            resultSORM = algo.getResult()
+            computedProbability = resultSORM.getEventProbabilityBreitung()
+        except RuntimeError:
+            computedProbability = 0.0
+        numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
+        pfReference = self.problem.getProbability()
+        result = ReliabilityBenchmarkResult(
+            pfReference, computedProbability, numberOfFunctionEvaluations
         )
-        computedProbability = resultSORM.getEventProbabilityBreitung()
-        pfReference = problem.getProbability()
-        absoluteError = abs(computedProbability - pfReference)
-        numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            pfReference, computedProbability
-        )
-        return [
-            computedProbability,
-            absoluteError,
-            numberOfCorrectDigits,
-            numberOfFunctionEvaluationsSORM,
-        ]
+        return result
 
-    def printResultSORM(benchmarkSORM):
-        s = (
-            "computedProbability = %s  "
-            "absoluteError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (benchmarkSORM[0], benchmarkSORM[1], benchmarkSORM[2], benchmarkSORM[3],)
-        return s
-
-    def MonteCarloSampling(
-        problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
+    def runMonteCarlo(
+        self, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
     ):
         """
         Runs the ProbabilitySimulationAlgorithm with Monte-Carlo experiment
         algorithm and get results.
+
+        Parameters
+        ----------
+        maximumOuterSampling : int
+            The maximum number of outer iterations.
+        coefficientOfVariation : float
+            The maximum coefficient of variation.
+        blockSize : int
+            The number of inner iterations.
+
+        Returns
+        -------
+        result : ReliabilityBenchmarkResult
+            The problem result.
         """
-        event = problem.getEvent()
+        event = self.problem.getEvent()
         g = event.getFunction()
         factory = otb.ProbabilitySimulationAlgorithmFactory()
-        algo = factory.buildMonteCarlo(problem)
+        algo = factory.buildMonteCarlo(self.problem)
         algo.setMaximumOuterSampling(maximumOuterSampling)
         algo.setBlockSize(blockSize)
         algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         algo.run()
         resultMC = algo.getResult()
-        numberOfFunctionEvaluationsMonteCarlo = (
-            g.getEvaluationCallsNumber() - initialNumberOfCall
-        )
-        graph = algo.drawProbabilityConvergence()
+        numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
         computedProbability = resultMC.getProbabilityEstimate()
-        pfReference = problem.getProbability()
-        absoluteError = abs(computedProbability - pfReference)
-        numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            pfReference, computedProbability
+        pfReference = self.problem.getProbability()
+        result = ReliabilityBenchmarkResult(
+            pfReference, computedProbability, numberOfFunctionEvaluations
         )
-        return [
-            computedProbability,
-            absoluteError,
-            numberOfCorrectDigits,
-            numberOfFunctionEvaluationsMonteCarlo,
-            graph,
-        ]
+        return result
 
-    def printResultMC(benchmarkMC):
-        s = (
-            "computedProbability = %s  "
-            "absoluteError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (benchmarkMC[0], benchmarkMC[1], benchmarkMC[2], benchmarkMC[3],)
-        return s
-
-    def FORMImportanceSampling(
-        problem,
-        nearestPointAlgo="AbdoRackwitz",
-        maximumEvaluationNumber=100,
-        maximumAbsoluteError=1.0e-3,
-        maximumRelativeError=1.0e-3,
-        maximumResidualError=1.0e-3,
-        maximumConstraintError=1.0e-3,
-        maximumOuterSampling=5000,
+    def runFORMImportanceSampling(
+        self,
+        nearestPointAlgorithm,
+        maximumOuterSampling=1000,
         coefficientOfVariation=0.1,
     ):
         """
         Runs the Importance Sampling method with FORM importance
         distribution and get the number of function evaluations.
+
+        Parameters
+        ----------
+        nearestPointAlgorithm : ot.OptimizationAlgorithm
+            Optimization algorithm used to search the design point.
+        maximumOuterSampling : int
+            The maximum number of outer iterations.
+        coefficientOfVariation : float
+            The maximum coefficient of variation.
+
+        Returns
+        -------
+        result : ReliabilityBenchmarkResult
+            The problem result.
         """
-        if nearestPointAlgo == "AbdoRackwitz":
-            nearestPointAlgorithm = ot.AbdoRackwitz()
-        elif nearestPointAlgo == "Cobyla":
-            nearestPointAlgorithm = ot.Cobyla()
-        elif nearestPointAlgo == "SQP":
-            nearestPointAlgorithm = ot.SQP()
-        else:
-            raise NameError(
-                "Nearest point algorithm name must be \
-                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
-            )
-        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
-        nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
-        nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
-        nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
-        nearestPointAlgorithm.setMaximumConstraintError(maximumConstraintError)
         factory = otb.ProbabilitySimulationAlgorithmFactory()
-        algo = factory.buildFORMIS(problem, nearestPointAlgorithm)
-        event = problem.getEvent()
+        event = self.problem.getEvent()
         g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
-        algo.setMaximumOuterSampling(maximumOuterSampling)
-        algo.setConvergenceStrategy(ot.Full())
-        algo.run()
-        result = algo.getResult()
-        graph = algo.drawProbabilityConvergence()
-        numberOfFunctionEvaluationsFORMIS = (
-            g.getEvaluationCallsNumber() - initialNumberOfCall
+        try:
+            algo = factory.buildFORMIS(self.problem, nearestPointAlgorithm)
+            algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
+            algo.setMaximumOuterSampling(maximumOuterSampling)
+            algo.setConvergenceStrategy(ot.Full())
+            algo.run()
+            result = algo.getResult()
+            computedProbability = result.getProbabilityEstimate()
+        except RuntimeError:
+            computedProbability = 0.0
+        numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
+        pfReference = self.problem.getProbability()
+        result = ReliabilityBenchmarkResult(
+            pfReference, computedProbability, numberOfFunctionEvaluations
         )
-        computedProbability = result.getProbabilityEstimate()
-        pfReference = problem.getProbability()
-        absoluteError = abs(computedProbability - pfReference)
-        numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            pfReference, computedProbability
-        )
+        return result
 
-        return [
-            computedProbability,
-            absoluteError,
-            numberOfCorrectDigits,
-            numberOfFunctionEvaluationsFORMIS,
-            graph,
-        ]
-
-    def printResultFORMIS(benchmarFORMIS):
-        s = (
-            "computedProbability = %s  "
-            "absoluteError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (
-            benchmarFORMIS[0],
-            benchmarFORMIS[1],
-            benchmarFORMIS[2],
-            benchmarFORMIS[3],
-        )
-        return s
-
-    def SubsetSampling(
-        problem, maximumOuterSampling=5000, coefficientOfVariation=0.1, blockSize=1
+    def runSubsetSampling(
+        self, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
     ):
         """
         Runs the Subset method and get the results.
+
+        Parameters
+        ----------
+        maximumOuterSampling : int
+            The maximum number of outer iterations.
+        coefficientOfVariation : float
+            The maximum coefficient of variation.
+        blockSize : int
+            The number of inner iterations.
+
+        Returns
+        -------
+        result : ReliabilityBenchmarkResult
+            The problem result.
         """
-        event = problem.getEvent()
+        event = self.problem.getEvent()
         g = event.getFunction()
-        algo = otb.SubsetSampling(problem)
+        algo = otb.SubsetSampling(self.problem)
         algo.setMaximumOuterSampling(maximumOuterSampling)
         algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
         algo.setBlockSize(blockSize)
         initialNumberOfCall = g.getEvaluationCallsNumber()
         algo.run()
-        graph = algo.drawProbabilityConvergence()
         resultSS = algo.getResult()
         computedProbability = resultSS.getProbabilityEstimate()
-        pfReference = problem.getProbability()
-        absoluteError = abs(computedProbability - pfReference)
-        numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            pfReference, computedProbability
+        pfReference = self.problem.getProbability()
+        numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
+        result = ReliabilityBenchmarkResult(
+            pfReference, computedProbability, numberOfFunctionEvaluations
         )
-        numberOfFunctionEvaluationsSS = (
-            g.getEvaluationCallsNumber() - initialNumberOfCall
-        )
-        return [
-            computedProbability,
-            absoluteError,
-            numberOfCorrectDigits,
-            numberOfFunctionEvaluationsSS,
-            graph,
-        ]
+        return result
 
-    def printResultSubset(benchmarkSS):
-        s = (
-            "computedProbability = %s  "
-            "absoluteError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
-        ) % (benchmarkSS[0], benchmarkSS[1], benchmarkSS[2], benchmarkSS[3],)
-        return s
-
-    def LHS(
-        problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
+    def runLHS(
+        self, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
     ):
-        """Runs the LHS algorithm and get the results."""
-        event = problem.getEvent()
+        """
+        Runs the LHS algorithm and get the results.
+
+        Parameters
+        ----------
+        maximumOuterSampling : int
+            The maximum number of outer iterations.
+        coefficientOfVariation : float
+            The maximum coefficient of variation.
+        blockSize : int
+            The number of inner iterations.
+
+        Returns
+        -------
+        result : ReliabilityBenchmarkResult
+            The problem result.
+        """
+        event = self.problem.getEvent()
         g = event.getFunction()
-        algo = otb.LHS(problem)
+        algo = otb.LHS(self.problem)
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algo.setMaximumCoefficientOfVariation(0.05)
-        algo.setMaximumOuterSampling(int(1.0e5))
+        algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
+        algo.setMaximumOuterSampling(maximumOuterSampling)
         algo.run()
         numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
         result = algo.getResult()
-        graph = algo.drawProbabilityConvergence()
         computedProbability = result.getProbabilityEstimate()
-        pfReference = problem.getProbability()
-        absoluteError = abs(computedProbability - pfReference)
-        numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            pfReference, computedProbability
+        pfReference = self.problem.getProbability()
+        result = ReliabilityBenchmarkResult(
+            pfReference, computedProbability, numberOfFunctionEvaluations
         )
-        return [
-            computedProbability,
-            absoluteError,
-            numberOfCorrectDigits,
-            numberOfFunctionEvaluations,
-            graph,
-        ]
+        return result
+
+
+class ReliabilityBenchmarkResult:
+    def __init__(
+        self, exactProbability, computedProbability, numberOfFunctionEvaluations
+    ):
+        """
+        Create a benchmark result for a reliability problem.
+        """
+        self.computedProbability = computedProbability
+        self.exactProbability = exactProbability
+        absoluteError = abs(computedProbability - exactProbability)
+        self.absoluteError = absoluteError
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
+            exactProbability, computedProbability
+        )
+        self.numberOfCorrectDigits = numberOfCorrectDigits
+        self.numberOfFunctionEvaluations = numberOfFunctionEvaluations
+        self.numberOfDigitsPerEvaluation = (
+            self.numberOfCorrectDigits / self.numberOfFunctionEvaluations
+        )
+        return None
+
+    def summary(self):
+        s = (
+            "computedProbability = %s  "
+            "exactProbability = %s  "
+            "absoluteError = %s "
+            "numberOfCorrectDigits = %s "
+            "numberOfFunctionEvaluations = %s"
+            "numberOfDigitsPerEvaluation = %s"
+        ) % (
+            self.computedProbability,
+            self.exactProbability,
+            self.absoluteError,
+            self.numberOfCorrectDigits,
+            self.numberOfFunctionEvaluations,
+            self.numberOfDigitsPerEvaluation,
+        )
+        return s

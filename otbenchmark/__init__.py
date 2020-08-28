@@ -28,7 +28,8 @@ from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
-from .OTReliabilityAlgorithmBenchmark import OTReliabilityAlgorithmBenchmark
+from .OTReliabilityAlgorithmBenchmark import ReliabilityBenchmarkMetaAlgorithm
+from .OTReliabilityAlgorithmBenchmark import ReliabilityBenchmarkResult
 from .OTReliabilityAlgorithmBenchmark import ComputeLogRelativeError
 from .OTReliabilityAlgorithmBenchmark import ComputeAbsoluteError
 from .OTReliabilityAlgorithmBenchmark import ComputeRelativeError
@@ -82,7 +83,6 @@ __all__ = [
     "FORM",
     "SORM",
     "SubsetSampling",
-    "OTReliabilityAlgorithmBenchmark",
     "ComputeLogRelativeError",
     "ComputeAbsoluteError",
     "ComputeRelativeError",
@@ -96,5 +96,7 @@ __all__ = [
     "CrossCutDistribution",
     "ProbabilitySimulationAlgorithmFactory",
     "LHS",
+    "ReliabilityBenchmarkMetaAlgorithm",
+    "ReliabilityBenchmarkResult",
 ]
 __version__ = "1.0"
