@@ -101,65 +101,73 @@ def ComputeRelativeError(exact, computed):
     return relativeError
 
 
-class OTReliabilityAlgorithmBenchmark:
-    def __init__(self):
-        p8 = otb.ReliabilityProblem8()
-        p14 = otb.ReliabilityProblem14()
-        p22 = otb.ReliabilityProblem22()
-        p24 = otb.ReliabilityProblem24()
-        p25 = otb.ReliabilityProblem25()
-        p28 = otb.ReliabilityProblem28()
-        p31 = otb.ReliabilityProblem31()
-        p33 = otb.ReliabilityProblem33()
-        p35 = otb.ReliabilityProblem35()
-        p38 = otb.ReliabilityProblem38()
-        p53 = otb.ReliabilityProblem53()
-        p55 = otb.ReliabilityProblem55()
-        p54 = otb.ReliabilityProblem54()
-        p57 = otb.ReliabilityProblem57()
-        p75 = otb.ReliabilityProblem75()
-        p89 = otb.ReliabilityProblem89()
-        p107 = otb.ReliabilityProblem107()
-        p110 = otb.ReliabilityProblem110()
-        p111 = otb.ReliabilityProblem111()
-        p63 = otb.ReliabilityProblem63()
-        p91 = otb.ReliabilityProblem91()
-        p60 = otb.ReliabilityProblem60()
-        p77 = otb.ReliabilityProblem77()
-        pFBS = otb.FourBranchSerialSystemReliability()
-        pRS = otb.RminusSReliability()
-        pBeam = otb.AxialStressedBeamReliability()
-        listProblems = [
-            p8,
-            p14,
-            p22,
-            p24,
-            p25,
-            p28,
-            p31,
-            p33,
-            p35,
-            p38,
-            p53,
-            p55,
-            p54,
-            p57,
-            p75,
-            p89,
-            p107,
-            p110,
-            p111,
-            p63,
-            p91,
-            p60,
-            p77,
-            pFBS,
-            pRS,
-            pBeam,
-        ]
-        self.problemslist = listProblems
-        return None
+def ReliabilityBenchmarkProblemList():
+    """
+    Returns the list of reliability benchmark problems.
 
+    Returns
+    -------
+    problemslist : list
+        A list of ReliabilityProblem.
+    """
+    p8 = otb.ReliabilityProblem8()
+    p14 = otb.ReliabilityProblem14()
+    p22 = otb.ReliabilityProblem22()
+    p24 = otb.ReliabilityProblem24()
+    p25 = otb.ReliabilityProblem25()
+    p28 = otb.ReliabilityProblem28()
+    p31 = otb.ReliabilityProblem31()
+    p33 = otb.ReliabilityProblem33()
+    p35 = otb.ReliabilityProblem35()
+    p38 = otb.ReliabilityProblem38()
+    p53 = otb.ReliabilityProblem53()
+    p55 = otb.ReliabilityProblem55()
+    p54 = otb.ReliabilityProblem54()
+    p57 = otb.ReliabilityProblem57()
+    p75 = otb.ReliabilityProblem75()
+    p89 = otb.ReliabilityProblem89()
+    p107 = otb.ReliabilityProblem107()
+    p110 = otb.ReliabilityProblem110()
+    p111 = otb.ReliabilityProblem111()
+    p63 = otb.ReliabilityProblem63()
+    p91 = otb.ReliabilityProblem91()
+    p60 = otb.ReliabilityProblem60()
+    p77 = otb.ReliabilityProblem77()
+    pFBS = otb.FourBranchSerialSystemReliability()
+    pRS = otb.RminusSReliability()
+    pBeam = otb.AxialStressedBeamReliability()
+    problemslist = [
+        p8,
+        p14,
+        p22,
+        p24,
+        p25,
+        p28,
+        p31,
+        p33,
+        p35,
+        p38,
+        p53,
+        p55,
+        p54,
+        p57,
+        p75,
+        p89,
+        p107,
+        p110,
+        p111,
+        p63,
+        p91,
+        p60,
+        p77,
+        pFBS,
+        pRS,
+        pBeam,
+    ]
+    return problemslist
+
+
+class OTReliabilityAlgorithmBenchmark:
     def FORM(
         problem,
         nearestPointAlgo="AbdoRackwitz",
@@ -170,15 +178,23 @@ class OTReliabilityAlgorithmBenchmark:
         maximumConstraintError=1.0e-3,
     ):
         """Runs the FORM algorithm and get the results."""
-        algo = otb.FORMFactory(
-            problem,
-            nearestPointAlgo,
-            maximumEvaluationNumber,
-            maximumAbsoluteError,
-            maximumRelativeError,
-            maximumResidualError,
-            maximumConstraintError,
-        )
+        if nearestPointAlgo == "AbdoRackwitz":
+            nearestPointAlgorithm = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            nearestPointAlgorithm = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            nearestPointAlgorithm = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
+        nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
+        nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
+        nearestPointAlgorithm.setMaximumConstraintError(maximumConstraintError)
+        algo = otb.FORM(problem, nearestPointAlgorithm)
         event = problem.getEvent()
         g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
@@ -223,15 +239,23 @@ class OTReliabilityAlgorithmBenchmark:
         event = problem.getEvent()
         g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algo = otb.SORMFactory(
-            problem,
-            nearestPointAlgo,
-            maximumEvaluationNumber,
-            maximumAbsoluteError,
-            maximumRelativeError,
-            maximumResidualError,
-            maximumConstraintError,
-        )
+        if nearestPointAlgo == "AbdoRackwitz":
+            nearestPointAlgorithm = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            nearestPointAlgorithm = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            nearestPointAlgorithm = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
+        nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
+        nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
+        nearestPointAlgorithm.setMaximumConstraintError(maximumConstraintError)
+        algo = otb.SORM(problem, nearestPointAlgorithm)
         algo.run()
         resultSORM = algo.getResult()
         numberOfFunctionEvaluationsSORM = (
@@ -268,7 +292,8 @@ class OTReliabilityAlgorithmBenchmark:
         """
         event = problem.getEvent()
         g = event.getFunction()
-        algo = otb.MonteCarloFactory(problem)
+        factory = otb.ProbabilitySimulationAlgorithmFactory()
+        algo = factory.buildMonteCarlo(problem)
         algo.setMaximumOuterSampling(maximumOuterSampling)
         algo.setBlockSize(blockSize)
         algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
@@ -317,15 +342,24 @@ class OTReliabilityAlgorithmBenchmark:
         Runs the Importance Sampling method with FORM importance
         distribution and get the number of function evaluations.
         """
-        algo = otb.FORMISFactory(
-            problem,
-            nearestPointAlgo,
-            maximumEvaluationNumber,
-            maximumAbsoluteError,
-            maximumRelativeError,
-            maximumResidualError,
-            maximumConstraintError,
-        )
+        if nearestPointAlgo == "AbdoRackwitz":
+            nearestPointAlgorithm = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            nearestPointAlgorithm = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            nearestPointAlgorithm = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
+        nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
+        nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
+        nearestPointAlgorithm.setMaximumConstraintError(maximumConstraintError)
+        factory = otb.ProbabilitySimulationAlgorithmFactory()
+        algo = factory.buildFORMIS(problem, nearestPointAlgorithm)
         event = problem.getEvent()
         g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
@@ -370,28 +404,33 @@ class OTReliabilityAlgorithmBenchmark:
     def SubsetSampling(
         problem, maximumOuterSampling=5000, coefficientOfVariation=0.1, blockSize=1
     ):
-        myEvent = problem.getEvent()
-        g = problem.getEvent().getFunction()
-        mySS = ot.SubsetSampling(myEvent)
-        mySS.setMaximumOuterSampling(maximumOuterSampling)
-
-        mySS.setMaximumCoefficientOfVariation(coefficientOfVariation)
-        mySS.setBlockSize(blockSize)
+        """
+        Runs the Subset method and get the results.
+        """
+        event = problem.getEvent()
+        g = event.getFunction()
+        algo = otb.SubsetSampling(problem)
+        algo.setMaximumOuterSampling(maximumOuterSampling)
+        algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
+        algo.setBlockSize(blockSize)
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        mySS.run()
-        graph = mySS.drawProbabilityConvergence()
-        resultSS = mySS.getResult()
+        algo.run()
+        graph = algo.drawProbabilityConvergence()
+        resultSS = algo.getResult()
         computedProbability = resultSS.getProbabilityEstimate()
-        absoluteError = abs(computedProbability - problem.getProbability())
+        pfReference = problem.getProbability()
+        absoluteError = abs(computedProbability - pfReference)
         numberOfCorrectDigits = otb.ComputeLogRelativeError(
-            problem.getProbability(), computedProbability
+            pfReference, computedProbability
         )
-        numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
+        numberOfFunctionEvaluationsSS = (
+            g.getEvaluationCallsNumber() - initialNumberOfCall
+        )
         return [
             computedProbability,
             absoluteError,
             numberOfCorrectDigits,
-            numberOfFunctionSS,
+            numberOfFunctionEvaluationsSS,
             graph,
         ]
 
@@ -403,3 +442,31 @@ class OTReliabilityAlgorithmBenchmark:
             "numberOfFunctionEvaluations = %s"
         ) % (benchmarkSS[0], benchmarkSS[1], benchmarkSS[2], benchmarkSS[3],)
         return s
+
+    def LHS(
+        problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
+    ):
+        """Runs the LHS algorithm and get the results."""
+        event = problem.getEvent()
+        g = event.getFunction()
+        algo = otb.LHS(problem)
+        initialNumberOfCall = g.getEvaluationCallsNumber()
+        algo.setMaximumCoefficientOfVariation(0.05)
+        algo.setMaximumOuterSampling(int(1.0e5))
+        algo.run()
+        numberOfFunctionEvaluations = g.getEvaluationCallsNumber() - initialNumberOfCall
+        result = algo.getResult()
+        graph = algo.drawProbabilityConvergence()
+        computedProbability = result.getProbabilityEstimate()
+        pfReference = problem.getProbability()
+        absoluteError = abs(computedProbability - pfReference)
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
+            pfReference, computedProbability
+        )
+        return [
+            computedProbability,
+            absoluteError,
+            numberOfCorrectDigits,
+            numberOfFunctionEvaluations,
+            graph,
+        ]

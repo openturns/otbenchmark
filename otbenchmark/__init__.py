@@ -32,10 +32,10 @@ from .OTReliabilityAlgorithmBenchmark import OTReliabilityAlgorithmBenchmark
 from .OTReliabilityAlgorithmBenchmark import ComputeLogRelativeError
 from .OTReliabilityAlgorithmBenchmark import ComputeAbsoluteError
 from .OTReliabilityAlgorithmBenchmark import ComputeRelativeError
-from .FORMFactory import FORMFactory
-from .SORMFactory import SORMFactory
-from .FORMISFactory import FORMISFactory
-from .MonteCarloFactory import MonteCarloFactory
+from .OTReliabilityAlgorithmBenchmark import ReliabilityBenchmarkProblemList
+from .FORM import FORM
+from .SORM import SORM
+from .SubsetSampling import SubsetSampling
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 from .GaussianSumSensitivity import GaussianSumSensitivity
 from .GaussianProductSensitivity import GaussianProductSensitivity
@@ -43,6 +43,8 @@ from .GSobolSensitivity import GSobolSensitivity
 from .ConditionalDistribution import ConditionalDistribution
 from .CrossCutFunction import CrossCutFunction
 from .CrossCutDistribution import CrossCutDistribution
+from .ProbabilitySimulationAlgorithmFactory import ProbabilitySimulationAlgorithmFactory
+from .LHS import LHS
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -77,14 +79,14 @@ __all__ = [
     "ReliabilityProblem63",
     "ReliabilityProblem60",
     "ReliabilityProblem77",
-    "FORMFactory",
-    "SORMFactory",
-    "FORMISFactory",
-    "MonteCarloFactory",
+    "FORM",
+    "SORM",
+    "SubsetSampling",
     "OTReliabilityAlgorithmBenchmark",
     "ComputeLogRelativeError",
     "ComputeAbsoluteError",
     "ComputeRelativeError",
+    "ReliabilityBenchmarkProblemList",
     "FourBranchSerialSystemReliability",
     "GaussianSumSensitivity",
     "GaussianProductSensitivity",
@@ -92,5 +94,7 @@ __all__ = [
     "ConditionalDistribution",
     "CrossCutFunction",
     "CrossCutDistribution",
+    "ProbabilitySimulationAlgorithmFactory",
+    "LHS",
 ]
 __version__ = "1.0"

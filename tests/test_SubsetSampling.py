@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Test for FORMISFactory class.
+Test for SORMFactory class.
 """
 import otbenchmark as otb
 import unittest
 import numpy as np
 
 
-class CheckFORMISFactory(unittest.TestCase):
-    def test_FORMISFactory(self):
+class CheckSubsetSampling(unittest.TestCase):
+    def test_SubsetSampling(self):
         problem = otb.ReliabilityProblem14()
-        algo = otb.FORMISFactory(problem)
+        algo = otb.SubsetSampling(problem)
         algo.run()
         result = algo.getResult()
         pf = result.getProbabilityEstimate()

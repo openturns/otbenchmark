@@ -5,12 +5,14 @@ Test for SORMFactory class.
 import otbenchmark as otb
 import unittest
 import numpy as np
+import openturns as ot
 
 
-class CheckSORMFactory(unittest.TestCase):
-    def test_SORMFactory(self):
+class CheckSORM(unittest.TestCase):
+    def test_SORM(self):
         problem = otb.ReliabilityProblem14()
-        algo = otb.SORMFactory(problem)
+        nearestPointAlgorithm = ot.AbdoRackwitz()
+        algo = otb.SORM(problem, nearestPointAlgorithm)
         algo.run()
         result = algo.getResult()
         pf = result.getEventProbabilityBreitung()
