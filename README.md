@@ -7,3 +7,10 @@ The goal of this project is to provide benchmark classes for OpenTURNS.
 It provides an interface for the test cases provided in the RPRepo :
 
 https://rprepo.readthedocs.io/en/latest/
+
+## Authors
+
+Michaël Baudin
+Youssef Jebroun
+Elias Fekhari
+Vincent Chabridon

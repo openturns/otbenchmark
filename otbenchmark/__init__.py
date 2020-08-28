@@ -28,6 +28,17 @@ from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
+from .OTReliabilityAlgorithmBenchmark import ComputeLogRelativeError
+from .OTReliabilityAlgorithmBenchmark import ComputeAbsoluteError
+from .OTReliabilityAlgorithmBenchmark import ComputeRelativeError
+from .OTReliabilityAlgorithmBenchmark import ReliabilityBenchmarkProblemList
+from .FORM import FORM
+from .SORM import SORM
+from .SubsetSampling import SubsetSampling
+from .ProbabilitySimulationAlgorithmFactory import ProbabilitySimulationAlgorithmFactory
+from .LHS import LHS
+from .ReliabilityBenchmarkMetaAlgorithm import ReliabilityBenchmarkMetaAlgorithm
+from .ReliabilityBenchmarkResult import ReliabilityBenchmarkResult
 from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
 from .GaussianSumSensitivity import GaussianSumSensitivity
 from .GaussianProductSensitivity import GaussianProductSensitivity
@@ -69,6 +80,13 @@ __all__ = [
     "ReliabilityProblem63",
     "ReliabilityProblem60",
     "ReliabilityProblem77",
+    "FORM",
+    "SORM",
+    "SubsetSampling",
+    "ComputeLogRelativeError",
+    "ComputeAbsoluteError",
+    "ComputeRelativeError",
+    "ReliabilityBenchmarkProblemList",
     "FourBranchSerialSystemReliability",
     "GaussianSumSensitivity",
     "GaussianProductSensitivity",
@@ -76,5 +94,9 @@ __all__ = [
     "ConditionalDistribution",
     "CrossCutFunction",
     "CrossCutDistribution",
+    "ProbabilitySimulationAlgorithmFactory",
+    "LHS",
+    "ReliabilityBenchmarkMetaAlgorithm",
+    "ReliabilityBenchmarkResult",
 ]
 __version__ = "1.0"
