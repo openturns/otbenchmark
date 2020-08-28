@@ -13,6 +13,21 @@ class ReliabilityBenchmarkProblem:
         """
         Create a reliability problem.
 
+        The essential information is the exact probability.
+        This should be as accurate as possible.
+        The best possible accuracy for a Python float is 53 significant
+        (binary) bits, which approximately corresponds to 15-17 decimal digits.
+        If this accuracy is not available, then a reference value may be used,
+        for example from a large Monte-Carlo sample.
+
+        In general, the exact probability should be a constant value,
+        e.g. 0.123456789.
+        However, we may be forced to compute this probability at the creation
+        of the problem, for example if the threshold of the problem
+        can be set at the creation of the object.
+        In this case, the unit test must check that the default value of the
+        parameters correspond to a reference, constant, value.
+
         Parameters
         ----------
         name : str
