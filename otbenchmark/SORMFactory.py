@@ -9,7 +9,16 @@ import openturns as ot
 
 
 class SORMFactory(ot.SORM):
-    def __init__(self, problem):
+    def __init__(
+        self,
+        problem,
+        nearestPointAlgo="AbdoRackwitz",
+        maximumEvaluationNumber=100,
+        maximumAbsoluteError=1.0e-3,
+        maximumRelativeError=1.0e-3,
+        maximumResidualError=1.0e-3,
+        maximumConstraintError=1.0e-3,
+    ):
         """
         Creates a SORM algorithm.
 
@@ -24,7 +33,22 @@ class SORMFactory(ot.SORM):
         myEvent = problem.getEvent()
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
-        solver = ot.AbdoRackwitz()
+        if nearestPointAlgo == "AbdoRackwitz":
+            solver = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            solver = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            solver = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        solver.setMaximumAbsoluteError(maximumAbsoluteError)
+        solver.setMaximumRelativeError(maximumRelativeError)
+        solver.setMaximumResidualError(maximumResidualError)
+        solver.setMaximumConstraintError(maximumConstraintError)
         physicalStartingPoint = myDistribution.getMean()
         super(SORMFactory, self).__init__(solver, myEvent, physicalStartingPoint)
         return None

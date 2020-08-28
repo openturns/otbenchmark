@@ -9,7 +9,16 @@ import openturns as ot
 
 
 class FORMISFactory(ot.ProbabilitySimulationAlgorithm):
-    def __init__(self, problem):
+    def __init__(
+        self,
+        problem,
+        nearestPointAlgo="AbdoRackwitz",
+        maximumEvaluationNumber=100,
+        maximumAbsoluteError=1.0e-3,
+        maximumRelativeError=1.0e-3,
+        maximumResidualError=1.0e-3,
+        maximumConstraintError=1.0e-3,
+    ):
         """
         Creates a FORM-IS algorithm.
 
@@ -27,7 +36,22 @@ class FORMISFactory(ot.ProbabilitySimulationAlgorithm):
         myEvent = problem.getEvent()
         inputVector = myEvent.getAntecedent()
         myDistribution = inputVector.getDistribution()
-        solver = ot.AbdoRackwitz()
+        if nearestPointAlgo == "AbdoRackwitz":
+            solver = ot.AbdoRackwitz()
+        elif nearestPointAlgo == "Cobyla":
+            solver = ot.Cobyla()
+        elif nearestPointAlgo == "SQP":
+            solver = ot.SQP()
+        else:
+            raise NameError(
+                "Nearest point algorithm name must be \
+                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
+            )
+        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        solver.setMaximumAbsoluteError(maximumAbsoluteError)
+        solver.setMaximumRelativeError(maximumRelativeError)
+        solver.setMaximumResidualError(maximumResidualError)
+        solver.setMaximumConstraintError(maximumConstraintError)
         physicalStartingPoint = myDistribution.getMean()
         algoFORM = ot.FORM(solver, myEvent, physicalStartingPoint)
         algoFORM.run()

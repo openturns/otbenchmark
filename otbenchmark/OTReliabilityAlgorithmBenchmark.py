@@ -13,9 +13,92 @@ Static methods to create a list of all reliability problems.
 """
 
 
-def computeLogRelativeError(exact, computed):
-    logRelativeError = -np.log10(abs(exact - computed) / abs(exact))
+def ComputeLogRelativeError(exact, computed, basis=10.0):
+    """
+    Compute the log-relative error between exact and computed.
+
+    The log-relative error (LRE) is defined by:
+
+        LRE = -logB(relativeError)
+
+    where relativeError is the relative error:
+
+        relativeError = abs(exact - computed) / abs(exact)
+
+    and logB is the base-b logarithm:
+
+        logB(x) = log(x) / log(basis)
+
+    where log is the natural logarithm.
+    This assumes that exact is different from zero.
+
+    The LRE is the number of base-B common digits in exact and computed.
+
+    Parameters
+    ----------
+    exact: float
+        The exact value.
+    computed: float
+        The computed value.
+
+    Returns
+    -------
+    logRelativeError: float
+        The LRE.
+    """
+    relativeError = abs(exact - computed) / abs(exact)
+    logRelativeError = -np.log(relativeError) / np.log(basis)
     return logRelativeError
+
+
+def ComputeAbsoluteError(exact, computed):
+    """
+    Compute absolute error between exact and computed.
+
+    The absolute error is defined by:
+
+        absoluteError = abs(exact - computed).
+
+    Parameters
+    ----------
+    exact: float
+        The exact value.
+    computed: float
+        The computed value.
+
+    Returns
+    -------
+    absoluteError: float
+        The absolute error.
+    """
+    absoluteError = abs(exact - computed)
+    return absoluteError
+
+
+def ComputeRelativeError(exact, computed):
+    """
+    Compute relative error between exact and computed.
+
+    The relative error is defined by:
+
+        relativeError = abs(exact - computed) / abs(exact)
+
+    if exact is different from zero.
+
+    Parameters
+    ----------
+    exact: float
+        The exact value.
+    computed: float
+        The computed value.
+
+    Returns
+    -------
+    relativeError: float
+        The relative error.
+    """
+    relativeError = abs(exact - computed) / abs(exact)
+    return relativeError
 
 
 class OTReliabilityAlgorithmBenchmark:
@@ -86,39 +169,29 @@ class OTReliabilityAlgorithmBenchmark:
         maximumResidualError=1.0e-3,
         maximumConstraintError=1.0e-3,
     ):
-
-        if nearestPointAlgo == "AbdoRackwitz":
-            solver = ot.AbdoRackwitz()
-        elif nearestPointAlgo == "Cobyla":
-            solver = ot.Cobyla()
-        elif nearestPointAlgo == "SQP":
-            solver = ot.SQP()
-        else:
-            raise NameError(
-                "Nearest point algorithm name must be \
-                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
-            )
-
-        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
-        solver.setMaximumAbsoluteError(maximumAbsoluteError)
-        solver.setMaximumRelativeError(maximumRelativeError)
-        solver.setMaximumResidualError(maximumResidualError)
-        solver.setMaximumConstraintError(maximumConstraintError)
-        myEvent = problem.getEvent()
-        inputVector = myEvent.getAntecedent()
-        myDistribution = inputVector.getDistribution()
-        g = problem.getEvent().getFunction()
+        """Runs the FORM algorithm and get the results."""
+        algo = otb.FORMFactory(
+            problem,
+            nearestPointAlgo,
+            maximumEvaluationNumber,
+            maximumAbsoluteError,
+            maximumRelativeError,
+            maximumResidualError,
+            maximumConstraintError,
+        )
+        event = problem.getEvent()
+        g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algoFORM = ot.FORM(solver, myEvent, myDistribution.getMean())
-        algoFORM.run()
-        resultFORM = algoFORM.getResult()
+        algo.run()
+        resultFORM = algo.getResult()
         numberOfFunctionEvaluationsFORM = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         computedProbability = resultFORM.getEventProbability()
-        absoluteError = abs(computedProbability - problem.getProbability())
-        numberOfCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), computedProbability
+        pfReference = problem.getProbability()
+        absoluteError = abs(computedProbability - pfReference)
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
+            pfReference, computedProbability
         )
 
         return [
@@ -128,13 +201,13 @@ class OTReliabilityAlgorithmBenchmark:
             numberOfFunctionEvaluationsFORM,
         ]
 
-    def printResultFORM(resultForm):
+    def printResultFORM(benchmarkFORM):
         s = (
             "computedProbability = %s  "
             "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
-        ) % (resultForm[0], resultForm[1], resultForm[2], resultForm[3],)
+        ) % (benchmarkFORM[0], benchmarkFORM[1], benchmarkFORM[2], benchmarkFORM[3],)
         return s
 
     def SORM(
@@ -146,39 +219,29 @@ class OTReliabilityAlgorithmBenchmark:
         maximumResidualError=1.0e-3,
         maximumConstraintError=1.0e-3,
     ):
-        if nearestPointAlgo == "AbdoRackwitz":
-            solver = ot.AbdoRackwitz()
-        elif nearestPointAlgo == "Cobyla":
-            solver = ot.Cobyla()
-        elif nearestPointAlgo == "SQP":
-            solver = ot.SQP()
-        else:
-            raise NameError(
-                "Nearest point algorithm name must be \
-                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
-            )
-
-        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
-        solver.setMaximumAbsoluteError(maximumAbsoluteError)
-        solver.setMaximumRelativeError(maximumRelativeError)
-        solver.setMaximumResidualError(maximumResidualError)
-        solver.setMaximumConstraintError(maximumConstraintError)
-
-        myEvent = problem.getEvent()
-        inputVector = myEvent.getAntecedent()
-        myDistribution = inputVector.getDistribution()
-        g = problem.getEvent().getFunction()
+        """Runs the SORM algorithm and get the results."""
+        event = problem.getEvent()
+        g = event.getFunction()
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        algoSORM = ot.SORM(solver, myEvent, myDistribution.getMean())
-        algoSORM.run()
-        resultSORM = algoSORM.getResult()
+        algo = otb.SORMFactory(
+            problem,
+            nearestPointAlgo,
+            maximumEvaluationNumber,
+            maximumAbsoluteError,
+            maximumRelativeError,
+            maximumResidualError,
+            maximumConstraintError,
+        )
+        algo.run()
+        resultSORM = algo.getResult()
         numberOfFunctionEvaluationsSORM = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
         computedProbability = resultSORM.getEventProbabilityBreitung()
-        absoluteError = abs(computedProbability - problem.getProbability())
-        numberOfCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), computedProbability
+        pfReference = problem.getProbability()
+        absoluteError = abs(computedProbability - pfReference)
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
+            pfReference, computedProbability
         )
         return [
             computedProbability,
@@ -187,37 +250,40 @@ class OTReliabilityAlgorithmBenchmark:
             numberOfFunctionEvaluationsSORM,
         ]
 
-    def printResultSORM(resultSorm):
+    def printResultSORM(benchmarkSORM):
         s = (
             "computedProbability = %s  "
             "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
-        ) % (resultSorm[0], resultSorm[1], resultSorm[2], resultSorm[3],)
+        ) % (benchmarkSORM[0], benchmarkSORM[1], benchmarkSORM[2], benchmarkSORM[3],)
         return s
 
     def MonteCarloSampling(
         problem, maximumOuterSampling=1000, coefficientOfVariation=0.1, blockSize=1
     ):
-
-        myEvent = problem.getEvent()
-        g = problem.getEvent().getFunction()
-        experiment = ot.MonteCarloExperiment()
-        myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
-        myMC.setMaximumOuterSampling(maximumOuterSampling)
-        myMC.setBlockSize(blockSize)
-        myMC.setMaximumCoefficientOfVariation(coefficientOfVariation)
+        """
+        Runs the ProbabilitySimulationAlgorithm with Monte-Carlo experiment
+        algorithm and get results.
+        """
+        event = problem.getEvent()
+        g = event.getFunction()
+        algo = otb.MonteCarloFactory(problem)
+        algo.setMaximumOuterSampling(maximumOuterSampling)
+        algo.setBlockSize(blockSize)
+        algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
         initialNumberOfCall = g.getEvaluationCallsNumber()
-        myMC.run()
-        resultMC = myMC.getResult()
+        algo.run()
+        resultMC = algo.getResult()
         numberOfFunctionEvaluationsMonteCarlo = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        graph = myMC.drawProbabilityConvergence()
+        graph = algo.drawProbabilityConvergence()
         computedProbability = resultMC.getProbabilityEstimate()
-        absoluteError = abs(computedProbability - problem.getProbability())
-        numberOfCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), computedProbability
+        pfReference = problem.getProbability()
+        absoluteError = abs(computedProbability - pfReference)
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
+            pfReference, computedProbability
         )
         return [
             computedProbability,
@@ -227,13 +293,13 @@ class OTReliabilityAlgorithmBenchmark:
             graph,
         ]
 
-    def printResultMC(resultMC):
+    def printResultMC(benchmarkMC):
         s = (
             "computedProbability = %s  "
             "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
-        ) % (resultMC[0], resultMC[1], resultMC[2], resultMC[3],)
+        ) % (benchmarkMC[0], benchmarkMC[1], benchmarkMC[2], benchmarkMC[3],)
         return s
 
     def FORMImportanceSampling(
@@ -247,72 +313,58 @@ class OTReliabilityAlgorithmBenchmark:
         maximumOuterSampling=5000,
         coefficientOfVariation=0.1,
     ):
-
-        if nearestPointAlgo == "AbdoRackwitz":
-            solver = ot.AbdoRackwitz()
-        elif nearestPointAlgo == "Cobyla":
-            solver = ot.Cobyla()
-        elif nearestPointAlgo == "SQP":
-            solver = ot.SQP()
-        else:
-            raise NameError(
-                "Nearest point algorithm name must be \
-                            'AbdoRackwitz', 'Cobyla' or 'SQP'."
-            )
-
-        solver.setMaximumEvaluationNumber(maximumEvaluationNumber)
-        solver.setMaximumAbsoluteError(maximumAbsoluteError)
-        solver.setMaximumRelativeError(maximumRelativeError)
-        solver.setMaximumResidualError(maximumResidualError)
-        solver.setMaximumConstraintError(maximumConstraintError)
-
-        myEvent = problem.getEvent()
-        inputVector = myEvent.getAntecedent()
-        myDistribution = inputVector.getDistribution()
-        g = problem.getEvent().getFunction()
-        initialNumberOfCall = g.getEvaluationCallsNumber()
-        algoFORM = ot.FORM(solver, myEvent, myDistribution.getMean())
-        algoFORM.run()
-        resultFORM = algoFORM.getResult()
-        standardSpaceDesignPoint = resultFORM.getStandardSpaceDesignPoint()
-        d = myDistribution.getDimension()
-        myImportance = ot.Normal(
-            standardSpaceDesignPoint, [1.0] * d, ot.CorrelationMatrix(d)
+        """
+        Runs the Importance Sampling method with FORM importance
+        distribution and get the number of function evaluations.
+        """
+        algo = otb.FORMISFactory(
+            problem,
+            nearestPointAlgo,
+            maximumEvaluationNumber,
+            maximumAbsoluteError,
+            maximumRelativeError,
+            maximumResidualError,
+            maximumConstraintError,
         )
-
-        experiment = ot.ImportanceSamplingExperiment(myImportance)
-        algo = ot.ProbabilitySimulationAlgorithm(ot.StandardEvent(myEvent), experiment)
+        event = problem.getEvent()
+        g = event.getFunction()
+        initialNumberOfCall = g.getEvaluationCallsNumber()
         algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
         algo.setMaximumOuterSampling(maximumOuterSampling)
         algo.setConvergenceStrategy(ot.Full())
         algo.run()
-        resultTirage = algo.getResult()
-
+        result = algo.getResult()
         graph = algo.drawProbabilityConvergence()
-        numberOfFunctionEvaluationsTirage = (
+        numberOfFunctionEvaluationsFORMIS = (
             g.getEvaluationCallsNumber() - initialNumberOfCall
         )
-        computedProbability = resultTirage.getProbabilityEstimate()
-        absoluteError = abs(computedProbability - problem.getProbability())
-        numberOfCorrectDigits = computeLogRelativeError(
-            problem.getProbability(), computedProbability
+        computedProbability = result.getProbabilityEstimate()
+        pfReference = problem.getProbability()
+        absoluteError = abs(computedProbability - pfReference)
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
+            pfReference, computedProbability
         )
 
         return [
             computedProbability,
             absoluteError,
             numberOfCorrectDigits,
-            numberOfFunctionEvaluationsTirage,
+            numberOfFunctionEvaluationsFORMIS,
             graph,
         ]
 
-    def printResultFORMIS(resultIS):
+    def printResultFORMIS(benchmarFORMIS):
         s = (
             "computedProbability = %s  "
             "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
-        ) % (resultIS[0], resultIS[1], resultIS[2], resultIS[3],)
+        ) % (
+            benchmarFORMIS[0],
+            benchmarFORMIS[1],
+            benchmarFORMIS[2],
+            benchmarFORMIS[3],
+        )
         return s
 
     def SubsetSampling(
@@ -331,7 +383,7 @@ class OTReliabilityAlgorithmBenchmark:
         resultSS = mySS.getResult()
         computedProbability = resultSS.getProbabilityEstimate()
         absoluteError = abs(computedProbability - problem.getProbability())
-        numberOfCorrectDigits = computeLogRelativeError(
+        numberOfCorrectDigits = otb.ComputeLogRelativeError(
             problem.getProbability(), computedProbability
         )
         numberOfFunctionSS = g.getEvaluationCallsNumber() - initialNumberOfCall
@@ -343,11 +395,11 @@ class OTReliabilityAlgorithmBenchmark:
             graph,
         ]
 
-    def printResultSubset(resultSS):
+    def printResultSubset(benchmarkSS):
         s = (
             "computedProbability = %s  "
             "absoluteError = %s "
             "numberOfCorrectDigits = %s "
             "numberOfFunctionEvaluations = %s"
-        ) % (resultSS[0], resultSS[1], resultSS[2], resultSS[3],)
+        ) % (benchmarkSS[0], benchmarkSS[1], benchmarkSS[2], benchmarkSS[3],)
         return s

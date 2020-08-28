@@ -29,6 +29,9 @@ from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
 from .OTReliabilityAlgorithmBenchmark import OTReliabilityAlgorithmBenchmark
+from .OTReliabilityAlgorithmBenchmark import ComputeLogRelativeError
+from .OTReliabilityAlgorithmBenchmark import ComputeAbsoluteError
+from .OTReliabilityAlgorithmBenchmark import ComputeRelativeError
 from .FORMFactory import FORMFactory
 from .SORMFactory import SORMFactory
 from .FORMISFactory import FORMISFactory
@@ -79,6 +82,9 @@ __all__ = [
     "FORMISFactory",
     "MonteCarloFactory",
     "OTReliabilityAlgorithmBenchmark",
+    "ComputeLogRelativeError",
+    "ComputeAbsoluteError",
+    "ComputeRelativeError",
     "FourBranchSerialSystemReliability",
     "GaussianSumSensitivity",
     "GaussianProductSensitivity",
