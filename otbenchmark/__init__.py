@@ -28,10 +28,10 @@ from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
-from .OTReliabilityAlgorithmBenchmark import ComputeLogRelativeError
-from .OTReliabilityAlgorithmBenchmark import ComputeAbsoluteError
-from .OTReliabilityAlgorithmBenchmark import ComputeRelativeError
-from .OTReliabilityAlgorithmBenchmark import ReliabilityBenchmarkProblemList
+from .ReliabilityLibrary import ComputeLogRelativeError
+from .ReliabilityLibrary import ComputeAbsoluteError
+from .ReliabilityLibrary import ComputeRelativeError
+from .ReliabilityLibrary import ReliabilityBenchmarkProblemList
 from .FORM import FORM
 from .SORM import SORM
 from .SubsetSampling import SubsetSampling

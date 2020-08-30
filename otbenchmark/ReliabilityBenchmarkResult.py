@@ -49,11 +49,11 @@ class ReliabilityBenchmarkResult:
         Returns a string which presents a summary of the reliability benchmark.
         """
         s = (
-            "computedProbability = %s  "
-            "exactProbability = %s  "
-            "absoluteError = %s "
-            "numberOfCorrectDigits = %s "
-            "numberOfFunctionEvaluations = %s"
+            "computedProbability = %s\n"
+            "exactProbability = %s\n"
+            "absoluteError = %s\n"
+            "numberOfCorrectDigits = %s\n"
+            "numberOfFunctionEvaluations = %s\n"
             "numberOfDigitsPerEvaluation = %s"
         ) % (
             self.computedProbability,
