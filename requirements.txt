@@ -10,3 +10,5 @@ flake8
 black-nb
 pandas
 tqdm
+shapely
+
