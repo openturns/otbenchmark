@@ -14,7 +14,7 @@ class CheckReliabilityLibrary(unittest.TestCase):
         lre = otb.ComputeLogRelativeError(1.234, 0.0)
         np.testing.assert_almost_equal(lre, 0.0)
         lre = otb.ComputeLogRelativeError(0.0, 1.234)
-        np.testing.assert_almost_equal(lre, -np.inf)
+        np.testing.assert_almost_equal(lre, 0.0)
 
     def test_ComputeAbsoluteError(self):
         ae = otb.ComputeAbsoluteError(1.0, 1.1)
