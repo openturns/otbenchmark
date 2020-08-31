@@ -39,8 +39,12 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
     logRelativeError: float
         The LRE.
     """
-    relativeError = abs(exact - computed) / abs(exact)
-    logRelativeError = -np.log(relativeError) / np.log(basis)
+    if abs(exact) == 0.0:
+        # Avoid division by zero
+        logRelativeError = -np.inf
+    else:
+        relativeError = abs(exact - computed) / abs(exact)
+        logRelativeError = -np.log(relativeError) / np.log(basis)
     return logRelativeError
 
 
