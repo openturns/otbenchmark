@@ -2,7 +2,6 @@
 """
 Manage reliability problems.
 """
-import openturns as ot
 import otbenchmark as otb
 
 
@@ -127,6 +126,7 @@ class ReliabilityBenchmarkMetaAlgorithm:
         nearestPointAlgorithm,
         maximumOuterSampling=1000,
         coefficientOfVariation=0.1,
+        blockSize=1,
     ):
         """
         Runs the Importance Sampling method with FORM importance
@@ -140,6 +140,8 @@ class ReliabilityBenchmarkMetaAlgorithm:
             The maximum number of outer iterations.
         coefficientOfVariation : float
             The maximum coefficient of variation.
+        blockSize : int
+            The number of inner iterations.
 
         Returns
         -------
@@ -154,7 +156,7 @@ class ReliabilityBenchmarkMetaAlgorithm:
             algo = factory.buildFORMIS(self.problem, nearestPointAlgorithm)
             algo.setMaximumCoefficientOfVariation(coefficientOfVariation)
             algo.setMaximumOuterSampling(maximumOuterSampling)
-            algo.setConvergenceStrategy(ot.Full())
+            algo.setBlockSize(blockSize)
             algo.run()
             result = algo.getResult()
             computedProbability = result.getProbabilityEstimate()

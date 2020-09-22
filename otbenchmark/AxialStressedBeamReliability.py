@@ -15,6 +15,13 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
         """
         Create a axial stressed beam reliability problem.
 
+        The inputs are R, the Yield strength, and F, the traction load.
+        The event is {g(X) < threshold} where
+
+        g(R, F) = R - F/(pi_ * 100.0)
+
+        We have R ~ LogNormalMuSigma() and F ~ Normal().
+
         Parameters
         ----------
         threshold : float
@@ -31,7 +38,7 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
         R_dist.setDescription("R")
 
         F_dist = ot.Normal(75000.0, 5000.0)
-        F_dist.setName("Traction_load")
+        F_dist.setName("Traction load")
         F_dist.setDescription("F")
 
         myDistribution = ot.ComposedDistribution([R_dist, F_dist])
