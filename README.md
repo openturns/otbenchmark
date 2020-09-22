@@ -98,6 +98,10 @@ The "DrawEvent" class that the module provides typically plots the following fig
 
 ![limit_state_surface_RP57.png](figures/limit_state_surface_RP57.png)
 
+The following figure plots cross-cuts of the limit state function for the RP8.
+
+![cross_cut_function_RP8.png](figures/cross_cut_function_RP8.png)
+
 [Examples]: https://github.com/mbaudin47/otbenchmark/tree/master/examples
 
 [BBRC]: https://github.com/mbaudin47/otbenchmark/blob/master/examples-on-server/BBRC.ipynb
