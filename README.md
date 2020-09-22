@@ -48,6 +48,16 @@ problems.
 * Elias Fekhari
 * Vincent Chabridon
 
+## Installation
+
+To install the module, we can use the "git clone" command:
+
+```
+git clone https://github.com/mbaudin47/otbenchmark.git
+cd otbenchmark
+python setup.py install
+```
+
 ## Getting help
 
 The code has docstrings. Hence, using the "help" statement will help. Another way of getting help is to read the examples, which are presented in the next section.
@@ -84,7 +94,21 @@ It is often useful to draw a sensitivity or reliability problem. Since many of t
 * Function: [Draw cross cut of functions] shows how to draw cross cuts of functions,
 * Distribution: [Draw cross cuts of distributions] shows how to draw cross cuts of distributions and [Draw conditional distributions] plots conditional distributions.
 
+The "DrawEvent" class that the module provides typically plots the following figure for the RP57.
+
+![limit_state_surface_RP57.png](figures/limit_state_surface_RP57.png)
+
 [Examples]: https://github.com/mbaudin47/otbenchmark/tree/master/examples
+
+[BBRC]: https://github.com/mbaudin47/otbenchmark/blob/master/examples-on-server/BBRC.ipynb
+
+[Convergence of Monte-Carlo to estimate the probability in a reliability problem]: https://github.com/mbaudin47/otbenchmark/blob/master/examples/convergence-reliability-Monte-Carlo.ipynb
+
+The [Convergence of Monte-Carlo to estimate the probability in a reliability problem] example might be interesting for those who want to plot convergence graphics.
+
+![convergence_montecarlo.png](figures/convergence_montecarlo.png)
+
+We provide in [BBRC] an example which shows how to use the "evaluate" function that the module provides to evaluate a function which is available in the remote BBRC server. 
 
 The [Examples] directory has many other examples: please read the notebooks and see if one of the examples fits your needs.
 
