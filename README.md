@@ -48,7 +48,7 @@ problems.
 * Elias Fekhari
 * Vincent Chabridon
 
-## Installation
+## Installation
 
 To install the module, we can use the "git clone" command:
 
