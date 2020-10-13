@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+This script shows how to use the computeCDF method in order
+to compute exact probabilities using Distribution arithmetic.
+"""
+
+# Creates a reliability problem RP8.
+import otbenchmark as otb
+import numpy as np
+
+
+def ComputeReferenceProbability(problem, verbose=False):
+    event = problem.getEvent()
+    antecedent = event.getAntecedent()
+    distribution = antecedent.getDistribution()
+    # Check copula
+    copula = distribution.getCopula()
+    if not copula.hasIndependentCopula():
+        raise Exception("Copula is not independent.")
+    # Get marginal distribution
+    dimension = distribution.getDimension()
+    for i in range(dimension):
+        marginal = distribution.getMarginal(i)
+        marginal_statement = "X%d=marginal" % (i + 1)
+        if verbose and i < 5:
+            print(marginal)
+        exec(marginal_statement)
+    # Prepare constants and functions
+    PI_ = np.pi
+    _ = PI_  # To fool flake8
+
+    def SQRT(x):
+        return np.sqrt(x)
+
+    def MIN(x, y):
+        return min(x, y)
+
+    def ABS(x):
+        return abs(x)
+
+    # Get the formula
+    function = event.getFunction()
+    function_repr = str(function)
+    start = function_repr.find(">")
+    formula = function_repr[start + 2 : -1]
+    formula = formula.upper()
+    formula_Y = "Y=" + formula
+    if verbose:
+        print(formula_Y)
+    exec(formula_Y)
+    # Compute pdf
+    threshold = event.getThreshold()
+    _ = threshold  # To fool flake8
+    pf = eval("Y.computeCDF(threshold)")
+    return pf
+
+
+problem = otb.ReliabilityProblem33()
+# pf_formula = ComputeReferenceProbability(problem, verbose=True)
+
+verbose = True
+benchmarkProblemList = otb.ReliabilityBenchmarkProblemList()
+numberOfProblems = len(benchmarkProblemList)
+
+for i in range(numberOfProblems):
+    problem = benchmarkProblemList[i]
+    name = problem.getName()
+    pf_reference = problem.getProbability()
+    try:
+        pf_formula = ComputeReferenceProbability(problem, verbose=verbose)
+        lre = otb.ComputeLogRelativeError(pf_formula, pf_reference)
+        print(
+            "#",
+            i,
+            ":",
+            name,
+            ", Pf_ref =",
+            pf_reference,
+            ", Pf - Formula=",
+            pf_formula,
+            ", lre =",
+            lre,
+        )
+    except Exception as inst:
+        print("    Fails")
+        print("    ", inst)
