@@ -11,6 +11,27 @@ import numpy as np
 
 
 def ComputeReferenceProbability(problem, verbose=False):
+    """
+    Compute the probability of a reliability problem using computeCDF().
+
+    Parameters
+    ----------
+    problem : ot.ReliabilityProblem
+        The problem.
+    verbose : bool, optional
+        If True, print messages. The default is False.
+
+    Raises
+    ------
+    Exception
+        DESCRIPTION.
+
+    Returns
+    -------
+    pf : float
+        The probability of failure.
+
+    """
     event = problem.getEvent()
     antecedent = event.getAntecedent()
     distribution = antecedent.getDistribution()
@@ -18,13 +39,15 @@ def ComputeReferenceProbability(problem, verbose=False):
     copula = distribution.getCopula()
     if not copula.hasIndependentCopula():
         raise Exception("Copula is not independent.")
-    # Get marginal distribution
+    # Set marginal distribution X0, X1, etc... up to Xd
+    description = distribution.getDescription()
     dimension = distribution.getDimension()
     for i in range(dimension):
         marginal = distribution.getMarginal(i)
-        marginal_statement = "X%d=marginal" % (i + 1)
+        marginal_statement = "%s = marginal" % (description[i])
         if verbose and i < 5:
-            print(marginal)
+            print("marginal = ", marginal)
+            print(marginal_statement)
         exec(marginal_statement)
     # Prepare constants and functions
     PI_ = np.pi
@@ -45,7 +68,7 @@ def ComputeReferenceProbability(problem, verbose=False):
     start = function_repr.find(">")
     formula = function_repr[start + 2 : -1]
     formula = formula.upper()
-    formula_Y = "Y=" + formula
+    formula_Y = "Y = " + formula
     if verbose:
         print(formula_Y)
     exec(formula_Y)
@@ -56,7 +79,7 @@ def ComputeReferenceProbability(problem, verbose=False):
     return pf
 
 
-problem = otb.ReliabilityProblem33()
+# problem = otb.FourBranchSerialSystemReliability()
 # pf_formula = ComputeReferenceProbability(problem, verbose=True)
 
 verbose = True
@@ -83,5 +106,6 @@ for i in range(numberOfProblems):
             lre,
         )
     except Exception as inst:
+        print("#", i, ":", name)
         print("    Fails")
         print("    ", inst)
