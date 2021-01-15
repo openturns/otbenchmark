@@ -66,7 +66,7 @@ class CheckReliabilityProblem14(unittest.TestCase):
         myCobyla = ot.Cobyla()
         # Resolution options:
         eps = 1e-3
-        myCobyla.setMaximumEvaluationNumber(100)
+        myCobyla.setMaximumEvaluationNumber(1000)
         myCobyla.setMaximumAbsoluteError(eps)
         myCobyla.setMaximumRelativeError(eps)
         myCobyla.setMaximumResidualError(eps)
@@ -84,8 +84,8 @@ class CheckReliabilityProblem14(unittest.TestCase):
         standardEvent = ot.StandardEvent(event)
         algo = ot.ProbabilitySimulationAlgorithm(standardEvent, experiment)
         algo.setMaximumCoefficientOfVariation(0.01)
-        algo.setBlockSize(int(1.0e3))
-        algo.setMaximumOuterSampling(int(1e3))
+        algo.setBlockSize(1000)
+        algo.setMaximumOuterSampling(1000)
         algo.run()
         result = algo.getResult()
         computed_pf = result.getProbabilityEstimate()

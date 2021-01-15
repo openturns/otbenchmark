@@ -10,6 +10,19 @@ jobs:
       - checkout
       - python/install-deps
       - run:
+          name: Install package in a venv with setup
+          command: |
+            python3 -m venv venv
+            source venv/bin/activate
+            python setup.py install
+            python tests/demo_axialbeam.py tmp
+      - run:
+          name: Create package source distribution
+          command: |
+            python3 -m venv venv
+            source venv/bin/activate
+            python setup.py sdist
+      - run:
           name: Check style of Python Scripts with black
           command: |
             black --check otbenchmark --config pyproject.toml
@@ -20,7 +33,8 @@ jobs:
       - run:
           name: Check style of Notebooks with black-nb
           command: |
-            black-nb --check .
+            black-nb --check examples
+            black-nb --check examples-on-server
       - run:
           name: Test
           command: ./.circleci/run_docker_linux.sh

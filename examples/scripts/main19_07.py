@@ -41,7 +41,7 @@ myFunction = ot.PythonFunction(6, 1, gfun_8)
 myOutputVector = ot.CompositeRandomVector(myFunction, myRandomVector)
 
 # Evènement fiabiliste
-event = ot.Event(myOutputVector, ot.LessOrEqual(), 0.0)
+event = ot.ThresholdEvent(myOutputVector, ot.LessOrEqual(), 0.0)
 
 # ~ #Run FORM
 # ~ FORM_result = run_FORM(event, myRandomVector, verbose=True,

@@ -83,7 +83,7 @@ def run_MonteCarlo(
                 func_sample=function_union,
             )
             output = ot.RandomVector(model, antecedent)
-            event = ot.Event(output, ot.Greater(), 0.0)
+            event = ot.ThresholdEvent(output, ot.Greater(), 0.0)
 
         elif failure_domain == "intersection":
 
@@ -116,7 +116,7 @@ def run_MonteCarlo(
                 func_sample=function_intersection,
             )
             output = ot.RandomVector(model, antecedent)
-            new_event = ot.Event(output, ot.Greater(), 0.0)
+            new_event = ot.ThresholdEvent(output, ot.Greater(), 0.0)
     else:
         model = event.getFunction()
         new_event = event
@@ -250,7 +250,7 @@ def run_ImportanceSampling(
                 func_sample=function_union,
             )
             output = ot.RandomVector(model, antecedent)
-            event = ot.Event(output, ot.Greater(), 0.0)
+            event = ot.ThresholdEvent(output, ot.Greater(), 0.0)
 
         elif failure_domain == "intersection":
 
@@ -283,7 +283,7 @@ def run_ImportanceSampling(
                 func_sample=function_intersection,
             )
             output = ot.RandomVector(model, antecedent)
-            new_event = ot.Event(output, ot.Greater(), 0.0)
+            new_event = ot.ThresholdEvent(output, ot.Greater(), 0.0)
     else:
         model = event.getFunction()
         new_event = event
