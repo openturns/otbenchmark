@@ -21,7 +21,7 @@ class CheckDrawEvent(unittest.TestCase):
         distribution = ot.ComposedDistribution([R, S])
         inputRV = ot.RandomVector(distribution)
         outputRV = ot.CompositeRandomVector(g, inputRV)
-        eventF = ot.Event(outputRV, ot.GreaterOrEqual(), 0)
+        eventF = ot.ThresholdEvent(outputRV, ot.GreaterOrEqual(), 0.0)
         alpha = 1.0 - 1.0e-2
         (
             bounds,
@@ -47,7 +47,7 @@ class CheckDrawEvent(unittest.TestCase):
         distribution = ot.ComposedDistribution([R, S])
         inputRV = ot.RandomVector(distribution)
         outputRV = ot.CompositeRandomVector(g, inputRV)
-        eventF = ot.Event(outputRV, ot.GreaterOrEqual(), 0)
+        eventF = ot.ThresholdEvent(outputRV, ot.GreaterOrEqual(), 0)
         #
         sampleSize = 500
         drawEvent = otbenchmark.DrawEvent(eventF)
@@ -70,7 +70,7 @@ class CheckDrawEvent(unittest.TestCase):
         distribution = ot.ComposedDistribution([R, S])
         inputRV = ot.RandomVector(distribution)
         outputRV = ot.CompositeRandomVector(g, inputRV)
-        eventF = ot.Event(outputRV, ot.GreaterOrEqual(), 0)
+        eventF = ot.ThresholdEvent(outputRV, ot.GreaterOrEqual(), 0)
         alpha = 1.0 - 1.0e-2
         (
             bounds,
