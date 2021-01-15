@@ -24,6 +24,20 @@ jobs:
       - run:
           name: Test
           command: ./.circleci/run_docker_linux.sh
+      - run:
+          name: Install package in a venv with setup
+          command: |
+            python setup.py install
+            mkdir tmp
+            cp demo.py tmp
+            cd tmp
+            python demo.py
+            cd ..
+            rm -r tmp
+      - run:
+          name: Create package source distribution
+          command: |
+            python setup.py sdist
 
 workflows:
   main:

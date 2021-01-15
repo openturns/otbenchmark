@@ -22,7 +22,7 @@ setup(
     keywords=("OpenTURNS", "benchmark"),
     version="0.1",
     packages=find_packages(),
-    install_requires=["numpy", "matplotlib", "scipy", "openturns"],
+    install_requires=["numpy", "matplotlib", "scipy", "openturns>=1.16"],
     description="Benchmark problems for OpenTURNS",
     long_description=long_description,
     long_description_content_type="text/markdown",
