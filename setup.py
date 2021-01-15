@@ -19,8 +19,8 @@ with open("README.md", "r") as fh:
 
 setup(
     name="otbenchmark",
-    keywords=("OpenTURNS", "benchmark"),
-    version="0.1",
+    keywords=["OpenTURNS", "benchmark"],
+    version="0.1.1",
     packages=find_packages(),
     install_requires=["numpy", "matplotlib", "scipy", "openturns>=1.16"],
     description="Benchmark problems for OpenTURNS",
