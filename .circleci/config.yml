@@ -28,12 +28,7 @@ jobs:
           name: Install package in a venv with setup
           command: |
             python setup.py install
-            mkdir tmp
-            cp demo.py tmp
-            cd tmp
-            python demo.py
-            cd ..
-            rm -r tmp
+            python tests/demo_axialbeam.py tmp
       - run:
           name: Create package source distribution
           command: |
