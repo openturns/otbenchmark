@@ -33,7 +33,8 @@ jobs:
       - run:
           name: Check style of Notebooks with black-nb
           command: |
-            black-nb --check .
+            black-nb --check examples
+            black-nb --check examples-on-server
       - run:
           name: Test
           command: ./.circleci/run_docker_linux.sh
