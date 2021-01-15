@@ -69,6 +69,8 @@ def ComputeReferenceProbability(problem, verbose=False):
     formula = function_repr[start + 2 : -1]
     formula = formula.upper()
     formula_Y = "Y = " + formula
+    # Replace ExprTk "^" with Python-style "**"
+    formula_Y = formula_Y.replace("^", "**")
     if verbose:
         print(formula_Y)
     exec(formula_Y)
@@ -79,10 +81,12 @@ def ComputeReferenceProbability(problem, verbose=False):
     return pf
 
 
-# problem = otb.FourBranchSerialSystemReliability()
+# Fails on RP14
+# https://github.com/openturns/openturns/issues/1720
+# problem = otb.ReliabilityProblem14()
 # pf_formula = ComputeReferenceProbability(problem, verbose=True)
 
-verbose = True
+verbose = False
 benchmarkProblemList = otb.ReliabilityBenchmarkProblemList()
 numberOfProblems = len(benchmarkProblemList)
 
@@ -90,6 +94,7 @@ for i in range(numberOfProblems):
     problem = benchmarkProblemList[i]
     name = problem.getName()
     pf_reference = problem.getProbability()
+    print(i, ":", name, "...")
     try:
         pf_formula = ComputeReferenceProbability(problem, verbose=verbose)
         lre = otb.ComputeLogRelativeError(pf_formula, pf_reference)
