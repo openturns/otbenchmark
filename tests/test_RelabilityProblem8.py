@@ -20,7 +20,7 @@ class CheckReliabilityProblem8(unittest.TestCase):
         # Check probability
         pf = problem.getProbability()
         pf_exacte = 0.000784
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-2)
 
         # Check function
         event = problem.getEvent()
@@ -38,7 +38,8 @@ class CheckReliabilityProblem8(unittest.TestCase):
         experiment = ot.MonteCarloExperiment()
         algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
         algo.setMaximumCoefficientOfVariation(0.05)
-        algo.setMaximumOuterSampling(int(1e5))
+        algo.setBlockSize(32)
+        algo.setMaximumOuterSampling(1000)
         algo.run()
 
         # Retrieve results

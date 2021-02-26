@@ -13,14 +13,16 @@ import openturns as ot
 
 class ReliabilityProblem28(ReliabilityBenchmarkProblem):
     def __init__(
-        self, threshold=0.0, mu1=78064.0, sigma1=11710.0, mu2=0.0104, sigma2=0.00156
+        self, threshold=146.14, mu1=78064.0, sigma1=11710.0, mu2=0.0104, sigma2=0.00156
     ):
         """
         Creates a reliability problem RP28.
 
         The event is {g(X) < threshold} where
 
-        g(x1, x2) = x1 * x2 - 146.14
+        g(x1, x2) = x1 * x2 - threshold
+
+        with threshold = 146.14.
 
         We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
 
@@ -37,7 +39,7 @@ class ReliabilityProblem28(ReliabilityBenchmarkProblem):
         sigma2 : float
             The standard deviation of the X2 gaussian distribution.
         """
-        formula = " x1 * x2 - 146.14 "
+        formula = "x1 * x2"
         limitStateFunction = ot.SymbolicFunction(["x1", "x2"], [formula])
 
         X1 = ot.Normal(mu1, sigma1)
@@ -53,6 +55,7 @@ class ReliabilityProblem28(ReliabilityBenchmarkProblem):
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP28"
-        probability = 0.000000146
+        Y = X1 * X2
+        probability = Y.computeCDF(threshold)
         super(ReliabilityProblem28, self).__init__(name, thresholdEvent, probability)
         return None

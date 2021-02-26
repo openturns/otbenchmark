@@ -112,6 +112,7 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP8"
-        probability = 0.000784
+        Y = X1 + 2 * X2 + 2 * X3 + X4 - 5 * X5 - 5 * X6
+        probability = Y.computeCDF(threshold)
         super(ReliabilityProblem8, self).__init__(name, thresholdEvent, probability)
         return None
