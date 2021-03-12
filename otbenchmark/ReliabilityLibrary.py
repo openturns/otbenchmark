@@ -38,6 +38,17 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
     -------
     logRelativeError: float
         The LRE.
+
+    Example
+    -------
+    import otbenchmark as otb
+    benchmarkProblemList = otb.ReliabilityBenchmarkProblemList()
+    numberOfProblems = len(benchmarkProblemList)
+    for i in range(numberOfProblems):
+        problem = benchmarkProblemList[i]
+        name = problem.getName()
+        pf = problem.getProbability()
+        print("#", i, " : ", name, ", exact PF : ", pf)
     """
     if abs(exact) == 0.0:
         # Avoid division by zero
