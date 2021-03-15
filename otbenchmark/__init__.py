@@ -49,6 +49,7 @@ from .CrossCutFunction import CrossCutFunction
 from .CrossCutDistribution import CrossCutDistribution
 from .MorrisSensitivity import MorrisSensitivity
 from .DirichletSensitivity import DirichletSensitivity
+from .FloodingSensitivity import FloodingSensitivity
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -104,5 +105,6 @@ __all__ = [
     "SensitivityBenchmarkProblemList",
     "MorrisSensitivity",
     "DirichletSensitivity",
+    "FloodingSensitivity",
 ]
 __version__ = "1.0"

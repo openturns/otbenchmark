@@ -187,7 +187,7 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         The sparse polynomial chaos expansion used an hyperbolic enumeration
         rule and a polynomial degree 4.
         The coefficients were estimated from regression.
-        With 500 points in the validation set, the Q2 was 98%.
+        With 500 points in the validation set, the Q2 was greater than 98%.
         There are 2 significant digits in the reference results.
 
         References
