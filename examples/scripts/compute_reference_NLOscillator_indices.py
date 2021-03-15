@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Compute reference Flooding Sobol' indices.
+Compute reference NLOscillator Sobol' indices.
 """
 
 import otbenchmark as otb
 
-print("Get Flooding S.A. problem")
-problem = otb.FloodingSensitivity()
+print("Get NLOscillator S.A. problem")
+problem = otb.NLOscillatorSensitivity()
 print(problem)
 sample_size_train = 1000
 sample_size_test = 1000

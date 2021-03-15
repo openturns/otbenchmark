@@ -50,6 +50,10 @@ from .CrossCutDistribution import CrossCutDistribution
 from .MorrisSensitivity import MorrisSensitivity
 from .DirichletSensitivity import DirichletSensitivity
 from .FloodingSensitivity import FloodingSensitivity
+from .NLOscillatorSensitivity import NLOscillatorSensitivity
+from .SparsePolynomialChaosSensitivityAnalysis import (
+    SparsePolynomialChaosSensitivityAnalysis,
+)
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -106,5 +110,7 @@ __all__ = [
     "MorrisSensitivity",
     "DirichletSensitivity",
     "FloodingSensitivity",
+    "NLOscillatorSensitivity",
+    "SparsePolynomialChaosSensitivityAnalysis",
 ]
 __version__ = "1.0"

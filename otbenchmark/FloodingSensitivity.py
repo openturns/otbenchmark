@@ -77,7 +77,7 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
         Handbook of Uncertainty Quantification. pp. 2001-2038
         """
 
-        formulas = ["(Q/(Ks*B*sqrt((Zm-Zv)/L)))^(3.0/5.0)+Zv-Zb-Hd"]
+        formulas = ["(Q / (Ks * B * sqrt((Zm - Zv) / L)))^(3.0 / 5.0) + Zv - Zb - Hd"]
         function = ot.SymbolicFunction(
             ["Q", "Ks", "Zv", "Zm", "Hd", "Zb", "L", "B"], formulas
         )
