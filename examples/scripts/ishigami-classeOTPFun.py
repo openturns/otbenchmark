@@ -37,7 +37,7 @@ inputDistribution = ot.ComposedDistribution(
 inputRandomVector = ot.RandomVector(inputDistribution)
 
 # Create the output variable of interest
-outputVariableOfInterest = ot.RandomVector(myWrapper, inputRandomVector)
+outputVariableOfInterest = ot.CompositeRandomVector(myWrapper, inputRandomVector)
 
 # Start the simulations
 outputSample = outputVariableOfInterest.getSample(1000)
