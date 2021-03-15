@@ -81,6 +81,7 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
         function = ot.SymbolicFunction(
             ["Q", "Ks", "Zv", "Zm", "Hd", "Zb", "L", "B"], formulas
         )
+        function.setOutputDescription(["S (m)"])
 
         # Define the distribution
         QGumbel = ot.Gumbel(558.0, 1013.0)

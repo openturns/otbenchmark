@@ -92,6 +92,7 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
             return ot.Point([Y])
 
         function = ot.PythonFunction(dimension, 1, GSobolModel)
+        function.setOutputDescription(["Y"])
 
         # Define the distribution
         distributionList = [ot.Uniform(0.0, 1.0) for i in range(dimension)]
