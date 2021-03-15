@@ -40,11 +40,11 @@ class MorrisFunction(ot.OpenTURNSPythonFunction):
         self.b0 = float(b0)
         # Check alpha dimension
         assert len(alpha) == 10
-        self.b1 = [20] * 10 + list(alpha)
+        self.b1 = [20.0] * 10 + list(alpha)
         # Check beta and gamma dimension
         assert len(beta) == 6 * 14
         assert len(gamma) == 20 * 14
-        self.b2 = [[0] * 20] * 20
+        self.b2 = [[0.0] * 20] * 20
         for i in range(6):
             for j in range(6):
                 self.b2[i][j] = -15.0
@@ -61,18 +61,18 @@ class MorrisFunction(ot.OpenTURNSPythonFunction):
                 self.b2[i][j] = gamma[k]
 
         # b3
-        self.b3 = [[[0] * 20] * 20] * 20
+        self.b3 = [[[0.0] * 20] * 20] * 20
         for i in range(5):
             for j in range(5):
                 for k in range(5):
                     self.b3[i][j][k] = -10.0
         # b4
-        self.b4 = [[[[0] * 20] * 20] * 20] * 20
+        self.b4 = [[[[0.0] * 20] * 20] * 20] * 20
         for i in range(4):
             for j in range(4):
                 for k in range(4):
-                    for l in range(4):
-                        self.b4[i][j][k][l] = 5
+                    for ell in range(4):
+                        self.b4[i][j][k][ell] = 5.0
 
     def _exec(self, x):
         assert len(x) == 20
@@ -132,6 +132,10 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         and
 
         w[i](x) = 2 * (1.1 * x[i] / (x[i] + 1) - 0.5) for 𝑖=3,5,7.
+
+        In order to get consistent results, the default value of the
+        random_parameters parameter is so that the parameters beta
+        are constant, deterministic, values.
 
         Parameters
         ----------
