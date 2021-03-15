@@ -59,13 +59,8 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
 
         g(x) = sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)
 
-        where X1, X2, X3 in [-pi, pi].
-
-        The distribution of the output of the Ishigami function has two modes.
-
-        The first order indice of X3 is equal to zero and the total order
-        indice of X3 is strictly posititive: this variable has an influence on the
-        output only through its interaction with X1.
+        where X1, X2, X3 in Uniform([-pi, pi]).
+        The input random variables are independent.
 
         References
         ----------
@@ -87,6 +82,50 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
         Example
         -------
         problem  = IshigamiSensitivity()
+
+        Analysis
+        --------
+
+        The dimension of this problem cannot be changed, but
+        its parameters can.
+        The Sobol' sensitivity indices are computed from the values
+        of the parameters.
+
+        The distribution of the output of the Ishigami function has two modes.
+
+        The first order indice of X3 is equal to zero and the total order
+        indice of X3 is strictly posititive: the variable X3 has an influence on the
+        output only through its interaction with X1.
+
+        The detailed analysis is the following.
+        * The variable X1 has a total indice close to 0.6 has the
+        highest impact on the output variability, by X1 on its own or
+        by its interactions with other variables.
+        Indeed, its first order indice is close to 0.3, which
+        implies that interactions of X1 with other variables are involved
+        in 0.6 - 0.3 = 0.3 of the variability of the output.
+        * The variable X2 has a first order indice approximately equal to 0.4,
+        which is close to the total order indice.
+        This shows that this variable does not interact with other variables.
+        * The variable X3 has a first order indice equal to zero.
+        Since its total order indice is approximately equal to 0.3,
+        this shows that its impact on the output is only through its
+        interaction with X1.
+
+        The function was first introduced in (Ishigami, Homma, 1990).
+
+        References
+        ----------
+        Ishigami, T., & Homma, T. (1990, December).
+        An importance quantification technique in uncertainty analysis
+        for computer models.
+        In Uncertainty Modeling and Analysis, 1990. Proceedings.,
+        First International Symposium on (pp. 398-403). IEEE.
+
+        Sobol', I. M., & Levitan, Y. L. (1999).
+        On the use of variance reducing multipliers in Monte Carlo
+        computations of a global sensitivity index.
+        Computer Physics Communications, 117(1), 52-61.
         """
 
         # Define the function
