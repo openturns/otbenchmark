@@ -47,6 +47,7 @@ from .GSobolSensitivity import GSobolSensitivity
 from .ConditionalDistribution import ConditionalDistribution
 from .CrossCutFunction import CrossCutFunction
 from .CrossCutDistribution import CrossCutDistribution
+from .MorrisSensitivity import MorrisSensitivity
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -100,5 +101,6 @@ __all__ = [
     "ReliabilityBenchmarkMetaAlgorithm",
     "ReliabilityBenchmarkResult",
     "SensitivityBenchmarkProblemList",
+    "MorrisSensitivity",
 ]
 __version__ = "1.0"
