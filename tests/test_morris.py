@@ -22,6 +22,11 @@ class CheckMorrisSensitivity(unittest.TestCase):
         assert exact_first_order.getDimension() == 20
         assert exact_total_order.getDimension() == 20
 
+        # Check we can call it
+        input_sample = distribution.getSample(10)
+        output_sample = model(input_sample)
+        assert output_sample.getSize() == 10
+
     def test_MorrisRandom(self):
         problem = otb.MorrisSensitivity(random_parameters=True)
         print(problem)
@@ -35,6 +40,11 @@ class CheckMorrisSensitivity(unittest.TestCase):
         assert model.getOutputDimension() == 1
         assert exact_first_order.getDimension() == 20
         assert exact_total_order.getDimension() == 20
+
+        # Check we can call it
+        input_sample = distribution.getSample(10)
+        output_sample = model(input_sample)
+        assert output_sample.getSize() == 10
 
 
 if __name__ == "__main__":

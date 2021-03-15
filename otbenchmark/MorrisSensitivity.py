@@ -117,8 +117,8 @@ class MorrisFunction(ot.OpenTURNSPythonFunction):
         for i in range(17):
             for j in range(i + 1, 18):
                 for k in range(j + 1, 20):
-                    for l in range(k + 1, 20):
-                        y += b4[i][j][k][l] * w[i] * w[j] * w[k] * w[l]
+                    for ell in range(k + 1, 20):
+                        y += b4[i][j][k][ell] * w[i] * w[j] * w[k] * w[ell]
 
         return [y]
 
