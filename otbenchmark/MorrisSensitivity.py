@@ -10,32 +10,50 @@ import warnings
 
 class MorrisFunction(ot.OpenTURNSPythonFunction):
     """
-        The non-monotonic function of Morris f: R^20 -> R
+    The non-monotonic function of Morris f: [0,1]^20 -> R
 
-        References
-        ---------
-        M. D. Morris, 1991, Factorial sampling plans for preliminary
-        computational experiments,Technometrics, 33, 161--174.
+    References
+    ---------
+    M. D. Morris, 1991, Factorial sampling plans for preliminary
+    computational experiments,Technometrics, 33, 161--174.
 
-        This code was taken from otmorris/python/src/Morris.i.
+    This code was taken from otmorris/python/src/Morris.i.
 
-        Examples
-        --------
-        >>> import openturns as ot
-        >>> ot.RandomGenerator.SetSeed(123)
-        >>> b0 = ot.DistFunc.rNormal()
-        >>> alpha = ot.DistFunc.rNormal(10)
-        >>> beta =  ot.DistFunc.rNormal(6*14)
-        >>> gamma =  ot.DistFunc.rNormal(20*14)
-        >>> f = ot.Function( MorrisFunction(alpha, beta, gamma, b0) )
-        >>> input_sample = ot.ComposedDistribution([ot.Uniform(0,1)] * 20).getSample(20)
-        >>> output_sample = f(input_sample)
-
-        """
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> ot.RandomGenerator.SetSeed(123)
+    >>> b0 = ot.DistFunc.rNormal()
+    >>> alpha = ot.DistFunc.rNormal(10)
+    >>> beta =  ot.DistFunc.rNormal(6*14)
+    >>> gamma =  ot.DistFunc.rNormal(20*14)
+    >>> f = ot.Function( MorrisFunction(alpha, beta, gamma, b0) )
+    >>> input_sample = ot.ComposedDistribution([ot.Uniform(0,1)] * 20).getSample(20)
+    >>> output_sample = f(input_sample)
+    """
 
     def __init__(
         self, alpha=ot.Point(10), beta=ot.Point(14 * 6), gamma=ot.Point(20 * 14), b0=0.0
     ):
+        """
+        Create the Morris function
+
+        Parameters
+        ----------
+        alpha : ot.Point(10), optional
+            The linear part. The default is ot.Point(10).
+        beta : ot.Point(14 * 6), optional
+            A segment of the quadratic coefficients. The default is ot.Point(14 * 6).
+        gamma : ot.Point(20 * 14), optional
+            A segment of the quadratic coefficients. The default is ot.Point(20 * 14).
+        b0 : float, optional
+            The constant part. The default is 0.0.
+
+        Returns
+        -------
+        None.
+
+        """
         ot.OpenTURNSPythonFunction.__init__(self, 20, 1)
         self.b0 = float(b0)
         # Check alpha dimension

@@ -62,15 +62,6 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
         where X1, X2, X3 in Uniform([-pi, pi]).
         The input random variables are independent.
 
-        References
-        ----------
-        * "Sensitivity analysis in practice", Saltelli, Tarantolla,
-          Compolongo, Ratto, Wiley, 2004
-        * "An importance quantification technique in uncertainty analysis for
-          computer models", Ishigami, Homma, 1990, Proceedings of the ISUMA'90.
-          First international symposium on uncertainty modelling and Analysis,
-          University of Maryland, USA, pp. 398-403.
-
         Parameters
         ----------
         a : float
@@ -116,16 +107,19 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
 
         References
         ----------
-        Ishigami, T., & Homma, T. (1990, December).
+        * Ishigami, T., & Homma, T. (1990, December).
         An importance quantification technique in uncertainty analysis
         for computer models.
         In Uncertainty Modeling and Analysis, 1990. Proceedings.,
         First International Symposium on (pp. 398-403). IEEE.
 
-        Sobol', I. M., & Levitan, Y. L. (1999).
+        * Sobol', I. M., & Levitan, Y. L. (1999).
         On the use of variance reducing multipliers in Monte Carlo
         computations of a global sensitivity index.
         Computer Physics Communications, 117(1), 52-61.
+
+        * "Sensitivity analysis in practice", Saltelli, Tarantolla,
+        Compolongo, Ratto, Wiley, 2004
         """
 
         # Define the function
