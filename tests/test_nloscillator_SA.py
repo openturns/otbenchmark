@@ -18,8 +18,8 @@ class CheckNLOscillatorSA(unittest.TestCase):
 
         # Create X/Y data
         ot.RandomGenerator.SetSeed(0)
-        size = 1000
-        inputDesign = ot.SobolIndicesExperiment(distribution, size, True).generate()
+        size = 5000
+        inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()
         outputDesign = model(inputDesign)
 
         # Compute first order indices using the Saltelli estimator

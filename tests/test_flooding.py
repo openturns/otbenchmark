@@ -19,7 +19,7 @@ class CheckFlooding(unittest.TestCase):
         # Create X/Y data
         ot.RandomGenerator.SetSeed(0)
         size = 100000
-        inputDesign = ot.SobolIndicesExperiment(distribution, size, True).generate()
+        inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()
         outputDesign = model(inputDesign)
 
         # Compute first order indices using the Saltelli estimator

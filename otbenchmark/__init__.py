@@ -54,6 +54,7 @@ from .NLOscillatorSensitivity import NLOscillatorSensitivity
 from .SparsePolynomialChaosSensitivityAnalysis import (
     SparsePolynomialChaosSensitivityAnalysis,
 )
+from .BoreholeSensitivity import BoreholeSensitivity
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -112,5 +113,6 @@ __all__ = [
     "FloodingSensitivity",
     "NLOscillatorSensitivity",
     "SparsePolynomialChaosSensitivityAnalysis",
+    "BoreholeSensitivity",
 ]
 __version__ = "1.0"

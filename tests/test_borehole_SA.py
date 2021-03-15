@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 - 2021 EDF.
 """
-Test for DirichletSensitivity class.
+Test for BoreholeSensitivity class.
 """
 import openturns as ot
 import otbenchmark as otb
@@ -9,9 +9,9 @@ import unittest
 import numpy as np
 
 
-class CheckDirichlet(unittest.TestCase):
-    def test_Dirichlet(self):
-        problem = otb.DirichletSensitivity()
+class CheckBoreholeSA(unittest.TestCase):
+    def test_BoreholeSA(self):
+        problem = otb.BoreholeSensitivity()
         print(problem)
         distribution = problem.getInputDistribution()
         model = problem.getFunction()
