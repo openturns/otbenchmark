@@ -32,6 +32,7 @@ from .ReliabilityLibrary import ComputeLogRelativeError
 from .ReliabilityLibrary import ComputeAbsoluteError
 from .ReliabilityLibrary import ComputeRelativeError
 from .ReliabilityLibrary import ReliabilityBenchmarkProblemList
+from .SensitivityLibrary import SensitivityBenchmarkProblemList
 from .FORM import FORM
 from .SORM import SORM
 from .SubsetSampling import SubsetSampling
@@ -98,5 +99,6 @@ __all__ = [
     "LHS",
     "ReliabilityBenchmarkMetaAlgorithm",
     "ReliabilityBenchmarkResult",
+    "SensitivityBenchmarkProblemList",
 ]
 __version__ = "1.0"
