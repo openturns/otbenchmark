@@ -10,13 +10,24 @@ from simulation_methods import run_MonteCarlo
 # ~ dist_X1 = ot.Normal(0., 1.)
 # ~ dist_X2 = ot.Normal(0., 1.)
 # ~ myDistribution = ot.ComposedDistribution([dist_X1, dist_X2])
+parameters1 = ot.LogNormalMuSigma(120, 12, 0.0)
+dist_X1 = ot.ParametrizedDistribution(parameters1)
 
-dist_X1 = ot.LogNormal(120, 12)
-dist_X2 = ot.LogNormal(120, 12)
-dist_X3 = ot.LogNormal(120, 12)
-dist_X4 = ot.LogNormal(120, 12)
-dist_X5 = ot.LogNormal(50, 10)
-dist_X6 = ot.LogNormal(40, 8)
+parameters2 = ot.LogNormalMuSigma(120, 12, 0.0)
+dist_X2 = ot.ParametrizedDistribution(parameters2)
+
+parameters3 = ot.LogNormalMuSigma(120, 12, 0.0)
+dist_X3 = ot.ParametrizedDistribution(parameters3)
+
+parameters4 = ot.LogNormalMuSigma(120, 12, 0.0)
+dist_X4 = ot.ParametrizedDistribution(parameters4)
+
+parameters5 = ot.LogNormalMuSigma(50, 10, 0.0)
+dist_X5 = ot.ParametrizedDistribution(parameters5)
+
+parameters6 = ot.LogNormalMuSigma(40, 8, 0.0)
+dist_X6 = ot.ParametrizedDistribution(parameters6)
+
 myDistribution = ot.ComposedDistribution(
     [dist_X1, dist_X2, dist_X3, dist_X4, dist_X5, dist_X6]
 )
@@ -30,13 +41,14 @@ myFunction = ot.PythonFunction(6, 1, gfun_8)
 myOutputVector = ot.CompositeRandomVector(myFunction, myRandomVector)
 
 # Evènement fiabiliste
-event = ot.Event(myOutputVector, ot.LessOrEqual(), 0.0)
+event = ot.ThresholdEvent(myOutputVector, ot.LessOrEqual(), 0.0)
 
 # ~ #Run FORM
 # ~ FORM_result = run_FORM(event, myRandomVector, verbose=True,
 #                          failure_domain=None)
 
 # ~ #Run CMC
+
 CMC_result = run_MonteCarlo(
     event,
     coefVar=0.01,
@@ -66,4 +78,5 @@ phase 1
 phase 2
 - créer un métamodel de krigeage sur G
 - faire un AK-MCS à la mano ?
+
 """

@@ -32,62 +32,76 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP8.
 
         The event is {g(X) < threshold} where
+
         X = (x1, x2, x3, x4, x5, x6)
+
         g(X) = x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6
+
         We have :
-                x1 ~ LogNormal(mu1, sigma1)
-                x2 ~ LogNormal(mu2, sigma2)
-                x3 ~ LogNormal(mu3, sigma3)
-                x4 ~ LogNormal(mu4, sigma4)
-                x5 ~ LogNormal(mu5, sigma5)
-                x6 ~ LogNormal(mu6, sigma6)
+            x1 ~ LogNormalMuSigma(mu1, sigma1)
+
+            x2 ~ LogNormalMuSigma(mu2, sigma2)
+
+            x3 ~ LogNormalMuSigma(mu3, sigma3)
+
+            x4 ~ LogNormalMuSigma(mu4, sigma4)
+
+            x5 ~ LogNormalMuSigma(mu5, sigma5)
+
+            x6 ~ LogNormalMuSigma(mu6, sigma6)
+
         Parameters
         ----------
         threshold : float
             The threshold.
         mu1 : float
-            The mean of the X1 LogNormal distribution.
+            The mean of the LogNormal random variable X1.
         sigma1 : float
-            The standard deviation of the X1 LogNormal distribution.
+            The standard deviation of the LogNormal random variable X1.
         mu2 : float
-            The mean of the X2 LogNormal distribution.
+            The mean of the LogNormal random variable X2.
         sigma2 : float
-            The standard deviation of the X2 LogNormal distribution.
+            The standard deviation of the LogNormal random variable X2.
         mu3 : float
-            The mean of the X3 LogNormal distribution.
+            The mean of the LogNormal random variable X3.
         sigma3 : float
-            The standard deviation of the X3 LogNormal distribution.
+            The standard deviation of the LogNormal random variable X3.
         mu4 : float
-            The mean of the X4 LogNormal distribution.
+            The mean of the LogNormal random variable X4.
         sigma4 : float
-            The standard deviation of the X4 LogNormal distribution.
+            The standard deviation of the LogNormal random variable X4.
         mu5 : float
-            The mean of the X5 LogNormal distribution.
+            The mean of the LogNormal random variable X5.
         sigma5 : float
-            The standard deviation of the X5 LogNormal distribution.
+            The standard deviation of the LogNormal random variable X5.
         mu6 : float
-            The mean of the X6 LogNormal distribution.
+            The mean of the LogNormal random variable X6.
         sigma6 : float
-            The standard deviation of the X6 LogNormal distribution.
+            The standard deviation of the LogNormal random variable X6.
         """
 
         formula = "x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6"
 
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5", "x6"], [formula]
         )
-        X1 = ot.LogNormal(mu1, sigma1, 0.0)
+        parameters1 = ot.LogNormalMuSigma(mu1, sigma1, 0.0)
+        X1 = ot.ParametrizedDistribution(parameters1)
         X1.setDescription(["X1"])
-        X2 = ot.LogNormal(mu2, sigma2, 0.0)
+        parameters2 = ot.LogNormalMuSigma(mu2, sigma2, 0.0)
+        X2 = ot.ParametrizedDistribution(parameters2)
         X2.setDescription(["X2"])
-        X3 = ot.LogNormal(mu3, sigma3, 0.0)
+        parameters3 = ot.LogNormalMuSigma(mu3, sigma3, 0.0)
+        X3 = ot.ParametrizedDistribution(parameters3)
         X3.setDescription(["X3"])
-        X4 = ot.LogNormal(mu4, sigma4, 0.0)
+        parameters4 = ot.LogNormalMuSigma(mu4, sigma4, 0.0)
+        X4 = ot.ParametrizedDistribution(parameters4)
         X4.setDescription(["X4"])
-        X5 = ot.LogNormal(mu5, sigma5, 0.0)
+        parameters5 = ot.LogNormalMuSigma(mu5, sigma5, 0.0)
+        X5 = ot.ParametrizedDistribution(parameters5)
         X5.setDescription(["X5"])
-        X6 = ot.LogNormal(mu6, sigma6, 0.0)
+        parameters6 = ot.LogNormalMuSigma(mu6, sigma6, 0.0)
+        X6 = ot.ParametrizedDistribution(parameters6)
         X6.setDescription(["X6"])
 
         myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5, X6])
@@ -98,6 +112,7 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), threshold)
 
         name = "RP8"
-        probability = 0.000784
+        Y = X1 + 2 * X2 + 2 * X3 + X4 - 5 * X5 - 5 * X6
+        probability = Y.computeCDF(threshold)
         super(ReliabilityProblem8, self).__init__(name, thresholdEvent, probability)
         return None

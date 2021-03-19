@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""A demo of the IshigamiSensitivityBenchmarkProblem class."""
+"""A demo of the IshigamiSensitivity class."""
 
 import otbenchmark as otb
 import openturns as ot
 
-problem = otb.IshigamiSensitivityBenchmarkProblem()
+problem = otb.IshigamiSensitivity()
 distribution = problem.getInputDistribution()
 model = problem.getFunction()
 

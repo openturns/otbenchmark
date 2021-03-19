@@ -17,9 +17,13 @@ class ReliabilityProblem107(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP107.
 
         The event is {g(X) < threshold} where
+
         X = (x1, x2, ...., x10)
+
         g(X) = 5*sqrt(10) -(x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10).
+
         We have xi ~ Normal(0, 1) for i in {1, 2, ...,10}
+
         Parameters
         ----------
         threshold : float
@@ -33,7 +37,6 @@ class ReliabilityProblem107(ReliabilityBenchmarkProblem):
 
         formula = "5*sqrt(10)-(x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10)"
 
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10"], [formula]
         )

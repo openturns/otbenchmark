@@ -1,12 +1,10 @@
 """otbenchmark module."""
 from .ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
-from .AxialStressedBeamReliabilityBenchmarkProblem import (
-    AxialStressedBeamReliabilityBenchmarkProblem,
-)
+from .AxialStressedBeamReliability import AxialStressedBeamReliability
 from .SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
-from .IshigamiSensitivityBenchmarkProblem import IshigamiSensitivityBenchmarkProblem
+from .IshigamiSensitivity import IshigamiSensitivity
 from .DrawEvent import DrawEvent
-from .RminusSReliabilityBenchmarkProblem import RminusSReliabilityBenchmarkProblem
+from .RminusSReliability import RminusSReliability
 from .ReliabilityProblem53 import ReliabilityProblem53
 from .ReliabilityProblem22 import ReliabilityProblem22
 from .ReliabilityProblem24 import ReliabilityProblem24
@@ -28,22 +26,40 @@ from .ReliabilityProblem54 import ReliabilityProblem54
 from .ReliabilityProblem107 import ReliabilityProblem107
 from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
-from .FourBranchSerialSystemReliabilityBenchmarkProblem import (
-    FourBranchSerialSystemReliabilityBenchmarkProblem,
-)
 from .RequestedBBRCProblem import RequestedBBRCProblem
 from .BBRCDistribution import BBRCDistribution
+from .ReliabilityProblem60 import ReliabilityProblem60
+from .ReliabilityProblem77 import ReliabilityProblem77
+from .ReliabilityLibrary import ComputeLogRelativeError
+from .ReliabilityLibrary import ComputeAbsoluteError
+from .ReliabilityLibrary import ComputeRelativeError
+from .ReliabilityLibrary import ReliabilityBenchmarkProblemList
+from .SensitivityLibrary import SensitivityBenchmarkProblemList
+from .FORM import FORM
+from .SORM import SORM
+from .SubsetSampling import SubsetSampling
+from .ProbabilitySimulationAlgorithmFactory import ProbabilitySimulationAlgorithmFactory
+from .LHS import LHS
+from .ReliabilityBenchmarkMetaAlgorithm import ReliabilityBenchmarkMetaAlgorithm
+from .ReliabilityBenchmarkResult import ReliabilityBenchmarkResult
+from .FourBranchSerialSystemReliability import FourBranchSerialSystemReliability
+from .GaussianSumSensitivity import GaussianSumSensitivity
+from .GaussianProductSensitivity import GaussianProductSensitivity
+from .GSobolSensitivity import GSobolSensitivity
+from .ConditionalDistribution import ConditionalDistribution
+from .CrossCutFunction import CrossCutFunction
+from .CrossCutDistribution import CrossCutDistribution
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
 
 __all__ = [
     "ReliabilityBenchmarkProblem",
-    "AxialStressedBeamReliabilityBenchmarkProblem",
+    "AxialStressedBeamReliability",
     "SensitivityBenchmarkProblem",
-    "IshigamiSensitivityBenchmarkProblem",
+    "IshigamiSensitivity",
     "DrawEvent",
-    "RminusSReliabilityBenchmarkProblem",
+    "RminusSReliability",
     "ReliabilityProblem53",
     "ReliabilityProblem22",
     "ReliabilityProblem24",
@@ -65,8 +81,28 @@ __all__ = [
     "ReliabilityProblem107",
     "ReliabilityProblem91",
     "ReliabilityProblem63",
-    "FourBranchSerialSystemReliabilityBenchmarkProblem",
     "RequestedBBRCProblem",
     "BBRCDistribution",
+    "ReliabilityProblem60",
+    "ReliabilityProblem77",
+    "FORM",
+    "SORM",
+    "SubsetSampling",
+    "ComputeLogRelativeError",
+    "ComputeAbsoluteError",
+    "ComputeRelativeError",
+    "ReliabilityBenchmarkProblemList",
+    "FourBranchSerialSystemReliability",
+    "GaussianSumSensitivity",
+    "GaussianProductSensitivity",
+    "GSobolSensitivity",
+    "ConditionalDistribution",
+    "CrossCutFunction",
+    "CrossCutDistribution",
+    "ProbabilitySimulationAlgorithmFactory",
+    "LHS",
+    "ReliabilityBenchmarkMetaAlgorithm",
+    "ReliabilityBenchmarkResult",
+    "SensitivityBenchmarkProblemList",
 ]
 __version__ = "1.0"

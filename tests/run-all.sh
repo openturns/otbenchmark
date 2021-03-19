@@ -1,13 +1,17 @@
 #!/bin/sh
 
 set -xe
+cd ..
 
+# Show OT version
 echo "Python interpreter"
 echo `which python`
 echo "OpenTURNS version"
 python -c "import openturns; print(openturns.__version__); exit()"
 
-# Run tests
+# Notebooks in all subdirectories
+cd examples
+python ../tests/find-ipynb-files.py
 cd ..
 
 # Unit tests
@@ -17,5 +21,4 @@ python demo_ishigami.py
 python -m unittest discover .
 cd ..
 
-# Notebooks in all subdirectories
-python tests/find-ipynb-files.py
+

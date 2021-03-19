@@ -30,16 +30,29 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         Creates a reliability problem RP91.
 
         The event is {g(X) < threshold} where
+
         X = (x1, x2, x3, x4, x5)
-        g(X) use this link :
-            "https://rprepo.readthedocs.io/en/latest/reliability_problems.html#rp91".
+
+        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 + 0.11
+        * x3^2 + (7 / 378) * x4^2- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4
+
+        g2 = 84000 * x1 / sqrt(x3^2 + x4^2 - x3 * x4 + 3 * x5^2) - 1
+
+        g3 = 84000 * x1 / abs(x4) - 1
+
+        g(X) = min(g1, g2, g3)
+
         We have :
             x1 ~ Normal(mu1, sigma1)
+
             x2 ~ Normal(mu2, sigma2)
+
             x3 ~ Normal(mu3, sigma3)
+
             x4 ~ Normal(mu4, sigma4)
+
             x5 ~ Normal(mu5, sigma5)
-        ***
+
         Parameters
         ----------
         threshold : float
@@ -65,8 +78,11 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         sigma5 : float
             The standard deviation of the X5 gaussian distribution.
         """
-        s = "0.847+0.96*x2+0.986*x3-0.216*x4+0.077*x2^2+"
-        s = s + "0.11*x2^2+(7/378)*x3^2-x3*x2-0.106*x2*x4-0.11"
+        s = "0.847 + 0.96 * x2 + 0.986 * x3"
+        s += "- 0.216 * x4 + 0.077 * x2^2 + "
+        s += "0.11 * x3^2 + (7 / 378) * x4^2 "
+        s += "- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4"
+
         equations = ["var g1 := " + s]
         equations.append(
             "var g2 := 84000 * x1 / sqrt(x3^2 + x4^2 - x3 * x4 + 3 * x5^2) - 1"
@@ -77,16 +93,15 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         limitStateFunction = ot.SymbolicFunction(
             ["x1", "x2", "x3", "x4", "x5"], ["gsys"], formula
         )
-        print(formula)
         X1 = ot.Normal(mu1, sigma1)
         X1.setDescription(["X1"])
         X2 = ot.Normal(mu2, sigma2)
         X2.setDescription(["X2"])
-        X3 = ot.Normal(mu1, sigma1)
+        X3 = ot.Normal(mu3, sigma3)
         X3.setDescription(["X3"])
-        X4 = ot.Normal(mu2, sigma2)
+        X4 = ot.Normal(mu4, sigma4)
         X4.setDescription(["X4"])
-        X5 = ot.Normal(mu1, sigma1)
+        X5 = ot.Normal(mu5, sigma5)
         X5.setDescription(["X5"])
 
         myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5])

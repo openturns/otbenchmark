@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 EDF
 """
-Test for FourBranchSerialSystemReliabilityBenchmarkProblem class.
+Test for FourBranchSerialSystemReliability class.
 """
 import otbenchmark as otb
 import unittest
@@ -9,15 +9,15 @@ import numpy as np
 import openturns as ot
 
 
-class CheckFourBranchSerialSystemReliabilityBenchmarkProblem(unittest.TestCase):
-    def test_FourBranchSerialSystemReliabilityBenchmarkProblem(self):
-        problem = otb.FourBranchSerialSystemReliabilityBenchmarkProblem()
+class CheckFourBranchSerialSystemReliability(unittest.TestCase):
+    def test_FourBranchSerialSystemReliability(self):
+        problem = otb.FourBranchSerialSystemReliability()
         print(problem)
 
         # Check probability
         pf = problem.getProbability()
         pf_exacte = 0.0021859614549132322
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-14)
 
         # Check function
         event = problem.getEvent()
@@ -28,7 +28,7 @@ class CheckFourBranchSerialSystemReliabilityBenchmarkProblem(unittest.TestCase):
         np.testing.assert_allclose(Y[0], 2.9497474683058327)
 
     def test_UseCase(self):
-        problem = otb.RminusSReliabilityBenchmarkProblem()
+        problem = otb.RminusSReliability()
         event = problem.getEvent()
 
         # Create a Monte Carlo algorithm

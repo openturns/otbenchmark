@@ -13,53 +13,56 @@ import openturns as ot
 
 class ReliabilityProblem33(ReliabilityBenchmarkProblem):
     def __init__(
-        self,
-        threshold=0.0,
-        mu1=0.0,
-        sigma1=1.0,
-        mu2=0.0,
-        sigma2=1.0,
-        mu3=0.0,
-        sigma3=1.0,
+        self, threshold=0.0, mu=[0.0] * 3, sigma=[1.0] * 3,
     ):
         """
-        Creates a reliability problem RP110.
+        Creates a reliability problem RP33.
 
         The event is {g(X) < threshold} where
-        g(x1, x2) = min(g1, g2) with :
-            g1 = -x1 - x2 - x3 + 3 * sqrt(3)
-            g2 = -x3 + 3
+
+        g(x1, x2, x3) = min(g1, g2) with
+
+        g1 = -x1 - x2 - x3 + 3 * sqrt(3)
+
+        g2 = -x3 + 3
+
         We have :
-            x1 ~ Normal(mu1, sigma1)
-            x2 ~ Normal(mu2, sigma2)
-            x3 ~ Normal(mu3, sigma3).
-        ***
+            x1 ~ Normal(mu[0], sigma[0])
+
+            x2 ~ Normal(mu[1], sigma[1])
+
+            x3 ~ Normal(mu[2], sigma[2]).
+
         Parameters
         ----------
         threshold : float
             The threshold.
-        mu1 : float
-            The mean of the X1 gaussian distribution.
-        sigma1 : float
-            The standard deviation of the X1 gaussian distribution.
-        mu2 : float
-            The mean of the X2 gaussian distribution.
-        sigma2 : float
-            The standard deviation of the X2 gaussian distribution.
-        mu3 : float
-            The mean of the X3 gaussian distribution.
-        sigma3 : float
-            The standard deviation of the X3 gaussian distribution.
+        mu : sequence of floats
+            The list of 3 items representing the means of the gaussian distributions.
+        sigma : float
+            The list of 3 items representing the standard deviations of
+            the gaussian distributions.
         """
         formula = "min(-x1 - x2 - x3 + 3 * sqrt(3), -x3 + 3)"
-
-        print(formula)
         limitStateFunction = ot.SymbolicFunction(["x1", "x2", "x3"], [formula])
-        X1 = ot.Normal(mu1, sigma1)
+        inputDimension = len(mu)
+        if inputDimension != 3:
+            raise Exception(
+                "The dimension of mu is %d, but the expected dimension is 3."
+                % (inputDimension)
+            )
+
+        inputDimension = len(sigma)
+        if inputDimension != 3:
+            raise Exception(
+                "The dimension of sigma is %d, but the expected dimension is 3."
+                % (inputDimension)
+            )
+        X1 = ot.Normal(mu[0], sigma[0])
         X1.setDescription(["X1"])
-        X2 = ot.Normal(mu2, sigma2)
+        X2 = ot.Normal(mu[1], sigma[1])
         X2.setDescription(["X2"])
-        X3 = ot.Normal(mu3, sigma3)
+        X3 = ot.Normal(mu[2], sigma[2])
         X3.setDescription(["X3"])
 
         myDistribution = ot.ComposedDistribution([X1, X2, X3])

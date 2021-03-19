@@ -30,6 +30,28 @@ class CheckReliabilityProblem63(unittest.TestCase):
         assert type(Y) is ot.Point
         np.testing.assert_allclose(Y[0], -4.5)
 
+    def test_UseCase(self):
+        problem = otb.ReliabilityProblem63()
+        event = problem.getEvent()
+
+        # Create a Monte Carlo algorithm
+        experiment = ot.MonteCarloExperiment()
+        algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+        algo.setMaximumCoefficientOfVariation(0.05)
+        algo.setMaximumOuterSampling(int(1e5))
+        algo.run()
+
+        # Retrieve results
+        result = algo.getResult()
+        computed_pf = result.getProbabilityEstimate()
+        exact_pf = problem.getProbability()
+        print("exact_pf=", exact_pf)
+        print("computed_pf=", computed_pf)
+        samplesize = result.getOuterSampling() * result.getBlockSize()
+        print("Sample size : ", samplesize)
+        atol = 1.0 / np.sqrt(samplesize)
+        np.testing.assert_allclose(computed_pf, exact_pf, atol=atol)
+
 
 if __name__ == "__main__":
     unittest.main()
