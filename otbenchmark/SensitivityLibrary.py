@@ -39,5 +39,7 @@ def SensitivityBenchmarkProblemList():
         otb.FloodingSensitivity(),
         otb.MorrisSensitivity(),
         otb.NLOscillatorSensitivity(),
+        otb.BorgonovoSensitivity(),
+        otb.OakleyOHaganSensitivity(),
     ]
     return problemslist

@@ -55,6 +55,8 @@ from .SparsePolynomialChaosSensitivityAnalysis import (
     SparsePolynomialChaosSensitivityAnalysis,
 )
 from .BoreholeSensitivity import BoreholeSensitivity
+from .BorgonovoSensitivity import BorgonovoSensitivity
+from .OakleyOHaganSensitivity import OakleyOHaganSensitivity
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -114,5 +116,7 @@ __all__ = [
     "NLOscillatorSensitivity",
     "SparsePolynomialChaosSensitivityAnalysis",
     "BoreholeSensitivity",
+    "BorgonovoSensitivity",
+    "OakleyOHaganSensitivity",
 ]
 __version__ = "1.0"
