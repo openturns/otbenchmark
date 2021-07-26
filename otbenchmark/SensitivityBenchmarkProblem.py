@@ -37,9 +37,51 @@ class SensitivityBenchmarkProblem:
                                                firstOrderIndices,
                                                totalOrderIndices)
         """
+        dimension = distribution.getDimension()
+        if function.getInputDimension() != dimension:
+            raise ValueError(
+                "The input dimension of the function is %d"
+                "but the dimension of the distribution is %d"
+                % (dimension, function.getInputDimension())
+            )
+        if function.getOutputDimension() != 1:
+            raise ValueError(
+                "The output dimension of the function is %d"
+                % (function.getOutputDimension())
+            )
         self.name = name
         self.distribution = distribution
         self.function = function
+        if firstOrderIndices.getDimension() != dimension:
+            raise ValueError(
+                "The the dimension of the distribution is %d"
+                "but the dimension of the first order indices is %d"
+                % (dimension, firstOrderIndices.getDimension())
+            )
+        if totalOrderIndices.getDimension() != dimension:
+            raise ValueError(
+                "The the dimension of the distribution is %d"
+                "but the dimension of the total order indices is %d"
+                % (dimension, firstOrderIndices.getDimension())
+            )
+        for i in range(dimension):
+            if firstOrderIndices[i] < 0.0 or firstOrderIndices[i] > 1.0:
+                raise ValueError(
+                    "The first order indice of marginal %d"
+                    "%f, which is not in [0, 1]" % (i, firstOrderIndices[i])
+                )
+            if totalOrderIndices[i] < 0.0 or totalOrderIndices[i] > 1.0:
+                raise ValueError(
+                    "The total order indice of marginal %d"
+                    "is %f, which is not in [0, 1]" % (i, firstOrderIndices[i])
+                )
+            if totalOrderIndices[i] < firstOrderIndices[i]:
+                raise ValueError(
+                    "The total order indice of marginal %d"
+                    "is %f, which is greater than the first "
+                    "order indce %f" % (i, totalOrderIndices[i], firstOrderIndices[i])
+                )
+
         self.firstOrderIndices = firstOrderIndices
         self.totalOrderIndices = totalOrderIndices
         return None

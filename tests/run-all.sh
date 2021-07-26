@@ -11,6 +11,15 @@ python -c "import openturns; print(openturns.__version__); exit()"
 
 # Notebooks in all subdirectories
 cd examples
+python scripts/analytical_functions.py
+python scripts/approximation_methods.py
+python scripts/ishigami-classeOTPFun.py
+python scripts/main19_07.py
+python scripts/simulation_methods.py
+python scripts/test-computeCDF.py
+python scripts/testCrue-classeOTPFun.py
+python scripts/compute_reference_Morris_indices.py
+python scripts/generate_reference_Morris_parameters.py
 python ../tests/find-ipynb-files.py
 cd ..
 

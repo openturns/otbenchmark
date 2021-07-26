@@ -25,6 +25,7 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
         x[i] = Uniform(0.0, 1.0)
 
         for i = 0, ..., d-1.
+        The input random variables are independent.
 
         The default dimension is equal to 3.
 
@@ -36,6 +37,46 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
         Example
         -------
         problem  = GSobolSensitivity()
+
+        Analysis
+        --------
+
+        The dimension of the problem can be changed.
+        The exact sensitivity indices are computed from the vector a.
+
+        The function g has no derivative at X=(1/2,..., 1/2).
+        The function g is symmetric with respect to X=(1/2,..., 1/2).
+
+        When a[i] increases, the variable X[i] has a first order
+        indice closer to zero.
+
+        The detailed analysis is the following:
+        * if a[i] = 0, then the variable X[i] is ”important”,
+        since 0 ≤ gi (x) ≤ 2.
+        * if a[i] = 9, then the variable X[i] is ”non important”,
+        since 0.90 ≤ gi (x) ≤ 1.10.
+        * if a[i] = 99, then the variable X[i] is ”non significant”,
+        since 0.99 ≤ gi (x) ≤ 1.01.
+
+        The model was first introduced in (Saltelli, Sobol', 1995).
+
+        References
+        ----------
+        Saltelli, A., & Sobol', I. Y. M. (1994).
+        Sensitivity analysis for nonlinear mathematical models: numerical experience.
+        Matematicheskoe Modelirovanie, 7(11), 16-28.
+
+        Saltelli, A., & Sobol', I. M. (1995). About the use of rank transformation
+        in sensitivity analysis of model output.
+        Reliability Engineering & System Safety, 50(3), 225-239.
+
+        Marrel, A., Iooss, B., Van Dorpe, F., & Volkova, E. (2008).
+        An efficient methodology for modeling complex computer codes with
+        Gaussian processes.
+        Computational Statistics & Data Analysis, 52(10), 4731-4744.
+
+        Saltelli, A., Chan, K., & Scott, E. M. (Eds.). (2000).
+        Sensitivity analysis (Vol. 134). New York: Wiley.
         """
 
         dimension = len(a)
@@ -51,6 +92,7 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
             return ot.Point([Y])
 
         function = ot.PythonFunction(dimension, 1, GSobolModel)
+        function.setOutputDescription(["Y"])
 
         # Define the distribution
         distributionList = [ot.Uniform(0.0, 1.0) for i in range(dimension)]

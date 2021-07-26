@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
-# Copyright 2020 EDF
+# Copyright 2020 2021 - EDF
 """Class to define a benchmark problem."""
 
 import openturns as ot
@@ -47,6 +47,11 @@ class ReliabilityBenchmarkProblem:
         """
         self.name = name
         self.thresholdEvent = thresholdEvent
+        if probability < 0.0 or probability > 1.0:
+            raise ValueError(
+                "The probability is %f, which is not in the range [0, 1]."
+                % (probability)
+            )
         self.probability = probability
 
         return None

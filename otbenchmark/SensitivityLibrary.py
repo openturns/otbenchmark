@@ -34,5 +34,12 @@ def SensitivityBenchmarkProblemList():
         otb.GaussianProductSensitivity(),
         otb.GSobolSensitivity(),
         otb.IshigamiSensitivity(),
+        otb.BoreholeSensitivity(),
+        otb.DirichletSensitivity(),
+        otb.FloodingSensitivity(),
+        otb.MorrisSensitivity(),
+        otb.NLOscillatorSensitivity(),
+        otb.BorgonovoSensitivity(),
+        otb.OakleyOHaganSensitivity(),
     ]
     return problemslist

@@ -47,6 +47,17 @@ from .GSobolSensitivity import GSobolSensitivity
 from .ConditionalDistribution import ConditionalDistribution
 from .CrossCutFunction import CrossCutFunction
 from .CrossCutDistribution import CrossCutDistribution
+from .MorrisSensitivity import MorrisSensitivity
+from .DirichletSensitivity import DirichletSensitivity
+from .FloodingSensitivity import FloodingSensitivity
+from .NLOscillatorSensitivity import NLOscillatorSensitivity
+from .SparsePolynomialChaosSensitivityAnalysis import (
+    SparsePolynomialChaosSensitivityAnalysis,
+)
+from .BoreholeSensitivity import BoreholeSensitivity
+from .BorgonovoSensitivity import BorgonovoSensitivity
+from .OakleyOHaganSensitivity import OakleyOHaganSensitivity
+from .SensitivityBenchmarkMetaAlgorithm import SensitivityBenchmarkMetaAlgorithm
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -100,5 +111,14 @@ __all__ = [
     "ReliabilityBenchmarkMetaAlgorithm",
     "ReliabilityBenchmarkResult",
     "SensitivityBenchmarkProblemList",
+    "MorrisSensitivity",
+    "DirichletSensitivity",
+    "FloodingSensitivity",
+    "NLOscillatorSensitivity",
+    "SparsePolynomialChaosSensitivityAnalysis",
+    "BoreholeSensitivity",
+    "BorgonovoSensitivity",
+    "OakleyOHaganSensitivity",
+    "SensitivityBenchmarkMetaAlgorithm",
 ]
 __version__ = "1.0"

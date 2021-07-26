@@ -4,6 +4,7 @@ Manage reliability problems.
 """
 import otbenchmark as otb
 import numpy as np
+import sys
 
 
 def ComputeLogRelativeError(exact, computed, basis=10.0):
@@ -25,7 +26,10 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
     where log is the natural logarithm.
     This assumes that exact is different from zero.
 
-    The LRE is the number of base-B common digits in exact and computed.
+    The LRE is the number of base-B common digits in exact and computed,
+    if the exponents are the same.
+    Otherwise, the LRE can be large, even if the digits are very
+    different, e.g. exact = 1.00000000000 and computed = 0.99999999999.
 
     Parameters
     ----------
@@ -38,6 +42,8 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
     -------
     logRelativeError: float
         The LRE.
+        The maximum possible LRE is 15.65.
+        The minimum possible LRE is 0.
 
     Example
     -------
@@ -53,9 +59,15 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
     if abs(exact) == 0.0:
         # Avoid division by zero
         logRelativeError = 0.0
+    elif abs(exact) > sys.float_info.max:
+        # Avoid generating NANs
+        logRelativeError = 0.0
     else:
         relativeError = abs(exact - computed) / abs(exact)
+        relativeError = max(relativeError, sys.float_info.epsilon)
         logRelativeError = -np.log(relativeError) / np.log(basis)
+        # https://github.com/mbaudin47/otbenchmark/issues/86
+        logRelativeError = abs(max(logRelativeError, 0.0))
     return logRelativeError
 
 

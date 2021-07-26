@@ -1,24 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Pour OT v1.9
-
 from openturns.viewer import View
-from openturns import (
-    ComposedDistribution,
-    Gumbel,
-    RandomVector,
-    Normal,
-    TruncatedDistribution,
-    Uniform,
-    OpenTURNSPythonFunction,
-    Function,
-)
+import openturns as ot
 from math import sqrt
-from openturns import VisualTest
 
 
 # A parametrized class
-class CrueFunction(OpenTURNSPythonFunction):
+class CrueFunction(ot.OpenTURNSPythonFunction):
     # H_d : Hauteur de la digue
     # Z_b : Côte de la berge
     # L : Longueur de la rivière
@@ -47,21 +35,21 @@ L = 5.0e3  # Longueur de la rivière
 B = 300.0  # Largeur de la rivière
 
 myParametricWrapper = CrueFunction(H_d, Z_b, L, B)
-myWrapper = Function(myParametricWrapper)
+myWrapper = ot.Function(myParametricWrapper)
 
 # 2. Random vector definition
-Q = Gumbel(1.0 / 558.0, 1013.0)
-Q = TruncatedDistribution(Q, 0.0, TruncatedDistribution.LOWER)
-K_s = Normal(30.0, 7.5)
-K_s = TruncatedDistribution(K_s, 0.0, TruncatedDistribution.LOWER)
-Z_v = Uniform(49.0, 51.0)
-Z_m = Uniform(54.0, 56.0)
+Q = ot.Gumbel(1.0 / 558.0, 1013.0)
+Q = ot.TruncatedDistribution(Q, 0.0, ot.TruncatedDistribution.LOWER)
+K_s = ot.Normal(30.0, 7.5)
+K_s = ot.TruncatedDistribution(K_s, 0.0, ot.TruncatedDistribution.LOWER)
+Z_v = ot.Uniform(49.0, 51.0)
+Z_m = ot.Uniform(54.0, 56.0)
 
 # 3. Create the joint distribution function,
 #    the output and the event.
-inputDistribution = ComposedDistribution([Q, K_s, Z_v, Z_m])
-inputRandomVector = RandomVector(inputDistribution)
-outputRandomVector = RandomVector(myWrapper, inputRandomVector)
+inputDistribution = ot.ComposedDistribution([Q, K_s, Z_v, Z_m])
+inputRandomVector = ot.RandomVector(inputDistribution)
+outputRandomVector = ot.CompositeRandomVector(myWrapper, inputRandomVector)
 
 # 4. Get a sample of the output
 sampleS = outputRandomVector.getSample(500)
@@ -69,7 +57,7 @@ sampleS = outputRandomVector.getSample(500)
 # 5. Plot the histogram
 
 barsNumber = int(sqrt(sampleS.getSize()))
-histoGraph = VisualTest.DrawHistogram(sampleS, barsNumber)
+histoGraph = ot.HistogramFactory().build(sampleS).drawPDF()
 histoGraph.setTitle("Histogramme de la surverse")
 histoGraph.setXTitle("S (m)")
 histoGraph.setYTitle("Frequence")

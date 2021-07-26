@@ -93,6 +93,10 @@ numberOfProblems = len(benchmarkProblemList)
 for i in range(numberOfProblems):
     problem = benchmarkProblemList[i]
     name = problem.getName()
+    if name == "RP14":
+        continue
+    if name == "RP38":
+        continue
     pf_reference = problem.getProbability()
     print(i, ":", name, "...")
     try:

@@ -1,0 +1,19 @@
+# $ conda env create --file requirements.yml
+# $ conda env update --file requirements.yml
+name: otbenchmark
+dependencies:
+- numpy>=1.16.*
+- matplotlib>=2.*
+- scipy==1.*
+- openturns>=1.16
+- jupyterlab
+- nbconvert
+- black==19.10b0
+- pre-commit
+- flake8
+- pandas
+- tqdm
+- shapely
+- pip:
+  - black-nb
+
