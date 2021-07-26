@@ -19,8 +19,25 @@ class CheckReliabilityProblem75(unittest.TestCase):
 
         # Check probability
         pf = problem.getProbability()
-        pf_exacte = 0.0107
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
+
+        # P = P(3-x1*x2<0)
+        # It can be rewritten (taking symmetry into account) as:
+        # P = 2\int_0^{\infty}\int_{3/x1}^{\infty}\phi(x1)\phi(x2)dx2dx1
+        # Maple gives P=0.981929872154689055665574917800e-2
+        # This time we get something meaningfull using distribution's arithmetic
+        P = (ot.Normal() * ot.Normal()).computeComplementaryCDF(3.0)
+        print("(Distribution arithmetic) P=", P)
+        lower = ot.SymbolicFunction("x1", "3/x1")
+        upper = ot.SymbolicFunction("x1", "8.5")
+
+        def kernel(X):
+            return [ot.Normal(2).computePDF(X)]
+
+        half_p = ot.IteratedQuadrature().integrate(
+            ot.PythonFunction(2, 1, kernel), 0, 8.5, [lower], [upper]
+        )[0]
+        pf_exacte = 2 * half_p
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-9)
 
         # Check function
         event = problem.getEvent()
