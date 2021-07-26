@@ -66,7 +66,8 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
         relativeError = abs(exact - computed) / abs(exact)
         relativeError = max(relativeError, sys.float_info.epsilon)
         logRelativeError = -np.log(relativeError) / np.log(basis)
-        logRelativeError = max(logRelativeError, 0.0)
+        # https://github.com/mbaudin47/otbenchmark/issues/86
+        logRelativeError = abs(max(logRelativeError, 0.0))
     return logRelativeError
 
 
