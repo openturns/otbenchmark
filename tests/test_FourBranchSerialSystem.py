@@ -16,8 +16,20 @@ class CheckFourBranchSerialSystemReliability(unittest.TestCase):
 
         # Check probability
         pf = problem.getProbability()
-        pf_exacte = 0.0021859614549132322
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-14)
+
+        # The innermost integral has a closed-form:
+        # P = 1-4\int_{0}^{7/2}(Phi(3+0.2*u^2)-1/2)\phi(u)du
+        def f(x):
+            u = x[0]
+            pnormal = ot.DistFunc.pNormal(3 + 0.2 * u ** 2) - 0.5
+            return [pnormal * np.exp(-(u ** 2) / 2) * ot.SpecFunc.ISQRT2PI]
+
+        part_of_p = ot.GaussKronrod().integrate(
+            ot.PythonFunction(1, 1, f), ot.Interval(0, 7 / 2)
+        )[0]
+
+        pf_exacte = 1 - 4 * part_of_p
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-12)
 
         # Check function
         event = problem.getEvent()

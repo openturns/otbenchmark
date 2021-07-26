@@ -52,8 +52,7 @@ class FourBranchSerialSystemReliability(ReliabilityBenchmarkProblem):
         thresholdEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), 0.0)
 
         name = "Four-branch serial system"
-        beta = 2.85
-        probability = ot.Normal().computeComplementaryCDF(beta)
+        probability = 0.2222795066194439887212863444e-2
         super(FourBranchSerialSystemReliability, self).__init__(
             name, thresholdEvent, probability
         )
