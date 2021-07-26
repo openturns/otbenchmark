@@ -19,8 +19,21 @@ class CheckReliabilityProblem31(unittest.TestCase):
 
         # Check probability
         pf = problem.getProbability()
-        pf_exacte = 0.00018
-        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-15)
+
+        # The probability is equal to
+        # P=\int_{-\infty}^\infty \int_{2+256*x1^4}^\infty \phi(xi)\phi(x2)dx2dx1
+        # Maple gives P=0.322668120958769103770120768386e-2
+        lower = ot.SymbolicFunction("x1", "2+256*x1^4")
+        upper = ot.SymbolicFunction("x1", "8.5")
+
+        def kernel(X):
+            return [ot.Normal(2).computePDF(X)]
+
+        pf_exacte = ot.IteratedQuadrature().integrate(
+            ot.PythonFunction(2, 1, kernel), -8.5, 8.5, [lower], [upper]
+        )[0]
+
+        np.testing.assert_allclose(pf, pf_exacte, rtol=1.0e-6)
 
         # Check function
         event = problem.getEvent()
@@ -55,7 +68,8 @@ class CheckReliabilityProblem31(unittest.TestCase):
             % ((1 - alpha) * 100, computed_pf - pflen / 2, computed_pf + pflen / 2)
         )
         print("Sample size : ", samplesize)
-        atol = 1.0e2 / np.sqrt(samplesize)
+        atol = 1.0e-1 / np.sqrt(samplesize)
+        print("Absolute tolerance: ", atol)
         np.testing.assert_allclose(computed_pf, exact_pf, atol=atol)
 
 
