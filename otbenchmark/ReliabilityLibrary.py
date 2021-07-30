@@ -28,8 +28,12 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
 
     The LRE is the number of base-B common digits in exact and computed,
     if the exponents are the same.
-    Otherwise, the LRE can be large, even if the digits are very
-    different, e.g. exact = 1.00000000000 and computed = 0.99999999999.
+    Otherwise, the LRE can be large (i.e. the number of "common digits" can
+    be large), even if the digits are very
+    different.
+    For example, if exact = 1.00000000000 and computed = 0.99999999999,
+    then LRE = 11 even if there is no common digits in the two real
+    numbers.
 
     Parameters
     ----------
