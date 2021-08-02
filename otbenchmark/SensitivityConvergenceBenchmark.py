@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jul 30 16:55:05 2021
-
-@author: devel
+Perform a convergence study of a sensitivity analysis estimator.
 """
 import openturns as ot
-import otbenchmark as otb
 import numpy as np
 import time
 
@@ -16,10 +13,12 @@ class SensitivityConvergenceBenchmark:
         self,
         problem,
         metaSAAlgorithm,
-        numberOfExperiments=12,
+        numberOfExperiments=1000,
         numberOfRepetitions=10,
         maximum_elapsed_time=5.0,
         sample_size_initial=20,
+        estimator="Saltelli",
+        sampling_method="MonteCarlo",
     ):
         """
         Create a meta-algorithm to benchmark a sensitivity problem.
@@ -33,8 +32,12 @@ class SensitivityConvergenceBenchmark:
         numberOfExperiments : int
             Number of atomic experiments, i.e. the number of times the sample
             size increases.
+            The default is set to a very large value, so that the algorithm
+            stops depending on the elapsed time criteria.
         numberOfRepetitions : int
             Number of repetions for a given sample size.
+            The numberOfRepetitions attribute sets the number of vertical
+            points in each graph.
         maximum_elapsed_time : float
             The maximum number of seconds in the simulation.
         sample_size_initial : int
@@ -47,9 +50,26 @@ class SensitivityConvergenceBenchmark:
         self.numberOfRepetitions = numberOfRepetitions
         self.maximum_elapsed_time = maximum_elapsed_time
         self.sample_size_initial = sample_size_initial
+        if (
+            sampling_method != "MonteCarlo"
+            and sampling_method != "LHS"
+            and sampling_method != "QMC"
+        ):
+            raise ValueError(
+                "Unknown value of sampling method : %s" % (sampling_method)
+            )
+        self.sampling_method = sampling_method
+        if (
+            estimator != "Saltelli"
+            and estimator != "Jansen"
+            and estimator != "Martinez"
+            and estimator != "MauntzKucherenko"
+        ):
+            raise ValueError("Unknown value of estimator %s" % (estimator))
+        self.estimator = estimator
         return None
 
-    def computeError(self, sobolIndicesAlgorithm, sample_size):
+    def computeError(self, sample_size):
         """
         Compute the absolute error for the problem with Monte-Carlo sample.
 
@@ -66,8 +86,6 @@ class SensitivityConvergenceBenchmark:
 
         Parameters
         ----------
-        sobolIndicesAlgorithm : ot.SobolIndicesAlgorithm
-            The estimator based on a Monte-Carlo sample.
         sample_size: int
             The sample size.
 
@@ -78,39 +96,20 @@ class SensitivityConvergenceBenchmark:
         total_order_AE : ot.Point(dimension)
             The AE of the total order Sobol' indices.
         """
-        print("sample_size=", sample_size)
-        distribution = self.problem.getInputDistribution()
-        dimension = distribution.getDimension()
-        if True:
-            (
-                computed_first_order,
-                computed_total_order,
-            ) = self.metaSAAlgorithm.runSamplingEstimator(
-                sobolIndicesAlgorithm, sample_size
-            )
-        else:
-            (
-                computed_first_order,
-                computed_total_order,
-            ) = self.metaSAAlgorithm.runSamplingEstimatorB(
-                sobolIndicesAlgorithm, sample_size
-            )
-
+        (
+            computed_first_order,
+            computed_total_order,
+        ) = self.metaSAAlgorithm.runSamplingEstimator(
+            sample_size, self.estimator, self.sampling_method
+        )
         exact_first_order = self.problem.getFirstOrderIndices()
         exact_total_order = self.problem.getTotalOrderIndices()
-        first_order_AE = ot.Point(dimension)
-        total_order_AE = ot.Point(dimension)
-        for i in range(dimension):
-            first_order_AE[i] = otb.ComputeAbsoluteError(
-                exact_first_order[i], computed_first_order[i]
-            )
-            total_order_AE[i] = otb.ComputeAbsoluteError(
-                exact_total_order[i], computed_total_order[i]
-            )
+        first_order_AE = ot.Point(np.abs(exact_first_order - computed_first_order))
+        total_order_AE = ot.Point(np.abs(exact_total_order - computed_total_order))
         return first_order_AE, total_order_AE
 
     def computeSobolSample(
-        self, sobolIndicesAlgorithm, verbose=False,
+        self, verbose=False,
     ):
         """
         Repeat increasingly large Monte-Carlo Sobol' experiments.
@@ -125,8 +124,8 @@ class SensitivityConvergenceBenchmark:
 
         Parameters
         ----------
-        sobolIndicesAlgorithm : ot.SobolIndicesAlgorithm
-            The estimator based on a Monte-Carlo sample.
+        verbose : bool
+            Set to True to print intermediate messages.
 
         Returns
         -------
@@ -153,13 +152,10 @@ class SensitivityConvergenceBenchmark:
                     "Elapsed = %.1f (s), Sample size = %d" % (elapsedTime, sample_size)
                 )
             for j in range(self.numberOfRepetitions):
-                first_order_AE, total_order_AE = self.computeError(
-                    sobolIndicesAlgorithm, sample_size,
-                )
+                first_order_AE, total_order_AE = self.computeError(sample_size,)
                 sample_size_data.append([sample_size])
                 first_order_data.append(first_order_AE)
                 total_order_data.append(total_order_AE)
-                print(sample_size, first_order_AE, total_order_AE)
 
         elapsedTime = time.time() - startTime
         if verbose:
@@ -172,7 +168,7 @@ class SensitivityConvergenceBenchmark:
         return sample_size_table, first_order_table, total_order_table
 
     def plotConvergenceGrid(
-        self, sobolIndicesAlgorithm, verbose=False,
+        self, verbose=False,
     ):
         """
         Plot increasingly large Monte-Carlo Sobol' experiments.
@@ -187,8 +183,6 @@ class SensitivityConvergenceBenchmark:
 
         Parameters
         ----------
-        sobolIndicesAlgorithm : ot.SobolIndicesAlgorithm
-            The estimator based on a Monte-Carlo sample.
         verbose : bool
             If True, then prints intermediate messages.
 
@@ -201,7 +195,7 @@ class SensitivityConvergenceBenchmark:
             sample_size_table,
             first_order_table,
             total_order_table,
-        ) = self.computeSobolSample(sobolIndicesAlgorithm, verbose=verbose,)
+        ) = self.computeSobolSample(verbose=verbose,)
         # Create a table for the reference Monte-Carlo convergence rate.
         sample_size_initial = np.min(sample_size_table)
         sample_size_final = np.max(sample_size_table)
@@ -257,7 +251,7 @@ class SensitivityConvergenceBenchmark:
         return grid
 
     def plotConvergenceCurve(
-        self, sobolIndicesAlgorithm, verbose=False,
+        self, verbose=False,
     ):
         """
         Plot increasingly large Monte-Carlo Sobol' experiments.
@@ -272,9 +266,7 @@ class SensitivityConvergenceBenchmark:
 
         Parameters
         ----------
-        sobolIndicesAlgorithm : ot.SobolIndicesAlgorithm
-            The estimator based on a Monte-Carlo sample.
-                verbose : bool
+        verbose : bool
             If True, then prints intermediate messages.
 
         Returns
@@ -307,8 +299,11 @@ class SensitivityConvergenceBenchmark:
             expectedConvergence = [1.0 / np.sqrt(n) for n in sampleSizeArray]
 
         # Create plot
-        estimatorName = sobolIndicesAlgorithm.getClassName()
-        title = "%s, %s" % (self.problem.getName(), estimatorName)
+        title = "%s, %s, %s" % (
+            self.problem.getName(),
+            self.estimator,
+            self.sampling_method,
+        )
         graph = ot.Graph(title, "Sample size", "Absolute error", True, "topright")
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()

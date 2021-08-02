@@ -32,13 +32,7 @@ from .ReliabilityLibrary import ComputeLogRelativeError
 from .ReliabilityLibrary import ComputeAbsoluteError
 from .ReliabilityLibrary import ComputeRelativeError
 from .ReliabilityLibrary import ReliabilityBenchmarkProblemList
-from .SensitivityLibrary import (
-    SensitivityBenchmarkProblemList,
-    plot_Sobol_curve,
-    compute_AE_by_sampling,
-    compute_Sobol_table,
-    plot_Sobol_grid,
-)
+from .SensitivityLibrary import SensitivityBenchmarkProblemList
 from .FORM import FORM
 from .SORM import SORM
 from .SubsetSampling import SubsetSampling
@@ -118,10 +112,6 @@ __all__ = [
     "ReliabilityBenchmarkMetaAlgorithm",
     "ReliabilityBenchmarkResult",
     "SensitivityBenchmarkProblemList",
-    "plot_Sobol_curve",
-    "compute_AE_by_sampling",
-    "compute_Sobol_table",
-    "plot_Sobol_grid",
     "MorrisSensitivity",
     "DirichletSensitivity",
     "FloodingSensitivity",
