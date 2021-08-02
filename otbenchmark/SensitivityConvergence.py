@@ -19,6 +19,10 @@ class SensitivityConvergence:
         sample_size_initial=20,
         estimator="Saltelli",
         sampling_method="MonteCarlo",
+        use_sampling=True,
+        total_degree=2,
+        hyperbolic_quasinorm=0.5,
+        graphical_epsilon=2 * ot.SpecFunc.ScalarEpsilon,
     ):
         """
         Create a meta-algorithm to benchmark a sensitivity problem.
@@ -42,6 +46,10 @@ class SensitivityConvergence:
             The maximum number of seconds in the simulation.
         sample_size_initial : int
             The initial sample size.
+        graphical_epsilon : float
+            The value which is set as the minimum absolute error of Sobol' indices.
+            This allows to use logarithmic scale even if the absolute error is
+            exactly zero.
         """
         #
         self.problem = problem
@@ -67,6 +75,10 @@ class SensitivityConvergence:
         ):
             raise ValueError("Unknown value of estimator %s" % (estimator))
         self.estimator = estimator
+        self.use_sampling = use_sampling
+        self.total_degree = total_degree
+        self.hyperbolic_quasinorm = hyperbolic_quasinorm
+        self.graphical_epsilon = graphical_epsilon
         return None
 
     def computeError(self, sample_size):
@@ -96,16 +108,35 @@ class SensitivityConvergence:
         total_order_AE : ot.Point(dimension)
             The AE of the total order Sobol' indices.
         """
-        (
-            computed_first_order,
-            computed_total_order,
-        ) = self.metaSAAlgorithm.runSamplingEstimator(
-            sample_size, self.estimator, self.sampling_method
-        )
+        if self.use_sampling:
+            (
+                computed_first_order,
+                computed_total_order,
+            ) = self.metaSAAlgorithm.runSamplingEstimator(
+                sample_size, self.estimator, self.sampling_method
+            )
+        else:
+            (
+                computed_first_order,
+                computed_total_order,
+            ) = self.metaSAAlgorithm.runPolynomialChaosEstimator(
+                sample_size_train=sample_size,
+                sample_size_test=2,  # Bare minimum
+                total_degree=self.total_degree,
+                hyperbolic_quasinorm=self.hyperbolic_quasinorm,
+            )
         exact_first_order = self.problem.getFirstOrderIndices()
         exact_total_order = self.problem.getTotalOrderIndices()
         first_order_AE = ot.Point(np.abs(exact_first_order - computed_first_order))
         total_order_AE = ot.Point(np.abs(exact_total_order - computed_total_order))
+        # Set zero components to a minimum.
+        # This allows to use a log-scale when the estimator is very accurate and
+        # leads to a zero error.
+        distribution = self.problem.getInputDistribution()
+        dimension = distribution.getDimension()
+        for i in range(dimension):
+            first_order_AE[i] = max(first_order_AE[i], self.graphical_epsilon)
+            total_order_AE[i] = max(total_order_AE[i], self.graphical_epsilon)
         return first_order_AE, total_order_AE
 
     def computeSobolSample(
@@ -293,20 +324,20 @@ class SensitivityConvergence:
         sampling_method = ot.ResourceMap.GetAsString(
             "SobolIndicesExperiment-SamplingMethod"
         )
-        if sampling_method == "QMC":
-            expectedConvergence = [1.0 / n for n in sampleSizeArray]
-        else:
-            expectedConvergence = [1.0 / np.sqrt(n) for n in sampleSizeArray]
 
         # Create plot
-        title = "%s, %s, %s" % (
-            self.problem.getName(),
-            self.estimator,
-            self.sampling_method,
-        )
+        if self.use_sampling:
+            title = "%s, %s, %s" % (
+                self.problem.getName(),
+                self.estimator,
+                self.sampling_method,
+            )
+        else:
+            title = "%s, P.C., Degree=%d" % (self.problem.getName(), self.total_degree)
         graph = ot.Graph(title, "Sample size", "Absolute error", True, "topright")
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()
+        # Plot absolute error
         for marginal_index in range(dimension):
             for first_order_sobol_estimator in [True, False]:
                 # If first_order_sobol_estimator, then plot LRE of first order
@@ -327,14 +358,20 @@ class SensitivityConvergence:
                 cloud.setPointStyle("fsquare")
                 cloud.setLegend(label)
                 graph.add(cloud)
-        curve = ot.Curve(sampleSizeArray, expectedConvergence)
-        if sampling_method == "QMC":
-            reference_legend = r"$1/n$"
-        else:
-            reference_legend = r"$1/\sqrt{n}$"
-        curve.setLegend(reference_legend)
-        graph.add(curve)
-        graph.setColors(ot.Drawable_BuildDefaultPalette(2 + 2 * dimension))
+        # Plot expected convergence rate
+        if self.use_sampling:
+            if sampling_method == "QMC":
+                expectedConvergence = [1.0 / n for n in sampleSizeArray]
+            else:
+                expectedConvergence = [1.0 / np.sqrt(n) for n in sampleSizeArray]
+            curve = ot.Curve(sampleSizeArray, expectedConvergence)
+            if sampling_method == "QMC":
+                reference_legend = r"$1/n$"
+            else:
+                reference_legend = r"$1/\sqrt{n}$"
+            curve.setLegend(reference_legend)
+            graph.add(curve)
         graph.setLogScale(ot.GraphImplementation.LOGXY)
-        graph.setLegendPosition("bottomleft")
+        graph.setLegendPosition("topright")
+        graph.setColors(ot.Drawable_BuildDefaultPalette(2 + 2 * dimension))
         return graph

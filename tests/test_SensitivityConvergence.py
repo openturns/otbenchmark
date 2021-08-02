@@ -68,7 +68,7 @@ class CheckSensitivityConvergence(unittest.TestCase):
         ) = benchmark.computeSobolSample()
         print(total_order_table)
 
-    def test_plotConvergenceCurve(self):
+    def test_plotConvergenceCurveSampling(self):
         ot.Log.Show(ot.Log.NONE)
         problem = otb.IshigamiSensitivity()
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
@@ -82,8 +82,27 @@ class CheckSensitivityConvergence(unittest.TestCase):
             estimator="Saltelli",
             sampling_method="MonteCarlo",
         )
-        grid = benchmark.plotConvergenceCurve(verbose=True)
-        otv.View(grid)
+        graph = benchmark.plotConvergenceCurve(verbose=True)
+        otv.View(graph)
+
+    def test_plotConvergenceCurveChaos(self):
+        ot.Log.Show(ot.Log.NONE)
+        problem = otb.IshigamiSensitivity()
+        metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
+        benchmark = otb.SensitivityConvergence(
+            problem,
+            metaSAAlgorithm,
+            numberOfExperiments=12,
+            numberOfRepetitions=1,
+            maximum_elapsed_time=2.0,
+            sample_size_initial=20,
+            use_sampling=False,
+            total_degree=10,
+            hyperbolic_quasinorm=1.0,
+        )
+        graph = benchmark.plotConvergenceCurve(verbose=True)
+        graph.setLegendPosition("bottomleft")
+        otv.View(graph)
 
 
 if __name__ == "__main__":
