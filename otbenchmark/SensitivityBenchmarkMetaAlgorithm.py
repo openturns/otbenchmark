@@ -50,7 +50,9 @@ class SensitivityBenchmarkMetaAlgorithm:
         self.problem = problem
         return None
 
-    def runMonteCarloSamplingEstimator(self, sobolIndicesAlgorithm, sample_size):
+    def runSamplingEstimator(
+        self, sobolIndicesAlgorithm, sample_size, sampling_method="MonteCarlo"
+    ):
         """
         Runs the sampling sensitivity estimator and get the results.
 
@@ -62,6 +64,9 @@ class SensitivityBenchmarkMetaAlgorithm:
             The estimator based on a Monte-Carlo sample.
         sample_size: int
             The sample size.
+        sampling_method : str
+            The sampling method.
+            Must be "MonteCarlo" or "LHS" or "QMC".
 
         Returns
         -------
@@ -70,6 +75,16 @@ class SensitivityBenchmarkMetaAlgorithm:
         total_order: ot.Point(dimension)
             The Sobol' total order indices.
         """
+        if (
+            sampling_method == "MonteCarlo"
+            or sampling_method == "LHS"
+            or sampling_method == "QMC"
+        ):
+            ot.ResourceMap.SetAsString(
+                "SobolIndicesExperiment-SamplingMethod", sampling_method
+            )
+        else:
+            raise ValueError("Unknown value of %s" % (sampling_method))
         distribution = self.problem.getInputDistribution()
         model = self.problem.getFunction()
         inputDesign = ot.SobolIndicesExperiment(distribution, sample_size).generate()
@@ -79,12 +94,13 @@ class SensitivityBenchmarkMetaAlgorithm:
         total_order = sobolIndicesAlgorithm.getTotalOrderIndices()
         return first_order, total_order
 
-    def runQuasiMonteCarloSamplingEstimator(self, sobolIndicesAlgorithm, sample_size):
+    def runSamplingEstimatorB(
+        self, sobolIndicesAlgorithm, sample_size, sampling_method="MonteCarlo"
+    ):
         """
         Runs the sampling sensitivity estimator and get the results.
 
-        Uses Quasi-Monte-Carlo low discrepancy sequence based
-        on Sobol' sequence.
+        Uses a Monte-Carlo sample.
 
         Parameters
         ----------
@@ -92,6 +108,9 @@ class SensitivityBenchmarkMetaAlgorithm:
             The estimator based on a Monte-Carlo sample.
         sample_size: int
             The sample size.
+        sampling_method : str
+            The sampling method.
+            Must be "MonteCarlo" or "LHS" or "QMC".
 
         Returns
         -------
@@ -100,19 +119,25 @@ class SensitivityBenchmarkMetaAlgorithm:
         total_order: ot.Point(dimension)
             The Sobol' total order indices.
         """
+        if (
+            sampling_method == "MonteCarlo"
+            or sampling_method == "LHS"
+            or sampling_method == "QMC"
+        ):
+            ot.ResourceMap.SetAsString(
+                "SobolIndicesExperiment-SamplingMethod", sampling_method
+            )
+        else:
+            raise ValueError("Unknown value of %s" % (sampling_method))
         distribution = self.problem.getInputDistribution()
         model = self.problem.getFunction()
-        dimension = distribution.getDimension()
-        sequence = ot.SobolSequence(dimension)
-        restart = True
-        experiment = ot.LowDiscrepancyExperiment(
-            sequence, distribution, sample_size, restart
-        )
-        inputDesign = ot.SobolIndicesExperiment(experiment).generate()
+        inputDesign = ot.SobolIndicesExperiment(distribution, sample_size).generate()
         outputDesign = model(inputDesign)
-        sobolIndicesAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
-        first_order = sobolIndicesAlgorithm.getFirstOrderIndices()
-        total_order = sobolIndicesAlgorithm.getTotalOrderIndices()
+        sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
+            inputDesign, outputDesign, sample_size
+        )
+        first_order = sensitivityAnalysis.getFirstOrderIndices()
+        total_order = sensitivityAnalysis.getTotalOrderIndices()
         return first_order, total_order
 
     def runPolynomialChaosEstimator(

@@ -7,7 +7,6 @@ import otbenchmark as otb
 import openturns as ot
 import numpy as np
 import time
-import openturns.viewer as otv
 
 
 def SensitivityBenchmarkProblemList():
@@ -253,12 +252,8 @@ def plot_Sobol_grid(
 
     Returns
     -------
-    sample_size_table : ot.Sample(number_of_performed_experiments, 1)
-        The sample size of each experiment.
-    first_order_table : ot.Sample(number_of_performed_experiments, dimension)
-        The AE of the first order Sobol' indices.
-    total_order_table : ot.Sample(number_of_performed_experiments, dimension)
-        The AE of the total order Sobol' indices.
+    grid : ot.GridLayout
+        The grid of convergence Graphs.
     """
     sample_size_table, first_order_table, total_order_table = compute_Sobol_table(
         problem,
@@ -316,13 +311,7 @@ def plot_Sobol_grid(
                 row_index = 1
             graph.setLegendPosition("bottomleft")
             grid.setGraph(row_index, marginal_index, graph)
-    view = otv.View(grid)
-    figure = view.getFigure()
-    _ = figure.suptitle("%s, %s" % (problem.getName(), estimator))
-    figure.set_figwidth(10.0)
-    figure.set_figheight(5.0)
-    figure.subplots_adjust(wspace=0.4, hspace=0.4)
-    return figure
+    return grid
 
 
 def plot_Sobol_curve(
