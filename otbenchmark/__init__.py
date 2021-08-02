@@ -58,7 +58,8 @@ from .BoreholeSensitivity import BoreholeSensitivity
 from .BorgonovoSensitivity import BorgonovoSensitivity
 from .OakleyOHaganSensitivity import OakleyOHaganSensitivity
 from .SensitivityBenchmarkMetaAlgorithm import SensitivityBenchmarkMetaAlgorithm
-from .SensitivityConvergenceBenchmark import SensitivityConvergenceBenchmark
+from .SensitivityConvergence import SensitivityConvergence
+from .SensitivityDistribution import SensitivityDistribution
 
 # from .CentralDispersionBenchmarkProblem import
 # CentralDispersionBenchmarkProblem
@@ -121,6 +122,7 @@ __all__ = [
     "BorgonovoSensitivity",
     "OakleyOHaganSensitivity",
     "SensitivityBenchmarkMetaAlgorithm",
-    "SensitivityConvergenceBenchmark",
+    "SensitivityConvergence",
+    "SensitivityDistribution",
 ]
 __version__ = "1.0"

@@ -8,7 +8,7 @@ import numpy as np
 import time
 
 
-class SensitivityConvergenceBenchmark:
+class SensitivityConvergence:
     def __init__(
         self,
         problem,
@@ -211,13 +211,13 @@ class SensitivityConvergenceBenchmark:
         grid = ot.GridLayout(2, dimension)
         for marginal_index in range(dimension):
             for first_order_sobol_estimator in [True, False]:
-                # If first_order_sobol_estimator, then plot LRE of first order
+                # If first_order_sobol_estimator, then plot asolute error of first order
                 # Sobol' index,
-                # otherwise, plot LRE of total order Sobol' index
+                # otherwise, plot asolute error of total order Sobol' index.
                 if first_order_sobol_estimator:
-                    label = "$S_%d$" % (marginal_index)
+                    label = "$S_{%d}$" % (marginal_index)
                 else:
-                    label = "$T_%d$" % (marginal_index)
+                    label = "$T_{%d}$" % (marginal_index)
                 title = ""
                 graph = ot.Graph(
                     title,

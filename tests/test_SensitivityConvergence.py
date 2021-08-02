@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Test for SensitivityLibrary class.
+Test for SensitivityConvergence class.
 """
 import otbenchmark as otb
 import unittest
@@ -9,12 +9,12 @@ import openturns as ot
 import numpy as np
 
 
-class CheckSensitivityConvergenceBenchmark(unittest.TestCase):
+class CheckSensitivityConvergence(unittest.TestCase):
     def test_plotConvergenceGrid(self):
         ot.Log.Show(ot.Log.NONE)
         problem = otb.IshigamiSensitivity()
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
-        benchmark = otb.SensitivityConvergenceBenchmark(
+        benchmark = otb.SensitivityConvergence(
             problem,
             metaSAAlgorithm,
             numberOfExperiments=12,
@@ -31,7 +31,7 @@ class CheckSensitivityConvergenceBenchmark(unittest.TestCase):
         ot.Log.Show(ot.Log.NONE)
         problem = otb.IshigamiSensitivity()
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
-        benchmark = otb.SensitivityConvergenceBenchmark(
+        benchmark = otb.SensitivityConvergence(
             problem,
             metaSAAlgorithm,
             numberOfExperiments=12,
@@ -53,7 +53,7 @@ class CheckSensitivityConvergenceBenchmark(unittest.TestCase):
         ot.Log.Show(ot.Log.NONE)
         problem = otb.IshigamiSensitivity()
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
-        benchmark = otb.SensitivityConvergenceBenchmark(
+        benchmark = otb.SensitivityConvergence(
             problem,
             metaSAAlgorithm,
             numberOfExperiments=12,
@@ -72,7 +72,7 @@ class CheckSensitivityConvergenceBenchmark(unittest.TestCase):
         ot.Log.Show(ot.Log.NONE)
         problem = otb.IshigamiSensitivity()
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
-        benchmark = otb.SensitivityConvergenceBenchmark(
+        benchmark = otb.SensitivityConvergence(
             problem,
             metaSAAlgorithm,
             numberOfExperiments=12,
