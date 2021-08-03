@@ -68,7 +68,7 @@ class SensitivityBenchmarkMetaAlgorithm:
             The sample size.
         estimator : str
             The estimator.
-            Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko".
+            Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko", "Janon".
         sampling_method : str
             The sampling method.
             Must be "MonteCarlo" or "LHS" or "QMC".
@@ -97,17 +97,22 @@ class SensitivityBenchmarkMetaAlgorithm:
         experiment = ot.SobolIndicesExperiment(distribution, sample_size)
         inputDesign = experiment.generate()
         outputDesign = model(inputDesign)
-        if estimator == "Saltelli":
-            sobolAlgorithm = ot.SaltelliSensitivityAlgorithm()
-        elif estimator == "Jansen":
-            sobolAlgorithm = ot.JansenSensitivityAlgorithm()
-        elif estimator == "Martinez":
-            sobolAlgorithm = ot.MartinezSensitivityAlgorithm()
-        elif estimator == "MauntzKucherenko":
-            sobolAlgorithm = ot.MauntzKucherenkoSensitivityAlgorithm()
+        if estimator == "Janon":
+            sobolAlgorithm = otb.JanonSensitivityAlgorithm(
+                inputDesign, outputDesign, sample_size
+            )
         else:
-            raise ValueError("Unknown value of estimator %s" % (estimator))
-        sobolAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
+            if estimator == "Saltelli":
+                sobolAlgorithm = ot.SaltelliSensitivityAlgorithm()
+            elif estimator == "Jansen":
+                sobolAlgorithm = ot.JansenSensitivityAlgorithm()
+            elif estimator == "Martinez":
+                sobolAlgorithm = ot.MartinezSensitivityAlgorithm()
+            elif estimator == "MauntzKucherenko":
+                sobolAlgorithm = ot.MauntzKucherenkoSensitivityAlgorithm()
+            else:
+                raise ValueError("Unknown value of estimator %s" % (estimator))
+            sobolAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
         first_order = sobolAlgorithm.getFirstOrderIndices()
         total_order = sobolAlgorithm.getTotalOrderIndices()
         return first_order, total_order

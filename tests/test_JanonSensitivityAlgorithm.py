@@ -23,14 +23,7 @@ class CheckJanonSensitivityAlgorithm(unittest.TestCase):
         outputDesign = model(inputDesign)
 
         # Compute first order indices using the Janon estimator
-        if True:
-            sobolAlgorithm = otb.JanonSensitivityAlgorithm(
-                inputDesign, outputDesign, size
-            )
-        else:
-            sobolAlgorithm = ot.SaltelliSensitivityAlgorithm(
-                inputDesign, outputDesign, size
-            )
+        sobolAlgorithm = otb.JanonSensitivityAlgorithm(inputDesign, outputDesign, size)
         computed_first_order = sobolAlgorithm.getFirstOrderIndices()
         computed_total_order = sobolAlgorithm.getTotalOrderIndices()
 

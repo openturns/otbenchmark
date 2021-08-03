@@ -17,35 +17,48 @@ class CheckSensitivityBenchmarkMetaAlgorithm(unittest.TestCase):
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
         sample_size = 100000
         # By Monte-Carlo
-        (
-            computed_first_order,
-            computed_total_order,
-        ) = metaSAAlgorithm.runSamplingEstimator(sample_size)
-        atol = 1.0e1 / np.sqrt(sample_size)
-        np.testing.assert_allclose(exact_first_order, computed_first_order, atol=atol)
-        np.testing.assert_allclose(exact_total_order, computed_total_order, atol=atol)
-        print(exact_first_order - computed_first_order)
-        print(exact_total_order - computed_total_order)
-        # By Quasi-Monte-Carlo
-        (
-            computed_first_order,
-            computed_total_order,
-        ) = metaSAAlgorithm.runSamplingEstimator(sample_size, sampling_method="QMC")
-        atol = 1.0e3 / sample_size
-        np.testing.assert_allclose(exact_first_order, computed_first_order, atol=atol)
-        np.testing.assert_allclose(exact_total_order, computed_total_order, atol=atol)
-        print(exact_first_order - computed_first_order)
-        print(exact_total_order - computed_total_order)
+        for sampling_method in ["MonteCarlo", "LHS", "QMC"]:
+            print("sampling_method=", sampling_method)
+            (
+                computed_first_order,
+                computed_total_order,
+            ) = metaSAAlgorithm.runSamplingEstimator(
+                sample_size, sampling_method=sampling_method
+            )
+            print(exact_first_order - computed_first_order)
+            print(exact_total_order - computed_total_order)
+            if sampling_method == "QMC":
+                atol = 1.0e2 / sample_size
+            else:
+                atol = 1.0e1 / np.sqrt(sample_size)
+            np.testing.assert_allclose(
+                exact_first_order, computed_first_order, atol=atol
+            )
+            np.testing.assert_allclose(
+                exact_total_order, computed_total_order, atol=atol
+            )
         # By Martinez
-        (
-            computed_first_order,
-            computed_total_order,
-        ) = metaSAAlgorithm.runSamplingEstimator(sample_size, estimator="Martinez")
-        atol = 1.0e1 / np.sqrt(sample_size)
-        np.testing.assert_allclose(exact_first_order, computed_first_order, atol=atol)
-        np.testing.assert_allclose(exact_total_order, computed_total_order, atol=atol)
-        print(exact_first_order - computed_first_order)
-        print(exact_total_order - computed_total_order)
+        for estimator in [
+            "Saltelli",
+            "Jansen",
+            "MauntzKucherenko",
+            "Martinez",
+            "Janon",
+        ]:
+            print("estimator=", estimator)
+            (
+                computed_first_order,
+                computed_total_order,
+            ) = metaSAAlgorithm.runSamplingEstimator(sample_size, estimator=estimator)
+            atol = 1.0e1 / np.sqrt(sample_size)
+            np.testing.assert_allclose(
+                exact_first_order, computed_first_order, atol=atol
+            )
+            np.testing.assert_allclose(
+                exact_total_order, computed_total_order, atol=atol
+            )
+            print(exact_first_order - computed_first_order)
+            print(exact_total_order - computed_total_order)
 
 
 if __name__ == "__main__":

@@ -46,6 +46,19 @@ class SensitivityConvergence:
             The maximum number of seconds in the simulation.
         sample_size_initial : int
             The initial sample size.
+        estimator : str
+            The estimator.
+            Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko", "Janon".
+        sampling_method : str
+            The sampling method.
+            Must be "MonteCarlo" or "LHS" or "QMC".
+        use_sampling : bool
+            Set to True to use sampling methods.
+            Set to False to use polynomial chaos.
+        total_degree : int
+            The total degree of the polynomial chaos.
+        hyperbolic_quasinorm : float
+            The quasi-norm of the enumeration rule of the polynomial chaos.
         graphical_epsilon : float
             The value which is set as the minimum absolute error of Sobol' indices.
             This allows to use logarithmic scale even if the absolute error is
@@ -72,6 +85,7 @@ class SensitivityConvergence:
             and estimator != "Jansen"
             and estimator != "Martinez"
             and estimator != "MauntzKucherenko"
+            and estimator != "Janon"
         ):
             raise ValueError("Unknown value of estimator %s" % (estimator))
         self.estimator = estimator
