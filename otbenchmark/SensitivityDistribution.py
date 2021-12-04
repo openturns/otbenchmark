@@ -183,6 +183,8 @@ class SensitivityDistribution:
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()
         grid = ot.GridLayout(2, dimension)
+        exact_first_order = self.problem.getFirstOrderIndices()
+        exact_total_order = self.problem.getTotalOrderIndices()
 
         # For each estimator, compare the distribution and the sample distribution
         for marginal_index in range(dimension):
@@ -209,7 +211,16 @@ class SensitivityDistribution:
                 curve = marginalDistribution.drawPDF()
                 curve.setLegends(["Computed"])
                 graph.add(curve)
-                graph.setColors(ot.DrawableImplementation.BuildDefaultPalette(2))
+                # Plot exact Sobol' index on the X axis
+                if first_order_sobol_estimator:
+                    data = exact_first_order[marginal_index]
+                else:
+                    data = exact_total_order[marginal_index]
+                cloud = ot.Cloud([[data]], [[0.0]])
+                cloud.setLegend("Exact")
+                graph.add(cloud)
+                # Graphics options
+                graph.setColors(ot.DrawableImplementation.BuildDefaultPalette(3))
                 if first_order_sobol_estimator:
                     row_index = 0
                 else:
