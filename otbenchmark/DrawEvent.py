@@ -556,7 +556,7 @@ class DrawEvent:
                         plot = self.fillEventCrossCut(crossCutBounds, i, j, nX, nY)
                         graph.add(plot)
                     if drawLimitState:
-                        plot = self.drawLimitStateCrossCut(crossCutBounds, i, j, nY)
+                        plot = self.drawLimitStateCrossCut(crossCutBounds, i, j, nX, nY)
                         graph.add(plot)
                     if drawSample:
                         plot = self.drawSampleCrossCut(sampleSize, i, j)
