@@ -154,7 +154,8 @@ class SensitivityConvergence:
         return first_order_AE, total_order_AE
 
     def computeSobolSample(
-        self, verbose=False,
+        self,
+        verbose=False,
     ):
         """
         Repeat increasingly large Monte-Carlo Sobol' experiments.
@@ -197,7 +198,9 @@ class SensitivityConvergence:
                     "Elapsed = %.1f (s), Sample size = %d" % (elapsedTime, sample_size)
                 )
             for j in range(self.numberOfRepetitions):
-                first_order_AE, total_order_AE = self.computeError(sample_size,)
+                first_order_AE, total_order_AE = self.computeError(
+                    sample_size,
+                )
                 sample_size_data.append([sample_size])
                 first_order_data.append(first_order_AE)
                 total_order_data.append(total_order_AE)
@@ -213,7 +216,8 @@ class SensitivityConvergence:
         return sample_size_table, first_order_table, total_order_table
 
     def plotConvergenceGrid(
-        self, verbose=False,
+        self,
+        verbose=False,
     ):
         """
         Plot increasingly large Monte-Carlo Sobol' experiments.
@@ -240,7 +244,9 @@ class SensitivityConvergence:
             sample_size_table,
             first_order_table,
             total_order_table,
-        ) = self.computeSobolSample(verbose=verbose,)
+        ) = self.computeSobolSample(
+            verbose=verbose,
+        )
         # Create a table for the reference Monte-Carlo convergence rate.
         sample_size_initial = np.min(sample_size_table)
         sample_size_final = np.max(sample_size_table)
@@ -296,7 +302,8 @@ class SensitivityConvergence:
         return grid
 
     def plotConvergenceCurve(
-        self, verbose=False,
+        self,
+        verbose=False,
     ):
         """
         Plot increasingly large Monte-Carlo Sobol' experiments.
@@ -327,7 +334,9 @@ class SensitivityConvergence:
             sample_size_table,
             first_order_table,
             total_order_table,
-        ) = self.computeSobolSample(verbose=verbose,)
+        ) = self.computeSobolSample(
+            verbose=verbose,
+        )
         # Create a table for the reference Monte-Carlo convergence rate.
         sample_size_initial = np.min(sample_size_table)
         sample_size_final = np.max(sample_size_table)

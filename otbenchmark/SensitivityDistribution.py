@@ -159,7 +159,8 @@ class SensitivityDistribution:
         )
 
     def draw(
-        self, mean_distribution=False,
+        self,
+        mean_distribution=False,
     ):
         """
         Plot the distribution of the estimator and the distribution of the indices.

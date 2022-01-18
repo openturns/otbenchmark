@@ -4,7 +4,7 @@ scipy==1.7.*
 openturns>=1.16
 jupyterlab==3.0.16
 nbconvert==6.1.0
-black>=19.10b0
+black==21.12b0
 pre-commit
 flake8==3.8.4
 black-nb==0.5.0
