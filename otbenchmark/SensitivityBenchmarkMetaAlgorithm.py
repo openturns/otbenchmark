@@ -50,18 +50,28 @@ class SensitivityBenchmarkMetaAlgorithm:
         self.problem = problem
         return None
 
-    def runMonteCarloSamplingEstimator(self, sobolIndicesAlgorithm, sample_size):
+    def runSamplingEstimator(
+        self, sample_size, estimator="Saltelli", sampling_method="MonteCarlo"
+    ):
         """
         Runs the sampling sensitivity estimator and get the results.
 
-        Uses a Monte-Carlo sample.
+        We may let the user select the estimator by taking
+        e.g. the SaltelliSensitivityAlgorithm() as input argument,
+        and use setDesign(), but this currently fails:
+        https://github.com/openturns/openturns/issues/1884
+        This is why the estimator input argument is currently a string.
 
         Parameters
         ----------
-        sobolIndicesAlgorithm : ot.SobolIndicesAlgorithm
-            The estimator based on a Monte-Carlo sample.
         sample_size: int
             The sample size.
+        estimator : str
+            The estimator.
+            Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko", "Janon".
+        sampling_method : str
+            The sampling method.
+            Must be "MonteCarlo" or "LHS" or "QMC".
 
         Returns
         -------
@@ -70,49 +80,41 @@ class SensitivityBenchmarkMetaAlgorithm:
         total_order: ot.Point(dimension)
             The Sobol' total order indices.
         """
+        if (
+            sampling_method == "MonteCarlo"
+            or sampling_method == "LHS"
+            or sampling_method == "QMC"
+        ):
+            ot.ResourceMap.SetAsString(
+                "SobolIndicesExperiment-SamplingMethod", sampling_method
+            )
+        else:
+            raise ValueError(
+                "Unknown value of sampling method : %s" % (sampling_method)
+            )
         distribution = self.problem.getInputDistribution()
         model = self.problem.getFunction()
-        inputDesign = ot.SobolIndicesExperiment(distribution, sample_size).generate()
+        experiment = ot.SobolIndicesExperiment(distribution, sample_size)
+        inputDesign = experiment.generate()
         outputDesign = model(inputDesign)
-        sobolIndicesAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
-        first_order = sobolIndicesAlgorithm.getFirstOrderIndices()
-        total_order = sobolIndicesAlgorithm.getTotalOrderIndices()
-        return first_order, total_order
-
-    def runQuasiMonteCarloSamplingEstimator(self, sobolIndicesAlgorithm, sample_size):
-        """
-        Runs the sampling sensitivity estimator and get the results.
-
-        Uses Quasi-Monte-Carlo low discrepancy sequence based
-        on Sobol' sequence.
-
-        Parameters
-        ----------
-        sobolIndicesAlgorithm : ot.SobolIndicesAlgorithm
-            The estimator based on a Monte-Carlo sample.
-        sample_size: int
-            The sample size.
-
-        Returns
-        -------
-        first_order: ot.Point(dimension)
-            The Sobol' first order indices.
-        total_order: ot.Point(dimension)
-            The Sobol' total order indices.
-        """
-        distribution = self.problem.getInputDistribution()
-        model = self.problem.getFunction()
-        dimension = distribution.getDimension()
-        sequence = ot.SobolSequence(dimension)
-        restart = True
-        experiment = ot.LowDiscrepancyExperiment(
-            sequence, distribution, sample_size, restart
-        )
-        inputDesign = ot.SobolIndicesExperiment(experiment).generate()
-        outputDesign = model(inputDesign)
-        sobolIndicesAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
-        first_order = sobolIndicesAlgorithm.getFirstOrderIndices()
-        total_order = sobolIndicesAlgorithm.getTotalOrderIndices()
+        if estimator == "Janon":
+            sobolAlgorithm = otb.JanonSensitivityAlgorithm(
+                inputDesign, outputDesign, sample_size
+            )
+        else:
+            if estimator == "Saltelli":
+                sobolAlgorithm = ot.SaltelliSensitivityAlgorithm()
+            elif estimator == "Jansen":
+                sobolAlgorithm = ot.JansenSensitivityAlgorithm()
+            elif estimator == "Martinez":
+                sobolAlgorithm = ot.MartinezSensitivityAlgorithm()
+            elif estimator == "MauntzKucherenko":
+                sobolAlgorithm = ot.MauntzKucherenkoSensitivityAlgorithm()
+            else:
+                raise ValueError("Unknown value of estimator %s" % (estimator))
+            sobolAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
+        first_order = sobolAlgorithm.getFirstOrderIndices()
+        total_order = sobolAlgorithm.getTotalOrderIndices()
         return first_order, total_order
 
     def runPolynomialChaosEstimator(

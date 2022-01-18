@@ -80,7 +80,7 @@ The simplest use cas of the library is in [Analysis of the R-S case], which show
 
 The library currently has:
 * 26 reliability problems,
-* 4 sensitivity problems.
+* 11 sensitivity problems.
 
 One of the most useful feature of the library is to perform a benchmark that is, loop over the problems. In [Benchmark on a given set of problems], we run several algorithms on all the problems. The associated statistics are gathered in table, presented in [Benchmark the reliability solvers on the problems]. In [Check reference probabilities with Monte-Carlo], we compare the exact (reference) probability with a Monte-Carlo estimate with a large sample.
 

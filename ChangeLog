@@ -1,0 +1,20 @@
+== 0.2 release (in-progress) ==
+
+- Added Uncecomp 2021 examples in Jupyter Notebooks.
+- Created new sensitivity analysis test problems:
+    - Added Morris test function
+    - Added Borgonovo, Oakley O'Hagan functions
+    - Added SA Benchmark with SA meta-algorithms
+    - Added Dirichlet SA problem
+    - Added Flooding SA
+    - Added NLOscillator.
+    - Added SparsePolynomialChaosSensitivityAnalysis
+    - Added Borehole function for SA.
+- Fixed reference values of reliability problems: 
+  RP14, RP22, RP25, RP31, RP35, RP75, FourBranch.
+- Updated to OpenTURNS v1.17.
+
+== 0.1.1 release ==
+
+Initial version.
+
