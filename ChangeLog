@@ -1,5 +1,6 @@
 == 0.2 release (in-progress) ==
 
+- Fixed the number of X points in DrawEvent.draw() (PR #90)
 - Added Uncecomp 2021 examples in Jupyter Notebooks.
 - Created new sensitivity analysis test problems:
     - Added Morris test function
@@ -17,4 +18,3 @@
 == 0.1.1 release ==
 
 Initial version.
-
