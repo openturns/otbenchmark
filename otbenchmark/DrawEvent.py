@@ -123,7 +123,7 @@ class DrawEvent:
                     crossCutLowerBound = [lowerBound[i], lowerBound[j]]
                     crossCutUpperBound = [upperBound[i], upperBound[j]]
                     crossCutBounds = ot.Interval(crossCutLowerBound, crossCutUpperBound)
-                    graph = self.drawLimitStateCrossCut(crossCutBounds, i, j, nY)
+                    graph = self.drawLimitStateCrossCut(crossCutBounds, i, j, nX, nY)
                     index = i * (self.inputDimension - 1) + j
                     ax = fig.add_subplot(
                         self.inputDimension - 1, self.inputDimension - 1, index
