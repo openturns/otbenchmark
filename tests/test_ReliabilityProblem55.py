@@ -58,6 +58,5 @@ class CheckReliabilityProblem55(unittest.TestCase):
         atol = 1.0e2 / np.sqrt(samplesize)
         np.testing.assert_allclose(computed_pf, exact_pf, atol=atol)
 
-
 if __name__ == "__main__":
     unittest.main()

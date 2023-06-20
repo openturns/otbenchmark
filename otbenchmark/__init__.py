@@ -26,6 +26,8 @@ from .ReliabilityProblem54 import ReliabilityProblem54
 from .ReliabilityProblem107 import ReliabilityProblem107
 from .ReliabilityProblem91 import ReliabilityProblem91
 from .ReliabilityProblem63 import ReliabilityProblem63
+from .RequestedBBRCProblem import RequestedBBRCProblem
+from .BBRCDistribution import BBRCDistribution
 from .ReliabilityProblem60 import ReliabilityProblem60
 from .ReliabilityProblem77 import ReliabilityProblem77
 from .ReliabilityLibrary import ComputeLogRelativeError
@@ -93,6 +95,8 @@ __all__ = [
     "ReliabilityProblem107",
     "ReliabilityProblem91",
     "ReliabilityProblem63",
+    "RequestedBBRCProblem",
+    "BBRCDistribution",
     "ReliabilityProblem60",
     "ReliabilityProblem77",
     "FORM",
