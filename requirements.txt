@@ -2,7 +2,7 @@ numpy==1.21.*
 matplotlib==3.4.2
 scipy==1.7.*
 openturns>=1.16
-jupyterlab==3.0.17
+jupyterlab==3.6.7
 nbconvert==6.5.1
 black==21.12b0
 pre-commit
