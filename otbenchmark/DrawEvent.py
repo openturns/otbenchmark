@@ -177,7 +177,10 @@ class DrawEvent:
         upperBound = bounds.getUpperBound()
         x = LinearSample(lowerBound[0], upperBound[0], nX + 2)
         y = LinearSample(lowerBound[1], upperBound[1], nY + 2)
-        contour = ot.Contour(x, y, outputSample, levels, labels, drawLabels)
+        contour = ot.Contour(x, y, outputSample)
+        contour.setLevels(levels)
+        contour.setLabels(labels)
+        contour.setDrawLabels(drawLabels)
         graph.add(contour)
         return graph
 
