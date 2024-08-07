@@ -44,7 +44,7 @@ outputSample = outputVariableOfInterest.getSample(1000)
 
 # Get the empirical mean and standard deviations
 empiricalMean = outputSample.computeMean()
-empiricalSd = outputSample.computeStandardDeviationPerComponent()
+empiricalSd = outputSample.computeStandardDeviation()
 print("Mean=%f, Sd.Dev.=%f" % (empiricalMean[0], empiricalSd[0]))
 
 mu = a / 2.0
