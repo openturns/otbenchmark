@@ -106,7 +106,7 @@ class CheckReliabilityProblem14(unittest.TestCase):
         myCobyla = ot.Cobyla()
         # Resolution options:
         eps = 1e-2
-        myCobyla.setMaximumEvaluationNumber(1000)
+        myCobyla.setMaximumCallsNumber(1000)
         myCobyla.setMaximumAbsoluteError(eps)
         myCobyla.setMaximumRelativeError(eps)
         myCobyla.setMaximumResidualError(eps)

@@ -15,7 +15,7 @@ class CheckReliabilityBenchmarkMetaAlgorithm(unittest.TestCase):
         maximumResidualError = 1.0e-3
         maximumConstraintError = 1.0e-3
         nearestPointAlgorithm = ot.AbdoRackwitz()
-        nearestPointAlgorithm.setMaximumEvaluationNumber(maximumEvaluationNumber)
+        nearestPointAlgorithm.setMaximumCallsNumber(maximumEvaluationNumber)
         nearestPointAlgorithm.setMaximumAbsoluteError(maximumAbsoluteError)
         nearestPointAlgorithm.setMaximumRelativeError(maximumRelativeError)
         nearestPointAlgorithm.setMaximumResidualError(maximumResidualError)
