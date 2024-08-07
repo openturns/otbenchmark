@@ -67,7 +67,7 @@ class ProbabilitySimulationAlgorithmFactory:
         standardSpaceDesignPoint = resultFORM.getStandardSpaceDesignPoint()
         d = myDistribution.getDimension()
         myImportance = ot.Normal(d)
-        myImportance.setMean(standardSpaceDesignPoint)
+        myImportance.setMu(standardSpaceDesignPoint)
         experiment = ot.ImportanceSamplingExperiment(myImportance)
         standardEvent = ot.StandardEvent(event)
         algo = ot.ProbabilitySimulationAlgorithm(standardEvent, experiment)
