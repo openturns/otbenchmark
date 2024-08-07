@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/mbaudin47/otbenchmark.svg?style=svg)](https://circleci.com/gh/mbaudin47/otbenchmark)
+[![GHA](https://github.com/openturns/otbenchmark/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/openturns/otbenchmark/actions/workflows/build.yml)
 
 # otbenchmark
 

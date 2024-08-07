@@ -1,0 +1,24 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  conda-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+      - name: Install
+        shell: bash -l {0}
+        run: conda install -y openturns scipy matplotlib-base flake8 black nb_black
+      - name: Lint
+        shell: bash -l {0}
+        run: |
+          black --check otbenchmark --config pyproject.toml
+          flake8 otbenchmark
+          black-nb --check examples
+          black-nb --check examples-on-server
+      - name: Test
+        shell: bash -l {0}
+        run: |
+          cd tests && bash run-all.sh && cd -
