@@ -119,7 +119,7 @@ class CheckReliabilityProblem14(unittest.TestCase):
         standardSpaceDesignPoint = resultFORM.getStandardSpaceDesignPoint()
         dimension = distribution.getDimension()
         myImportance = ot.Normal(dimension)
-        myImportance.setMean(standardSpaceDesignPoint)
+        myImportance.setMu(standardSpaceDesignPoint)
         experiment = ot.ImportanceSamplingExperiment(myImportance)
         standardEvent = ot.StandardEvent(event)
         algo = ot.ProbabilitySimulationAlgorithm(standardEvent, experiment)
