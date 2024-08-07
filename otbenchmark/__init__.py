@@ -1,4 +1,5 @@
 """otbenchmark module."""
+
 from .ReliabilityBenchmarkProblem import ReliabilityBenchmarkProblem
 from .AxialStressedBeamReliability import AxialStressedBeamReliability
 from .SensitivityBenchmarkProblem import SensitivityBenchmarkProblem

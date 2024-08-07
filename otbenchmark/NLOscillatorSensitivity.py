@@ -124,17 +124,9 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
             gamma = ms / mp
             xi_a = 0.5 * (xip + xis)
             theta = 1.0 / omegaa * (omegap - omegas)
-            t1 = np.pi * S0 / (4.0 * xis * omegas ** 3)
-            t2 = (
-                xi_a
-                * xis
-                / (xip * xis * (4.0 * xi_a ** 2 + theta ** 2) + gamma * xi_a ** 2)
-            )
-            t3 = (
-                (xip * omegap ** 3 + xis * omegas ** 3)
-                * omegap
-                / (4.0 * xi_a * omegaa ** 4)
-            )
+            t1 = np.pi * S0 / (4.0 * xis * omegas**3)
+            t2 = xi_a * xis / (xip * xis * (4.0 * xi_a**2 + theta**2) + gamma * xi_a**2)
+            t3 = (xip * omegap**3 + xis * omegas**3) * omegap / (4.0 * xi_a * omegaa**4)
             F = fs - 3.0 * ks * np.sqrt(t1 * t2 * t3)
             return [F]
 
