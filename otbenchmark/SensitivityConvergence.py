@@ -291,7 +291,7 @@ class SensitivityConvergence:
                 curve = ot.Curve(sampleSizeArray, expectedConvergence)
                 curve.setLegend(r"$1/\sqrt{n}$")
                 graph.add(curve)
-                graph.setColors(ot.Drawable_BuildDefaultPalette(2))
+                graph.setColors(ot.Drawable.BuildDefaultPalette(2))
                 graph.setLogScale(ot.GraphImplementation.LOGXY)
                 if first_order_sobol_estimator:
                     row_index = 0
@@ -396,5 +396,5 @@ class SensitivityConvergence:
             graph.add(curve)
         graph.setLogScale(ot.GraphImplementation.LOGXY)
         graph.setLegendPosition("topright")
-        graph.setColors(ot.Drawable_BuildDefaultPalette(2 + 2 * dimension))
+        graph.setColors(ot.Drawable.BuildDefaultPalette(2 + 2 * dimension))
         return graph
