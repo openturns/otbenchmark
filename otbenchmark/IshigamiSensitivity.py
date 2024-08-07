@@ -30,16 +30,16 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
             total order Sobol' indices.
 
         """
-        var = 1.0 / 2 + a ** 2 / 8 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8 / 18
-        S1 = (1.0 / 2 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8 / 50) / var
-        S2 = (a ** 2 / 8) / var
+        var = 1.0 / 2 + a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18
+        S1 = (1.0 / 2 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 50) / var
+        S2 = (a**2 / 8) / var
         S3 = 0
-        S13 = b ** 2 * np.pi ** 8 / 2 * (1.0 / 9 - 1.0 / 25) / var
+        S13 = b**2 * np.pi**8 / 2 * (1.0 / 9 - 1.0 / 25) / var
         exact = {
             "expectation": a / 2,
             "variance": var,
-            "S1": (1.0 / 2 + b * np.pi ** 4 / 5 + b ** 2 * np.pi ** 8.0 / 50) / var,
-            "S2": (a ** 2 / 8) / var,
+            "S1": (1.0 / 2 + b * np.pi**4 / 5 + b**2 * np.pi**8.0 / 50) / var,
+            "S2": (a**2 / 8) / var,
             "S3": 0,
             "S12": 0,
             "S23": 0,
