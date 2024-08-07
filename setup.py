@@ -38,7 +38,7 @@ setup(
         "Topic :: Scientific/Engineering",
     ],
     license="LGPL",
-    url="https://github.com/mbaudin47/otbenchmark",
+    url="https://github.com/openturns/otbenchmark",
     include_package_data=True,
     maintainer="Michaël Baudin",
     maintainer_email="michael.baudin@edf.fr",
