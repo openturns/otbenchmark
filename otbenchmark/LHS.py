@@ -5,8 +5,7 @@ Create a LHS object.
 
 import openturns as ot
 
-
-class LHS(ot.LHS):
+class LHS(ot.ProbabilitySimulationAlgorithm):
     def __init__(self, problem):
         """
         Creates a LHS algorithm.
@@ -17,5 +16,4 @@ class LHS(ot.LHS):
             The problem.
         """
         event = problem.getEvent()
-        super(LHS, self).__init__(event)
-        return None
+        super(LHS, self).__init__(event, ot.LHSExperiment())
