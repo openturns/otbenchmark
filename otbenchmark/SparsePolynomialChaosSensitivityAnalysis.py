@@ -145,8 +145,9 @@ class SparsePolynomialChaosSensitivityAnalysis:
         experiment = ot.MonteCarloExperiment(distribution, self.sample_size_test)
         inputTest = experiment.generate()
         outputTest = model(inputTest)
-        val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-        predictivity_coefficient = val.computePredictivityFactor()[0]
+        predictions = metamodel(inputTest)
+        val = ot.MetaModelValidation(outputTest, predictions)
+        predictivity_coefficient = val.computeR2Score()[0]
         if verbose:
             print("Q2=%.2f%%" % (100 * predictivity_coefficient))
 

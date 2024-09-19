@@ -15,7 +15,7 @@ jobs:
         shell: bash -l {0}
         run: |
           black --check otbenchmark --config pyproject.toml
-          flake8 otbenchmark
+          flake8 otbenchmark doc/examples --max-line-length 120
       - name: Test
         shell: bash -l {0}
         run: |
@@ -25,7 +25,7 @@ jobs:
         shell: bash -l {0}
         run: |
           sudo apt install -y texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra
-          make html -C doc
+          make html SPHINXOPTS="-W -T -j3" -C doc
       - name: Upload
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |

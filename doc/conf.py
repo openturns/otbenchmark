@@ -15,6 +15,18 @@ import os
 import sys
 import subprocess
 
+import sphinx_gallery
+try:
+    from packaging.version import Version
+except ImportError:
+    from pkg_resources import parse_version as Version
+
+try:
+    import joblib
+    have_joblib = True
+except ImportError:
+    have_joblib = False
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -37,6 +49,9 @@ sphinx_gallery_conf = {
     'gallery_dirs': ['auto_examples'],
     'show_signature': False,
 }
+
+if Version(sphinx_gallery.__version__) >= Version("0.17.0"):
+    sphinx_gallery_conf["parallel"] = have_joblib
 
 autodoc_default_options = {
     "members": None,

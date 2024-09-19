@@ -13,3 +13,4 @@ pandas<2.0
 tqdm
 shapely
 lxml-html-clean
+joblib
