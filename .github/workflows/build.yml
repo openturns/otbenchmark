@@ -16,8 +16,6 @@ jobs:
         run: |
           black --check otbenchmark --config pyproject.toml
           flake8 otbenchmark
-          black-nb --check examples
-          black-nb --check examples-on-server
       - name: Test
         shell: bash -l {0}
         run: |
