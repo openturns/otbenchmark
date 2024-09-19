@@ -34,13 +34,11 @@ class SensitivityBenchmarkProblem:
         totalOrderIndices : ot.Point
             The total order indices.
 
-        Example
-        -------
-        problem  = SensitivityBenchmarkProblem(name,
-                                               distribution,
-                                               function,
-                                               firstOrderIndices,
-                                               totalOrderIndices)
+        Examples
+        --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.SensitivityBenchmarkProblem(name, distribution, function,
+        ...     firstOrderIndices, totalOrderIndices)  # doctest: +SKIP
         """
         dimension = distribution.getDimension()
         if function.getInputDimension() != dimension:

@@ -65,7 +65,7 @@ class ConditionalDistribution(ot.PythonDistribution):
         The dimension of Y is the dimension of X minus the number
         of conditioned indices:
 
-            dimension(Y) = dimension(X) - len(conditionalIndices)
+        dimension(Y) = dimension(X) - len(conditionalIndices)
 
         Computing the CDF of the distribution requires a numerical integration.
         This is done with IteratedQuadrature based on the univariate GaussKronrod
@@ -95,17 +95,16 @@ class ConditionalDistribution(ot.PythonDistribution):
         Examples
         --------
         # The random variable is (X0, X1, X2)
-        distribution = ot.Normal(3)
+        >>> import openturns as ot
+        >>> import otbenchmark as otb
+        >>> distribution = ot.Normal(3)
         # We condition X = (X0, X1, X2) given X1=2.0, X2=3.0
-        conditionalIndices = [1, 2]
-        conditionalRefencePoint = [2.0, 3.0]
-        conditionalDistribution = ot.Distribution(
-            otbenchmark.ConditionalDistribution(
-                distribution, conditionalIndices, conditionalRefencePoint
-            )
-        )
+        >>> conditionalIndices = [1, 2]
+        >>> conditionalRefencePoint = [2.0, 3.0]
+        >>> conditionalDistribution = ot.Distribution(otb.ConditionalDistribution(
+        ...     distribution, conditionalIndices, conditionalRefencePoint))
         # PDF
-        computed = conditionalDistribution.computePDF([1.0])
+        >>>  computed = conditionalDistribution.computePDF([1.0])
         """
         if len(conditionalIndices) != len(conditionalRefencePoint):
             raise ValueError(
@@ -296,22 +295,24 @@ class ConditionalDistribution(ot.PythonDistribution):
         so that
 
         X[i] = X[i] if i is conditionned
-                       conditionalRefencePoint[i] otherwise,
+        conditionalRefencePoint[i] otherwise,
 
         for i = 0, 1, ..., dimension - 1.
 
         The following algorithm implements this:
 
-        X = []
-        referenceIndex = 0
-        conditionalIndex = 0
-        for i in range(self.extendedDimension):
-            if i in self.conditionalIndices:
-                X.append(self.conditionalRefencePoint[referenceIndex])
-                referenceIndex += 1
-            else:
-                X.append(X[conditionalIndex])
-                conditionalIndex += 1
+        .. code-block:: python
+
+            X = []
+            referenceIndex = 0
+            conditionalIndex = 0
+            for i in range(self.extendedDimension):
+                if i in self.conditionalIndices:
+                    X.append(self.conditionalRefencePoint[referenceIndex])
+                    referenceIndex += 1
+                else:
+                    X.append(X[conditionalIndex])
+                    conditionalIndex += 1
 
         The actual code is, however, vectorized using numpy.
 

@@ -18,16 +18,16 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
 
         g(x) = (Q/(Ks*B*sqrt((Zm-Zv)/L)))^(3.0/5.0)+Zv-Zb-Hd
 
-        where:
+        with:
 
-            Q : maximum annual flowrate (m3/s)
-            Ks : Strickler coefficient
-            Zv : downstream riverbed level (m)
-            Zm : upstream riverbed level (m)
-            L : Length of the river in meters
-            B : Width of the river in meters
-            Hd : height of the dyke (m)
-            Zb : the height of the bank (m)
+        - Q : maximum annual flowrate (m3/s)
+        - Ks : Strickler coefficient
+        - Zv : downstream riverbed level (m)
+        - Zm : upstream riverbed level (m)
+        - L : Length of the river in meters
+        - B : Width of the river in meters
+        - Hd : height of the dyke (m)
+        - Zb : the height of the bank (m)
 
         The input random variables are independent.
 
@@ -35,13 +35,13 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
         ----------
         None.
 
-        Example
-        -------
-        problem  = FloodingSensitivity()
-
-        Analysis
+        Examples
         --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.FloodingSensitivity()
 
+        Notes
+        -----
         The dimension of this problem cannot be changed.
 
         The model was first introduced in (Iooss, 2015).
@@ -50,7 +50,7 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
 
         * The model has almost no interactions.
         * The most important variable is Q, with first order indice
-        approximately equal to 0.4.
+          approximately equal to 0.4.
         * The variables L and B are insignificant.
 
         The reference Sobol' indices were computed from a sparse
@@ -66,15 +66,15 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
         References
         ----------
         * Iooss, B., Lemaître, P.
-        A review on global sensitivity analysis methods.
-        In: Meloni, C., Dellino, G. (eds.) Uncertainty Management
-        in Simulation-Optimization of Complex Systems.
-        Algorithms and Applications. Springer, New York (2015)
+          A review on global sensitivity analysis methods.
+          In: Meloni, C., Dellino, G. (eds.) Uncertainty Management
+          in Simulation-Optimization of Complex Systems.
+          Algorithms and Applications. Springer, New York (2015)
 
         * "OpenTURNS: An industrial software for uncertainty quantification
-        in simulation".
-        Baudin, M., Dutfoy, A., Looss, B., Popelin, A.-L. 2017.
-        Handbook of Uncertainty Quantification. pp. 2001-2038
+          in simulation".
+          Baudin, M., Dutfoy, A., Looss, B., Popelin, A.-L. 2017.
+          Handbook of Uncertainty Quantification. pp. 2001-2038
         """
 
         formulas = ["(Q / (Ks * B * sqrt((Zm - Zv) / L)))^(3.0 / 5.0) + Zv - Zb - Hd"]

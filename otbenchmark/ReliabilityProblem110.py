@@ -20,16 +20,9 @@ class ReliabilityProblem110(ReliabilityBenchmarkProblem):
 
         g(x1, x2) = min(g1, g2) with :
 
-            if(x1 <= 3.5) :
-                g1 = 0.85 - 0.1 * x1
-            else :
-                g1 = 4 - x1
-            and
+        g1 = 0.85 - 0.1 * x1 if x1 <= 3.5 else g1 = 4 - x1
 
-            if(x2 <= 2) :
-                g2 = 2.3 - x2
-            else :
-                g2 = 0.5 - 0.1 * x2
+        g2 = 2.3 - x2 if x2 <= 2 else g2 = 0.5 - 0.1 * x2
 
         We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
 

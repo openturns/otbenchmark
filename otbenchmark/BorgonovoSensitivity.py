@@ -16,31 +16,32 @@ class BorgonovoSensitivity(SensitivityBenchmarkProblem):
 
         The function is defined by the equation:
 
-        g(x) = x1 * x2 + x3
+        .. math::
+            g(x) = x1 * x2 + x3
 
         where x1, x2, x3 ~ U(0, 1).
 
         The input random variables are independent.
 
-        Example
-        -------
-        problem  = BorgonovoSensitivity()
-
-        Analysis
+        Examples
         --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.BorgonovoSensitivity()
 
+        Notes
+        -----
         The dimension and parameters of this problem cannot be changed.
         The Sobol' sensitivity indices are exact.
 
         The model was first introduced in (Borgonovo, 2017).
 
-        Reference
-        ---------
-        Borgonovo, Emanuele. "Sensitivity analysis."
-        An Introduction for the Management Scientist.
-        International Series in Operations Research and Management Science.
-        Cham, Switzerland: Springer (2017).
-        p.18 and p.157.
+        References
+        ----------
+        * Borgonovo, Emanuele. "Sensitivity analysis."
+          An Introduction for the Management Scientist.
+          International Series in Operations Research and Management Science.
+          Cham, Switzerland: Springer (2017).
+          p.18 and p.157.
         """
 
         dimension = 3

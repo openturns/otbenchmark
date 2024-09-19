@@ -63,9 +63,6 @@ from .SensitivityConvergence import SensitivityConvergence
 from .SensitivityDistribution import SensitivityDistribution
 from .JanonSensitivityAlgorithm import JanonSensitivityAlgorithm
 
-# from .CentralDispersionBenchmarkProblem import
-# CentralDispersionBenchmarkProblem
-
 __all__ = [
     "ReliabilityBenchmarkProblem",
     "AxialStressedBeamReliability",

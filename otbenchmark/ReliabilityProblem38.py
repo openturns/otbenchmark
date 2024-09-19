@@ -38,24 +38,25 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, x3, x4, x5, x6, x7)
 
-        g(X) = 15.59 * 1e4 - x1 *x2^3 / (2 * x3^3)
-        * ((x4^2 - 4 * x5 * x6 * x7^2 +x4 * (x6 + 4 * x5 + 2 *x6 * x7))
-        / (x4 * x5 * (x4 + x6 + 2 *x6 *x7)))
+        .. math::
+            g(X) = 15.59 * 1e4 - x1 *x2^3 / (2 * x3^3)
+            * ((x4^2 - 4 * x5 * x6 * x7^2 +x4 * (x6 + 4 * x5 + 2 *x6 * x7))
+            / (x4 * x5 * (x4 + x6 + 2 *x6 *x7)))
 
         We have :
-            x1 ~ Normal(mu1, sigma1)
+        x1 ~ Normal(mu1, sigma1)
 
-            x2 ~ Normal(mu2, sigma2)
+        x2 ~ Normal(mu2, sigma2)
 
-            x3 ~ Normal(mu3, sigma3)
+        x3 ~ Normal(mu3, sigma3)
 
-            x4 ~ Normal(mu4, sigma4)
+        x4 ~ Normal(mu4, sigma4)
 
-            x5 ~ Normal(mu5, sigma5)
+        x5 ~ Normal(mu5, sigma5)
 
-            x6 ~ Normal(mu6, sigma6)
+        x6 ~ Normal(mu6, sigma6)
 
-            x7 ~ Normal(mu7, sigma7)
+        x7 ~ Normal(mu7, sigma7)
 
         Parameters
         ----------

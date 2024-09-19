@@ -34,7 +34,7 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
 
         X = (x1, x2, x3, x4, x5)
 
-        g(X) = x1 - 32 / (pi_ * x2^3) * sqrt(x3^2 * x4^2 / 16 + x5^2)
+        g(X) = x1 - 32 / (pi * x2^3) * sqrt(x3^2 * x4^2 / 16 + x5^2)
 
         We have :
             x1 ~ Uniform(a, b)

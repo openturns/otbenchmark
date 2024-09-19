@@ -35,13 +35,13 @@ class BoreholeSensitivity(SensitivityBenchmarkProblem):
         ----------
         None.
 
-        Example
-        -------
-        problem  = FloodingSensitivity()
-
-        Analysis
+        Examples
         --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.FloodingSensitivity()
 
+        Notes
+        -----
         The dimension of this problem cannot be changed.
 
         The reference Sobol' indices were computed from a sparse
@@ -57,12 +57,12 @@ class BoreholeSensitivity(SensitivityBenchmarkProblem):
         References
         ----------
         * Worley, B. A. (1987). Deterministic uncertainty analysis
-        (No. CONF-871101-30). Oak Ridge National Lab., TN (USA).
+          (No. CONF-871101-30). Oak Ridge National Lab., TN (USA).
 
         * Morris, M. D., Mitchell, T. J., & Ylvisaker, D. (1993).
-        Bayesian design and analysis of computer experiments:
-        use of derivatives in surface prediction.
-        Technometrics, 35(3), 243-255.
+          Bayesian design and analysis of computer experiments:
+          use of derivatives in surface prediction.
+          Technometrics, 35(3), 243-255.
         """
 
         input_names = ["rw", "r", "Tu", "Hu", "Tl", "Hl", "L", "Kw"]

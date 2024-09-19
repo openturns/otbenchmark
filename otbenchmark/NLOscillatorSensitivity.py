@@ -17,17 +17,18 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
 
         The function is defined by the equation:
 
-        g(x) = fs - 3*ks*np.sqrt(np.pi*S0/(4.*xis*omegas**3)*
-              xi_a*xis/(xip*xis*(4.*xi_a**2+theta**2)+gamma*xi_a**2)*
-              (xip*omegap**3+xis*omegas**3)*omegap/(4.*xi_a*omegaa**4))
+        .. math::
+            g(x) = fs - 3*ks*np.sqrt(np.pi*S0/(4.*xis*omegas**3)*
+                xi_a*xis/(xip*xis*(4.*xi_a**2+theta**2)+gamma*xi_a**2)*
+                (xip*omegap**3+xis*omegas**3)*omegap/(4.*xi_a*omegaa**4))
 
         where
-            omegap = np.sqrt(kp/mp)
-            omegas = np.sqrt(ks/ms)
-            omegaa = 0.5*(omegap+omegas)
-            gamma = ms/mp
-            xi_a = 0.5*(xip+xis)
-            theta = 1./omegaa*(omegap-omegas)
+        * omegap = np.sqrt(kp/mp)
+        * omegas = np.sqrt(ks/ms)
+        * omegaa = 0.5*(omegap+omegas)
+        * gamma = ms/mp
+        * xi_a = 0.5*(xip+xis)
+        * theta = 1./omegaa*(omegap-omegas)
 
         The input random variables are independent.
 
@@ -38,9 +39,10 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
         * the masses mp and ms
         * spring stiffnesses kp and ks
         * natural frequencies ωp and ωs
-        * damping ratios ξp and ξs,
-        where the subscripts p and s respectively refer to the primary
-        and secondary oscillators.
+        * damping ratios ξp and ξs
+
+        where the subscripts p and s respectively refer to
+        the primary and secondary oscillators.
 
         The variables in the model are:
         * Fs : the force capacity of the secondary spring,
@@ -56,13 +58,13 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
         ----------
         None.
 
-        Example
-        -------
-        problem  = FloodingSensitivity()
-
-        Analysis
+        Examples
         --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.FloodingSensitivity()
 
+        Notes
+        -----
         The dimension of this problem cannot be changed.
 
         The model was first introduced in (Iooss, 2015).
@@ -77,42 +79,42 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
         The analysis is the following.
 
         * The most influential parameter is Fs with first order indice
-        equal to 0.4.
-        It has no interaction with other variables.
+          equal to 0.4.
+          It has no interaction with other variables.
 
         * The second most influential parameter is kp, with
-        first order indice equal to 0.18.
-        It has small interactions with other parameters, since
-        its total order indice is equal to 0.23.
+          first order indice equal to 0.18.
+          It has small interactions with other parameters, since
+          its total order indice is equal to 0.23.
 
         * The variable S0 is insignificant.
 
         References
         ----------
         * A. Der Kiureghian, M. De Stefano, Efficient algorithm for
-        second-order reliability analysis, J. Eng. Mech. 117 (12) (1991) 2904–2923.
+          second-order reliability analysis, J. Eng. Mech. 117 (12) (1991) 2904–2923.
 
         * J.-M. Bourinet, F. Deheeger, M. Lemaire, Assessing small
-        failure probabilities by combined subset simulation and
-        Support Vector Machines, Struct. Saf. 33 (6) (2011) 343–353.
+          failure probabilities by combined subset simulation and
+          Support Vector Machines, Struct. Saf. 33 (6) (2011) 343–353.
 
         * J.-M. Bourinet, Rare-event probability estimation with adaptive
-        support vector regression surrogates,
-        Reliab. Eng. Syst. Saf. 150 (2016) 210–221.
+          support vector regression surrogates,
+          Reliab. Eng. Syst. Saf. 150 (2016) 210–221.
 
         * V. Dubourg, Adaptive surrogate models for reliability analysis
-        and reliability-based design optimization, PhD thesis,
-        Université Blaise Pascal – Clermont II, 2011.
+          and reliability-based design optimization, PhD thesis,
+          Université Blaise Pascal – Clermont II, 2011.
 
         * Vincent Chabridon, Mathieu Balesdent, Jean-Marc Bourinet,
-        Jérôme Morio, Nicolas Gayton.
-        Evaluation of failure probability under parameter epistemic
-        uncertainty: application to aerospace system reliability assessment.
-        Aerospace Science and Technology, Elsevier, 2017, 69, pp.526-537.
+          Jérôme Morio, Nicolas Gayton.
+          Evaluation of failure probability under parameter epistemic
+          uncertainty: application to aerospace system reliability assessment.
+          Aerospace Science and Technology, Elsevier, 2017, 69, pp.526-537.
 
         * Analyse de sensibilité fiabiliste avec prise en compte
-        d’incertitudes sur le modèle probabiliste,
-        Thèse présentée par Vincent Chabridon, 2019.
+          d’incertitudes sur le modèle probabiliste,
+          Thèse présentée par Vincent Chabridon, 2019.
 
         """
 

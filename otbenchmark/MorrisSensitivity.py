@@ -164,8 +164,8 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         -------
         None.
 
-        Analysis
-        --------
+        Notes
+        -----
 
         The dimension of this problem is equal to 20 and cannot be changed.
 
@@ -191,7 +191,7 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         There are 2 significant digits in the reference results.
 
         References
-        ---------
+        ----------
         M. D. Morris, 1991, Factorial sampling plans for preliminary
         computational experiments,Technometrics, 33, 161--174.
         """

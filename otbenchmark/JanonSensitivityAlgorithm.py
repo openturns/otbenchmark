@@ -25,6 +25,7 @@ def computeSumDotSamples(sampleX, sampleY):
 
     This is:
 
+    .. math::
         S = sum_{i = 1}^n x_i * y_i
 
     Parameters
@@ -107,9 +108,6 @@ class JanonSensitivityAlgorithm(ot.SobolIndicesAlgorithm):
         """
         Returns first order Sobol' indices.
 
-        Parameters
-        ----------
-
         Returns
         -------
         indices : ot.Point(dimension)
@@ -121,9 +119,6 @@ class JanonSensitivityAlgorithm(ot.SobolIndicesAlgorithm):
     def getTotalOrderIndices(self):
         """
         Returns total order Sobol' indices.
-
-        Parameters
-        ----------
 
         Returns
         -------

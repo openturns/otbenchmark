@@ -26,7 +26,7 @@ class ProbabilitySimulationAlgorithmFactory:
             The problem.
 
         Returns
-        ----------
+        -------
         algo : ot.ProbabilitySimulationAlgorithm
             The Monte-Carlo algorithm for estimating the probability.
         """
@@ -53,7 +53,7 @@ class ProbabilitySimulationAlgorithmFactory:
             Optimization algorithm used to search the design point.
 
         Returns
-        ----------
+        -------
         algo : ot.ProbabilitySimulationAlgorithm
             The FORM-IS algorithm for estimating the probability.
         """

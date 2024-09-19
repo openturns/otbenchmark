@@ -12,13 +12,15 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
     """Class to define a axial stressed beam benchmark problem."""
 
     def __init__(self, threshold=0.0):
-        """
+        r"""
         Create a axial stressed beam reliability problem.
 
         The inputs are R, the Yield strength, and F, the traction load.
         The event is {g(X) < threshold} where
 
-        g(R, F) = R - F/(pi_ * 100.0)
+        .. math::
+
+            g(R, F) = R - F/(\pi * 100.0)
 
         We have R ~ LogNormalMuSigma() and F ~ Normal().
 
@@ -27,9 +29,10 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
         threshold : float
             The threshold.
 
-        Example
-        -------
-        problem  = AxialStressedBeamReliability()
+        Examples
+        --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.AxialStressedBeamReliability()
         """
         limitStateFunction = ot.SymbolicFunction(["R", "F"], ["R - F/(pi_ * 100.0)"])
 

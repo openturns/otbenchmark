@@ -28,9 +28,10 @@ class FourBranchSerialSystemReliability(ReliabilityBenchmarkProblem):
         ----------
         None.
 
-        Example
-        -------
-        problem  = FourBranchSerialSystemReliability()
+        Examples
+        --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.FourBranchSerialSystemReliability()
         """
         formulaList = [
             "var y0 := 3 + 0.1 * (x0 - x1)^2 - (x0 + x1) / sqrt(2)",

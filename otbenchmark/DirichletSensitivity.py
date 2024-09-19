@@ -105,27 +105,31 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
 
         The function is defined by the equation:
 
-        g(x) = prod_{i=1}^p (1 + g_i(x[i]))
+        .. math::
+            g(x) = prod_{i=1}^p (1 + g_i(x[i]))
 
         where:
 
-        g_i(x) = alpha[i] * d_i(x)
+        .. math::
+            g_i(x) = alpha_i * d_i(x)
 
         for any x in [0, 1], where d_i is the Dirichlet kernel:
 
-        d_i(x) = (1 / sqrt(2i)) * (sin((2i + 1) pi x) / sin(pi x) - 1)
+        .. math::
+            d_i(x) = (1 / sqrt(2i)) * (sin((2i + 1) pi x) / sin(pi x) - 1)
 
         for i=1, 2, ..., p.
 
         By continuity, we set:
 
-        d_i(0) = 1 / sqrt(2i) for i=1, 2, ..., p.
+        .. math::
+            d_i(0) = 1 / sqrt(2i) for i=1, 2, ..., p.
 
         The Dirichlet kernel has the properties:
 
-        int_0^1 d_i(x) dx = 0,
-
-        int_0^1 d_i(x)^2 dx = 0.
+        .. math::
+            int_0^1 d_i(x) dx = 0,
+            int_0^1 d_i(x)^2 dx = 0.
 
         The input random variables are independent.
 
@@ -134,12 +138,13 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
         alpha : ot.Point(p)
             The vector of coefficients.
 
-        Example
-        -------
-        problem  = DirichletSensitivity()
-
-        Analysis
+        Examples
         --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.DirichletSensitivity()
+
+        Notes
+        -----
 
         The dimension of this problem can be changed, but
         its parameters can.
@@ -151,7 +156,8 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
         References
         ----------
         * Jean-Marc Martinez. Benchmark based on analytical functions (2008).
-        http://gdr-mascotnum.math.cnrs.fr/data2/benchmarks/jm.pdf.
+          http://gdr-mascotnum.math.cnrs.fr/data2/benchmarks/jm.pdf.
+
         """
 
         dimension = alpha.getDimension()

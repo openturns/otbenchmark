@@ -16,13 +16,14 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
 
         The model is:
 
-        g(x) = prod_{i=0,..., d-1} g[i](x[i])
+        g(x) = prod_{i=0,..., d-1} g_i(x_i)
 
         where d is the dimension and
 
-        g[i](x[i]) = (|4 * x[i] - 2.0| + a[i])/ (1 + a[i])
+        .. math::
+            g_i(x_i) = (|4 * x_i - 2.0| + a_i)/ (1 + a_i)
 
-        x[i] = Uniform(0.0, 1.0)
+        x_i = Uniform(0.0, 1.0)
 
         for i = 0, ..., d-1.
         The input random variables are independent.
@@ -34,12 +35,13 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
         a : sequence of floats
             The coefficients of the linear sum, with length d + 1.
 
-        Example
-        -------
-        problem  = GSobolSensitivity()
-
-        Analysis
+        Examples
         --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.GSobolSensitivity()
+
+        Notes
+        -----
 
         The dimension of the problem can be changed.
         The exact sensitivity indices are computed from the vector a.

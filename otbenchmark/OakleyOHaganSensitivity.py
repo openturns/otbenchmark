@@ -17,19 +17,20 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
 
         The function is defined by the equation:
 
-        g(x) = x'Mx+a1'x + a2' sin(x) + a3'cos(x)
+        .. math::
+            g(x) = x'Mx+a1'x + a2' sin(x) + a3'cos(x)
 
         where x1, ..., x15 ~ N(0, 1).
 
         The input random variables are independent.
 
-        Example
-        -------
+        Examples
+        --------
+        >>> import otbenchmark as otb
         problem  = OakleyOHaganSensitivity()
 
-        Analysis
-        --------
-
+        Notes
+        -----
         The dimension and parameters of this problem cannot be changed.
         The Sobol' sensitivity indices are estimate with as
         much accuracy as possible.
@@ -46,15 +47,15 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
         With 500 points in the validation set, the Q2 was greater than 98%.
         There are 2 significant digits in the reference results.
 
-        Reference
-        ---------
-        Oakley, J. E., & O'Hagan, A. (2004).
-        Probabilistic sensitivity analysis of complex models:
-        a Bayesian approach.
-        Journal of the Royal Statistical Society:
-        Series B (Statistical Methodology), 66(3), 751-769.
+        References
+        ----------
+        * Oakley, J. E., & O'Hagan, A. (2004).
+          Probabilistic sensitivity analysis of complex models:
+          a Bayesian approach.
+          Journal of the Royal Statistical Society:
+          Series B (Statistical Methodology), 66(3), 751-769.
 
-        Derek Bingham, https://www.sfu.ca/~ssurjano/oakoh04.html
+        * Derek Bingham, https://www.sfu.ca/~ssurjano/oakoh04.html
         """
 
         def OakleyOHaganFunction(X):

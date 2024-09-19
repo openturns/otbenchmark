@@ -41,9 +41,10 @@ class GaussianProductSensitivity(SensitivityBenchmarkProblem):
         sigma : sequence of floats
             The standard deviations of the gaussian distributions, with length d.
 
-        Example
-        -------
-        problem  = LinearSumSensitivity()
+        Examples
+        --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.LinearSumSensitivity()
         """
 
         dimension = len(mu)

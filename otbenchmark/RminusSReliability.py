@@ -37,9 +37,10 @@ class RminusSReliability(ReliabilityBenchmarkProblem):
         sigmaS : float
             The standard deviation of the S gaussian distribution.
 
-        Example
-        -------
-        problem  = RminusSReliability()
+        Examples
+        --------
+        >>> import otbenchmark as otb
+        >>> problem = otb.RminusSReliability()
         """
         limitStateFunction = ot.SymbolicFunction(["R", "S"], ["R - S"])
 

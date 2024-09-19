@@ -49,16 +49,16 @@ def ComputeLogRelativeError(exact, computed, basis=10.0):
         The maximum possible LRE is 15.65.
         The minimum possible LRE is 0.
 
-    Example
-    -------
-    import otbenchmark as otb
-    benchmarkProblemList = otb.ReliabilityBenchmarkProblemList()
-    numberOfProblems = len(benchmarkProblemList)
-    for i in range(numberOfProblems):
-        problem = benchmarkProblemList[i]
-        name = problem.getName()
-        pf = problem.getProbability()
-        print("#", i, " : ", name, ", exact PF : ", pf)
+    Examples
+    --------
+    >>> import otbenchmark as otb
+    >>> benchmarkProblemList = otb.ReliabilityBenchmarkProblemList()
+    >>> numberOfProblems = len(benchmarkProblemList)
+    >>> for i in range(numberOfProblems):
+    ...     problem = benchmarkProblemList[i]
+    ...     name = problem.getName()
+    ...     pf = problem.getProbability()
+    ...     print("#", i, " : ", name, ", exact PF : ", pf)
     """
     if abs(exact) == 0.0:
         # Avoid division by zero
@@ -81,18 +81,18 @@ def ComputeAbsoluteError(exact, computed):
 
     The absolute error is defined by:
 
-        absoluteError = abs(exact - computed).
+    absoluteError = abs(exact - computed).
 
     Parameters
     ----------
-    exact: float
+    exact : float
         The exact value.
-    computed: float
+    computed : float
         The computed value.
 
     Returns
     -------
-    absoluteError: float
+    absoluteError : float
         The absolute error.
     """
     absoluteError = abs(exact - computed)
