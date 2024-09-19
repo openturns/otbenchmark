@@ -11,7 +11,6 @@ Demonstration of the Factory classes for reliability problems
 
 # %%
 import openturns as ot
-import numpy as np
 import otbenchmark as otb
 
 # %%
@@ -23,8 +22,10 @@ problem = otb.ReliabilityProblem8()
 # ------------------------------
 
 # %%
-# The `buildMonteCarlo` method creates a `ProbabilitySimulationAlgorithm` based on MonteCarlo sampling.
-# Before running the algorithm, we set the number of outer iterations based on the `setMaximumOuterSampling` method.
+# The `buildMonteCarlo` method creates a `ProbabilitySimulationAlgorithm`
+# based on MonteCarlo sampling.
+# Before running the algorithm, we set the number of outer iterations
+# based on the `setMaximumOuterSampling` method.
 # This shows the main utility of the `Factory` classes.
 
 # %%
@@ -45,8 +46,10 @@ nearestPointAlgorithm = ot.AbdoRackwitz()
 algo = otb.FORM(problem, nearestPointAlgorithm)
 
 # %%
-# The `FORM` object of the otbenchmark module implements a `FORM` object from the OpenTURNS library.
-# Hence, it has a `run` method. If specific setting is required, we can do it now, prior to the call to the `run` method.
+# The `FORM` object of the otbenchmark module implements
+# a :class:`openturns.FORM` object.
+# Hence, it has a `run` method. If specific setting is required,
+# we can do it now, prior to the call to the `run` method.
 algo.run()
 
 # %%
