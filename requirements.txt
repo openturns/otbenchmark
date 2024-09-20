@@ -1,9 +1,6 @@
 numpy<2
-matplotlib<3.5
-scipy
-openturns
-jupyterlab
-nbconvert
+matplotlib
+openturns>=1.23
 black
 pre-commit
 flake8
@@ -12,5 +9,4 @@ numpydoc
 pandas
 tqdm
 shapely
-lxml-html-clean
 joblib
