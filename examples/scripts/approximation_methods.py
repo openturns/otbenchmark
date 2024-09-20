@@ -88,31 +88,11 @@ def run_FORM_simple(
     iter_number = optimResult.getIterationNumber()
 
     dfResult = pd.DataFrame()
-    dfResult = dfResult.append(
-        pd.DataFrame([result.getEventProbability()], index=["Probability of failure"])
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getGeneralisedReliabilityIndex()],
-            index=["Generalised reliability index"],
-        )
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame([iter_number], index=["Number of iterations"])
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getStandardSpaceDesignPoint()],
-            index=["Standard space design point"],
-        )
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getPhysicalSpaceDesignPoint()],
-            index=["Physical space design point"],
-        )
-    )
-
+    dfResult = pd.DataFrame([result.getEventProbability()], index=["Probability of failure"])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getGeneralisedReliabilityIndex()], index=["Generalised reliability index"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([iter_number()], index=["Number of iterations"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getStandardSpaceDesignPoint()], index=["Standard space design point"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getPhysicalSpaceDesignPoint()], index=["Physical space design point"])])
     dfResult = dfResult.reset_index()
     dfResult.columns = ["", "Results - FORM (" + nearestPointAlgo + ")"]
     pd.options.display.float_format = "{:,.2E}".format

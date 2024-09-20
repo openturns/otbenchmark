@@ -139,26 +139,10 @@ def run_MonteCarlo(
 
     result = simulation.getResult()
 
-    dfResult = pd.DataFrame()
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getProbabilityEstimate()], index=["Probability of failure"]
-        )
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
-        )
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getOuterSampling() * result.getBlockSize()],
-            index=["Number of calls"],
-        )
-    )
+    dfResult = pd.DataFrame([result.getProbabilityEstimate()], index=["Probability of failure"])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getCoefficientOfVariation()], index=["Coefficient of varation"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getOuterSampling() * result.getBlockSize()], index=["Number of calls"])])
     dfResult = dfResult.reset_index()
     dfResult.columns = ["", "Results - Monte Carlo"]
 
@@ -322,26 +306,10 @@ def run_ImportanceSampling(
 
     result = simulation.getResult()
 
-    dfResult = pd.DataFrame()
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getProbabilityEstimate()], index=["Probability of failure"]
-        )
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getCoefficientOfVariation()], index=["Coefficient of varation"],
-        )
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])
-    )
-    dfResult = dfResult.append(
-        pd.DataFrame(
-            [result.getOuterSampling() * result.getBlockSize()],
-            index=["Number of calls"],
-        )
-    )
+    dfResult = pd.DataFrame([result.getProbabilityEstimate()], index=["Probability of failure"])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getCoefficientOfVariation()], index=["Coefficient of variation"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getConfidenceLength()], index=["95 % Confidence length"])])
+    dfResult = pd.concat([dfResult, pd.DataFrame([result.getOuterSampling() * result.getBlockSize()], index=["Number of calls"])])
     dfResult = dfResult.reset_index()
     dfResult.columns = ["", "Results - Importance Sampling"]
 
