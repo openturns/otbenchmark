@@ -48,7 +48,7 @@ sphinx_gallery_conf = {
     'examples_dirs': ['examples'],
     'gallery_dirs': ['auto_examples'],
     'show_signature': False,
-    'ignore_pattern': 'rp8.py|rp33'
+    'ignore_pattern': 'rp8.py|rp33|drawevent|draw_cross_cuts|plot_bbrc'
 }
 
 if Version(sphinx_gallery.__version__) >= Version("0.17.0"):

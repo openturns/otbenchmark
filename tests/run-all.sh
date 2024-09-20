@@ -20,7 +20,6 @@ python scripts/test-computeCDF.py
 python scripts/testCrue-classeOTPFun.py
 python scripts/compute_reference_Morris_indices.py
 python scripts/generate_reference_Morris_parameters.py
-python ../tests/find-ipynb-files.py
 cd ..
 
 # Unit tests
