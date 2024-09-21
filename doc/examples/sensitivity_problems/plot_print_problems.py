@@ -51,6 +51,6 @@ print(df_problems_list)
 
 # %%
 latex_code = df_problems_list.to_latex()
-text_file = open("sensitivity_problems_list.tex", "w")
-text_file.write(latex_code)
-text_file.close()
+# text_file = open("sensitivity_problems_list.tex", "w")
+# text_file.write(latex_code)
+# text_file.close()

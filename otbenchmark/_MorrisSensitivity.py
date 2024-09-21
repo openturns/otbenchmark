@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 The non-monotonic function of Morris f: R^20 -> R.
 """

@@ -149,7 +149,7 @@ for i in tqdm(range(numberOfProblems)):
     results[i][5] = benchmarkResult.computedProbability
 
 df = pd.DataFrame(results, index=problem_names, columns=metrics)
-df.to_csv("reliability_benchmark_table-output.csv")
+# df.to_csv("reliability_benchmark_table-output.csv")
 df
 
 # %%

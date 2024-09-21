@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 This script shows how to use the computeCDF method in order
 to compute exact probabilities using Distribution arithmetic.

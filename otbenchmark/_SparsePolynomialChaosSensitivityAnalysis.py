@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Estimate sensitivity indices from sparse polynomial chaos
 with hyperbolic enumerate function and regression.

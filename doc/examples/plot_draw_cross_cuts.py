@@ -21,8 +21,9 @@ problem = otb.ReliabilityProblem33()
 event = problem.getEvent()
 g = event.getFunction()
 
-
-# ## Compute the bounds of the domain
+# %%
+# Compute the bounds of the domain
+# --------------------------------
 
 # %%
 inputVector = event.getAntecedent()

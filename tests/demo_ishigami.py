@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """A demo of the IshigamiSensitivity class."""
 
 import otbenchmark as otb

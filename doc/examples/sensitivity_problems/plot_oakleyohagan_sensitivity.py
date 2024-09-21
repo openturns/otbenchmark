@@ -25,8 +25,9 @@ print(exact_first_order)
 exact_total_order = problem.getTotalOrderIndices()
 print(exact_total_order)
 
-
-# ## Plot the function
+# %%
+# Plot the function
+# -----------------
 
 # %%
 # Create X/Y data
@@ -62,7 +63,8 @@ output_distribution = ot.KernelSmoothing().build(outputDesign)
 _ = otv.View(output_distribution.drawPDF())
 
 # %%
-# ## Perform sensitivity analysis
+# Perform sensitivity analysis
+# ----------------------------
 
 # %%
 # Create X/Y data

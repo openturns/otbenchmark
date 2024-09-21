@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2020 EDF.
 """
 Test for JanonSensitivityAlgorithm class.

@@ -46,7 +46,8 @@ pmax = pf + 0.5 * c95
 print("%.1f %% confidence interval :[%.4f,%.4f] " % (level * 100, pmin, pmax))
 
 # %%
-# ## Plot the contours of the function
+# Plot the contours of the function
+# ---------------------------------
 
 # %%
 inputVector = event.getAntecedent()
@@ -81,7 +82,8 @@ _ = otv.View(Y.drawPDF())
 _ = otv.View(distribution.drawPDF())
 
 # %%
-# ## Visualise the safe and unsafe regions on a sample
+# Visualise the safe and unsafe regions on a sample
+# -------------------------------------------------
 
 # %%
 sampleSize = 500
@@ -91,10 +93,11 @@ drawEvent = otb.DrawEvent(event)
 
 # %%
 cloud = drawEvent.drawSampleCrossCut(sampleSize)
-cloud
+_ = otv.View(cloud)
 
 # %%
-# ## Draw the limit state surface
+# Draw the limit state surface
+# ----------------------------
 
 # %%
 bounds = ot.Interval(lowerBound, upperBound)
@@ -104,10 +107,11 @@ bounds
 # %%
 graph = drawEvent.drawLimitStateCrossCut(bounds)
 graph.add(cloud)
-graph
+_ = otv.View(graph)
 
 # %%
-# ## Fill the event domain with a color
+# Fill the event domain with a color
+# ----------------------------------
 
 # %%
 domain = drawEvent.fillEventCrossCut(bounds)

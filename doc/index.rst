@@ -8,7 +8,7 @@ User documentation
    :maxdepth: 2
 
    user_manual/user_manual
-   ../auto_examples/index.rst
+   examples/examples
 
 Indices and tables
 ==================

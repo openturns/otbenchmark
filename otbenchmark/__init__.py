@@ -125,4 +125,4 @@ __all__ = [
     "SensitivityDistribution",
     "JanonSensitivityAlgorithm",
 ]
-__version__ = "1.0"
+__version__ = "0.2"

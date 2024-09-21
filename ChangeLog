@@ -1,4 +1,4 @@
-== 0.2 release (in-progress) ==
+== 0.2 release (2024-09-21) ==
 
 - Fixed the number of X points in DrawEvent.draw() (PR #90)
 - Added Uncecomp 2021 examples in Jupyter Notebooks.
@@ -13,7 +13,8 @@
     - Added Borehole function for SA.
 - Fixed reference values of reliability problems: 
   RP14, RP22, RP25, RP31, RP35, RP75, FourBranch.
-- Updated to OpenTURNS v1.17.
+- Updated to OpenTURNS v1.23
+- Sphinx documentation
 
 == 0.1.1 release ==
 

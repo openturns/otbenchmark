@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from openturns.viewer import View
 import openturns as ot

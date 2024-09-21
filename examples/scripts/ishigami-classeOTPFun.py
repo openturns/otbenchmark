@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # Pour OT v1.1
 

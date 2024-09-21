@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """A demo of the AxialStressedBeamReliability class."""
 
 import otbenchmark as otb

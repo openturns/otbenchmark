@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Create a ProbabilitySimulationAlgorithm based on a reliability problem.
 """

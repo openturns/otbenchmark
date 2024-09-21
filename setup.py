@@ -20,7 +20,7 @@ with open("README.md", "r") as fh:
 setup(
     name="otbenchmark",
     keywords=["OpenTURNS", "benchmark"],
-    version="0.1.1",
+    version="0.2",
     packages=find_packages(),
     install_requires=["numpy<2", "matplotlib", "openturns>=1.23"],
     description="Benchmark problems for OpenTURNS",
@@ -29,7 +29,7 @@ setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
-        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "License :: OSI Approved :: GNU Lesser General Public License (LGPL)",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
         "Natural Language :: French",

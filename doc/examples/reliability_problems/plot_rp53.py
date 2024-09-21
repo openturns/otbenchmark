@@ -81,13 +81,12 @@ _ = otv.View(cloud)
 # %%
 graph = drawEvent.drawLimitStateCrossCut(bounds)
 graph.add(cloud)
-graph
+_ = otv.View(graph)
 
 
 # %%
 domain = drawEvent.fillEventCrossCut(bounds)
 _ = otv.View(domain)
-
 
 # %%
 domain.add(cloud)

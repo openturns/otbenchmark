@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 A class to create a Subset algorithm.
 """

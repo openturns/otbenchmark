@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Static methods to plot reliability problems.
 """

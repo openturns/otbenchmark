@@ -61,7 +61,7 @@ bounds = ot.Interval(lowerBound, upperBound)
 # %%
 graph = drawEvent.drawLimitStateCrossCut(bounds)
 graph.add(cloud)
-graph
+_ = otv.View(graph)
 
 # %%
 # Fill the event domain with a color

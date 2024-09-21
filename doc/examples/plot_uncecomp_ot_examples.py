@@ -3,12 +3,14 @@ Introduction to OpenTURNS objects
 =================================
 """
 
+# %%
 # In the otbenchmark package, we use several objects that must be known in order to distinguish which objects
 # come from the OpenTURNS library or from otbenchmark.
 # For reliability problems, there are three objects that cannot be ignored:
-# * the `Distribution`,
-# * the `Function`,
-# * the `ThresholdEvent`.
+#
+# * the :class:`openturns.Distribution`,
+# * the :class:`openturns.Function`,
+# * the :class:`openturns.ThresholdEvent`.
 #
 
 # %%
@@ -85,7 +87,7 @@ graph.add(cloud)
 graph.setLegendPosition("topright")
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = otv.View(graph, figure_kw={"figsize": (4.5, 3.5)})
-view.save("two_samples.pdf")
+# view.save("two_samples.pdf")
 
 # %%
 # Function
@@ -143,7 +145,7 @@ curve.setLegends(["Frank"])
 graph.add(curve)
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = otv.View(graph, figure_kw={"figsize": (4.5, 3.5)})
-view.save("histo_output.pdf")
+# view.save("histo_output.pdf")
 
 # %%
 graph = ot.KernelSmoothing().build(outputSample_ind).drawPDF()
@@ -154,7 +156,7 @@ curve.setLegends(["Frank"])
 graph.add(curve)
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = otv.View(graph, figure_kw={"figsize": (4.5, 3.5)})
-view.save("kernel_output.pdf")
+# view.save("kernel_output.pdf")
 
 # %%
 # ThresholdEvent

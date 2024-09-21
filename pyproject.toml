@@ -1,3 +1,37 @@
+[project]
+name = "otbenchmark"
+version = "0.2"
+dependencies = [
+  "openturns>=1.23",
+  "matplotlib>=3",
+  "numpy<2",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Michaël Baudin"},
+  {name = "Youssef Jebroun"},
+  {name = " Elias Fekhari"},
+  {name = " Vincent Chabridon"},
+]
+maintainers = [
+  {name = "Michaël Baudin", email = "michael.baudin@edf.fr"}
+]
+description = "A benchmark library for OpenTURNS"
+readme = "README.md"
+license = {file = "LICENSE.LESSER"}
+keywords = ["reliability", "sensitivity", "benchmark"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "License :: OSI Approved :: GNU Lesser General Public License (LGPL)",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "Natural Language :: French",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development",
+  "Topic :: Scientific/Engineering",
+]
+
 [tool.black]
 line-length = 88
 

@@ -57,11 +57,11 @@ upperBound = ot.Point(
 # %%
 nbPoints = [100, 100]
 figure = g.draw(lowerBound, upperBound, nbPoints)
-figure.setTitle(" Iso-values of limit state function")
-figure
+figure.setTitle("Iso-values of limit state function")
+_ = otv.View(figure)
 
 # %%
-# Print the iso-values of the distribution
+# Plot the iso-values of the distribution
 # ----------------------------------------
 
 # %%
@@ -77,10 +77,11 @@ drawEvent = otb.DrawEvent(event)
 
 # %%
 cloud = drawEvent.drawSampleCrossCut(sampleSize)
-cloud
+_ = otv.View(cloud)
 
 # %%
-# ## Draw the limit state surface
+# Draw the limit state surface
+# ----------------------------
 
 # %%
 bounds = ot.Interval(lowerBound, upperBound)
@@ -90,7 +91,7 @@ bounds
 # %%
 graph = drawEvent.drawLimitStateCrossCut(bounds)
 graph.add(cloud)
-graph
+_ = otv.View(graph)
 
 
 # %%
