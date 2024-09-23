@@ -123,3 +123,9 @@ for sampleSize in [100, 200, 400, 800]:
 #
 # We see that these distributions are never far away from each other.
 # This proves that the computation of the distribution is correct, for both the asymptotic and bootstrap options.
+
+# %%
+otv.View.ShowAll()
+
+# %%
+ot.ResourceMap.Reload()

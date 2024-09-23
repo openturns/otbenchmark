@@ -183,3 +183,6 @@ algoMC.run()
 result = algoMC.getResult()
 probability = result.getProbabilityEstimate()
 print("Pf = ", probability)
+
+# %%
+otv.View.ShowAll()
