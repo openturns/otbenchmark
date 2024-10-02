@@ -148,9 +148,7 @@ nearestPointAlgorithm.setMaximumConstraintError(eps)
 
 # %%
 # If the mean point is used as a starting point with the `AbdoRackwitz` class, then the algorithm fails with:
-# ```
-# RuntimeError: InternalException : Error in Abdo Rackwitz algorithm: the gradient of the level function is zero ...
-# ```
+# *RuntimeError: InternalException : Error in Abdo Rackwitz algorithm: the gradient of the level function is zero*
 # In order to fix this, we just use a different starting point.
 
 # %%

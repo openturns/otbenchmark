@@ -29,7 +29,7 @@ setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
-        "License :: OSI Approved :: GNU Lesser General Public License (LGPL)",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
         "Natural Language :: French",
