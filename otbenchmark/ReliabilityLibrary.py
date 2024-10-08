@@ -7,20 +7,26 @@ import sys
 
 
 def ComputeLogRelativeError(exact, computed, basis=10.0):
-    """
+    r"""
     Compute the log-relative error between exact and computed.
 
     The log-relative error (LRE) is defined by:
+
+    .. math::
 
         LRE = -logB(relativeError)
 
     where relativeError is the relative error:
 
-        relativeError = abs(exact - computed) / abs(exact)
+    .. math::
+
+        relativeError = \frac{|exact - computed|}{|exact|}
 
     and logB is the base-b logarithm:
 
-        logB(x) = log(x) / log(basis)
+    .. math::
+
+        logB(x) = \frac{log(x)}{log(basis)}
 
     where log is the natural logarithm.
     This assumes that exact is different from zero.

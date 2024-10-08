@@ -15,18 +15,14 @@ class FourBranchSerialSystemReliability(ReliabilityBenchmarkProblem):
         References
         ----------
 
-        Waarts, P.-H. (2000). Structural reliability using finite element
-        methods: an appraisal of DARS: Directional Adaptive Response Surface
-        Sampling. Ph. D. thesis, Technical University of Delft, The
-        Netherlands. Pages 58, 69, 160.
+        - Waarts, P.-H. (2000). Structural reliability using finite element
+          methods: an appraisal of DARS: Directional Adaptive Response Surface
+          Sampling. Ph. D. thesis, Technical University of Delft, The
+          Netherlands. Pages 58, 69, 160.
 
-        Thèse Vincent Dubourg 2011, Méta-modèles adaptatifs pour l’analyse
-        de fiabilité et l’optimisation sous contrainte fiabiliste,
-        section "A two-dimensional four-branch serial system", page 182
-
-        Parameters
-        ----------
-        None.
+        - Thèse Vincent Dubourg 2011, Méta-modèles adaptatifs pour l’analyse
+          de fiabilité et l’optimisation sous contrainte fiabiliste,
+          section "A two-dimensional four-branch serial system", page 182
 
         Examples
         --------

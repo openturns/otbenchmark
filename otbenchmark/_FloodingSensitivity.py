@@ -11,12 +11,14 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
     """Class to define a Flooding sensitivity benchmark problem."""
 
     def __init__(self):
-        """
+        r"""
         Create a Flooding sensitivity problem.
 
         The function is defined by the equation:
 
-        g(x) = (Q/(Ks*B*sqrt((Zm-Zv)/L)))^(3.0/5.0)+Zv-Zb-Hd
+        .. math::
+
+            g(x) = (\frac{Q}{K_s B \sqrt{\frac{Z_m-Z_v}{L}}})^{\frac{3}{5}}+Z_v-Z_b-H_d
 
         with:
 
