@@ -14,12 +14,6 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
         Create a axial stressed beam reliability problem.
 
         The inputs are R, the Yield strength, and F, the traction load.
-        The event is {g(X) < threshold} where
-
-        .. math::
-
-            g(R, F) = R - F/(\pi * 100.0)
-
         We have R ~ LogNormalMuSigma() and F ~ Normal().
 
         Parameters

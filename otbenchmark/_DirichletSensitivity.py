@@ -25,7 +25,7 @@ class DirichletFunction(ot.OpenTURNSPythonFunction):
 
         Parameters
         ----------
-        alpha : ot.Point(p), optional
+        alpha : sequence of float, optional
             The coefficients of the model.
 
         Returns
@@ -100,7 +100,7 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
         return exact
 
     def __init__(self, alpha=ot.Point([1.0 / 2.0, 1.0 / 3.0, 1.0 / 4.0])):
-        """
+        r"""
         Create a Dirichlet sensitivity problem.
 
         The function is defined by the equation:
@@ -111,19 +111,19 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
         where:
 
         .. math::
-            g_i(x) = alpha_i * d_i(x)
+            g_i(x) = \alpha_i * d_i(x)
 
         for any x in [0, 1], where d_i is the Dirichlet kernel:
 
         .. math::
-            d_i(x) = (1 / sqrt(2i)) * (sin((2i + 1) pi x) / sin(pi x) - 1)
+            d_i(x) = \frac{1}{\sqrt(2i)} \frac{\sin((2i + 1) \pi x}{\sin(\pi x) - 1}
 
         for i=1, 2, ..., p.
 
         By continuity, we set:
 
         .. math::
-            d_i(0) = 1 / sqrt(2i) for i=1, 2, ..., p.
+            d_i(0) = i\frac{1}{\sqrt(2i)} for i=1, 2, ..., p.
 
         The Dirichlet kernel has the properties:
 
@@ -135,7 +135,7 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
 
         Parameters
         ----------
-        alpha : ot.Point(p)
+        alpha : sequence of float
             The vector of coefficients.
 
         Examples

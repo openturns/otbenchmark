@@ -20,15 +20,16 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
         """
         Creates a reliability problem RP33.
 
-        The event is {g(X) < threshold} where
+        The limit-state g is defined by:
 
-        g(x1, x2, x3) = min(g1, g2) with
+            g(x1, x2, x3) = min(g1, g2) with
 
-        g1 = -x1 - x2 - x3 + 3 * sqrt(3)
+            g1 = -x1 - x2 - x3 + 3 * sqrt(3)
 
-        g2 = -x3 + 3
+            g2 = -x3 + 3
 
-        We have :
+        We have:
+
             x1 ~ Normal(mu[0], sigma[0])
 
             x2 ~ Normal(mu[1], sigma[1])
