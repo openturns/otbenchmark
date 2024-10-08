@@ -12,7 +12,7 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
     """Class to define a Oakley-O'Hagan sensitivity benchmark problem."""
 
     def __init__(self):
-        """
+        r"""
         Create a Oakley-O'Hagan sensitivity problem.
 
         The function is defined by the equation:
@@ -20,7 +20,7 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
         .. math::
             g(x) = x'Mx+a1'x + a2' sin(x) + a3'cos(x)
 
-        where x1, ..., x15 ~ N(0, 1).
+        where :math:`x_1, \hdots, x_{15} \tilde N(0, 1)`
 
         The input random variables are independent.
 
