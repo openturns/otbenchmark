@@ -12,15 +12,15 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
     """Class to define a Oscillator sensitivity benchmark problem."""
 
     def __init__(self):
-        """
+        r"""
         Create a nonlinear oscillator sensitivity problem.
 
         The function is defined by the equation:
 
         .. math::
-            g(x) = fs - 3*ks*np.sqrt(np.pi*S0/(4.*xis*omegas**3)*
-                xi_a*xis/(xip*xis*(4.*xi_a**2+theta**2)+gamma*xi_a**2)*
-                (xip*omegap**3+xis*omegas**3)*omegap/(4.*xi_a*omegaa**4))
+            g(x) = fs - 3*ks*\sqrt{\pi*S0/(4.*xis*omegas^3)*
+                xi_a*xis/(xip*xis*(4.*xi_a^2+theta^2)+gamma*xi_a^2)*
+                (xip*omegap^3+xis*omegas^3)*omegap/(4.*xi_a*omegaa^4)}
 
         where
         * omegap = np.sqrt(kp/mp)

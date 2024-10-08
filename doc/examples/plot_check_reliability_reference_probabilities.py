@@ -7,7 +7,7 @@ Check reliability problems reference probabilities
 # In this example, we check that the reference probabilities in the reliability problems
 # are consistent with confidence bounds from Monte-Carlo simulations.
 # These 95% confidence bounds are stored in 'reliability_compute_reference_proba.csv'
-# and required approximately than :math`10^9` function evaluations for each problem.
+# and required approximately than :math:`10^9` function evaluations for each problem.
 #
 # We consider two different metrics:
 #
