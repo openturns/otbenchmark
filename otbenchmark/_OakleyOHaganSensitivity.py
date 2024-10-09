@@ -18,9 +18,9 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
         The function is defined by the equation:
 
         .. math::
-            g(x) = x'Mx+a1'x + a2' sin(x) + a3'cos(x)
+            g(x) = x'Mx+a1'x + a2' \sin(x) + a3'\cos(x)
 
-        where :math:`x_1, \hdots, x_{15} \tilde N(0, 1)`
+        where :math:`x_1, \hdots, x_{15} \sim N(0, 1)`
 
         The input random variables are independent.
 

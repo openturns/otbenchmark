@@ -16,6 +16,10 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
         The inputs are R, the Yield strength, and F, the traction load.
         We have R ~ LogNormalMuSigma() and F ~ Normal().
 
+        .. math::
+
+            g(R, F) = R - \frac{F}{\pi 100}
+
         Parameters
         ----------
         threshold : float

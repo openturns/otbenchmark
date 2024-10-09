@@ -17,7 +17,7 @@ the output of a function is less than a threshold,
 * sensitivity problems, i.e. estimating sensitivity indices, 
 for example Sobol' indices.
 
-Most of the reliability problems were adapted from the RPRepo:
+Most of the reliability problems were adapted from the RPRepo
 
 https://rprepo.readthedocs.io/en/latest/
 
