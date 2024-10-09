@@ -111,25 +111,25 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
         where:
 
         .. math::
-            g_i(x) = \alpha_i * d_i(x)
+            g_i(x) = \alpha_i d_i(x)
 
         for any x in [0, 1], where d_i is the Dirichlet kernel:
 
         .. math::
-            d_i(x) = \frac{1}{\sqrt(2i)} \frac{\sin((2i + 1) \pi x}{\sin(\pi x) - 1}
+            d_i(x) = \frac{1}{\sqrt{2i}} \frac{\sin{2i + 1} \pi x}{\sin{\pi x} - 1}
 
         for i=1, 2, ..., p.
 
         By continuity, we set:
 
         .. math::
-            d_i(0) = i\frac{1}{\sqrt(2i)} for i=1, 2, ..., p.
+            d_i(0) = \frac{1}{\sqrt{2i}} \forall i=1, 2, ..., p.
 
         The Dirichlet kernel has the properties:
 
         .. math::
-            int_0^1 d_i(x) dx = 0,
-            int_0^1 d_i(x)^2 dx = 0.
+            \int_0^1 d_i(x) dx = 0,
+            \int_0^1 d_i(x)^2 dx = 0.
 
         The input random variables are independent.
 
