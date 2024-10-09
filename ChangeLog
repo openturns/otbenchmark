@@ -1,3 +1,9 @@
+== 0.2.1 release (2024-10-09) ==
+
+- Split examples
+- Fix maths
+- Cleanup README
+
 == 0.2 release (2024-09-21) ==
 
 - Fixed the number of X points in DrawEvent.draw() (PR #90)
