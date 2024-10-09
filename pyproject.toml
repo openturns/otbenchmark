@@ -1,6 +1,6 @@
 [project]
 name = "otbenchmark"
-version = "0.2"
+version = "0.2.1"
 dependencies = [
   "openturns>=1.23",
   "matplotlib>=3",
@@ -25,10 +25,7 @@ classifiers = [
   "Environment :: Console",
   "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
   "Intended Audience :: Science/Research",
-  "Intended Audience :: Developers",
-  "Natural Language :: French",
   "Programming Language :: Python :: 3",
-  "Topic :: Software Development",
   "Topic :: Scientific/Engineering",
 ]
 

@@ -45,12 +45,3 @@ pip install otbenchmark
 
 The documentation is available here: https://openturns.github.io/otbenchmark/master/
 
-## TODO-List
-
-* The FORM algorithm does not perform correctly on: RP75, RP111
-and Four-branch serial system.
-An explanation would be required for this.
-
-* The computeCDF() method does not perform correctly on many problems.
-An explanation would be required for this.
-
