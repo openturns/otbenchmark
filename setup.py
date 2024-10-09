@@ -9,7 +9,7 @@ Usage
 -----
 ::
 
-    python setup.py install
+    pip install .
 
 """
 from setuptools import setup, find_packages
@@ -20,7 +20,7 @@ with open("README.md", "r") as fh:
 setup(
     name="otbenchmark",
     keywords=["OpenTURNS", "benchmark"],
-    version="0.2",
+    version="0.2.1",
     packages=find_packages(),
     install_requires=["numpy<2", "matplotlib", "openturns>=1.23"],
     description="Benchmark problems for OpenTURNS",
@@ -31,10 +31,7 @@ setup(
         "Environment :: Console",
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Intended Audience :: Science/Research",
-        "Intended Audience :: Developers",
-        "Natural Language :: French",
         "Programming Language :: Python :: 3",
-        "Topic :: Software Development",
         "Topic :: Scientific/Engineering",
     ],
     license="LGPL",
