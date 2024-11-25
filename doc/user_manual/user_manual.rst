@@ -52,7 +52,6 @@ Reliability methods
     LHS
     ReliabilityBenchmarkMetaAlgorithm
     ReliabilityBenchmarkResult
-    ConditionalDistribution
     CrossCutFunction
     CrossCutDistribution
     DrawEvent

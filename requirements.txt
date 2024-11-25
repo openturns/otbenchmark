@@ -1,6 +1,6 @@
-numpy<2
+numpy
 matplotlib
-openturns>=1.23
+openturns>=1.24
 black
 pre-commit
 flake8
