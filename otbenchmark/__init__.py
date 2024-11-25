@@ -45,7 +45,6 @@ from ._FourBranchSerialSystemReliability import FourBranchSerialSystemReliabilit
 from ._GaussianSumSensitivity import GaussianSumSensitivity
 from ._GaussianProductSensitivity import GaussianProductSensitivity
 from ._GSobolSensitivity import GSobolSensitivity
-from ._ConditionalDistribution import ConditionalDistribution
 from ._CrossCutFunction import CrossCutFunction
 from ._CrossCutDistribution import CrossCutDistribution
 from ._MorrisSensitivity import MorrisSensitivity
@@ -104,7 +103,6 @@ __all__ = [
     "GaussianSumSensitivity",
     "GaussianProductSensitivity",
     "GSobolSensitivity",
-    "ConditionalDistribution",
     "CrossCutFunction",
     "CrossCutDistribution",
     "ProbabilitySimulationAlgorithmFactory",

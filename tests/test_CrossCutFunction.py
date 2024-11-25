@@ -1,6 +1,6 @@
 # Copyright 2020 EDF.
 """
-Test for ConditionalDistribution class.
+Test for CrossCutDistribution class.
 """
 import otbenchmark
 import unittest
