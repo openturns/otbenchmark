@@ -11,15 +11,17 @@ class BorgonovoSensitivity(SensitivityBenchmarkProblem):
     """Class to define a Borgonovo sensitivity benchmark problem."""
 
     def __init__(self):
-        """
+        r"""
         Create a Borgonovo sensitivity problem.
 
         The function is defined by the equation:
 
         .. math::
-            g(x) = x1 * x2 + x3
+            g(\boldsymbol{x}) = x_1 x_2 + x_3
 
-        where x1, x2, x3 ~ U(0, 1).
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^3`.
+        We assume that :math:`X_1, X_2, X_3 \sim \mathcal{U}(0, 1)` where
+        :math:`\mathcal{N}` is the Gaussian distribution.
 
         The input random variables are independent.
 

@@ -18,9 +18,16 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
         The function is defined by the equation:
 
         .. math::
-            g(x) = x'Mx+a1'x + a2' \sin(x) + a3'\cos(x)
+            g(\boldsymbol{x}) = \boldsymbol{x}^\top M \boldsymbol{x}
+                + \boldsymbol{a}_1^\top \boldsymbol{x}
+                + \boldsymbol{a}_2^\top \sin(\boldsymbol{x}) + \boldsymbol{a}_3^\top \cos(\boldsymbol{x})
 
-        where :math:`x_1, \hdots, x_{15} \sim N(0, 1)`
+        where :math:`\boldsymbol{x} \in \mathbb{R}^{15}`, :math:`M \in \mathbb{R}^{15 \times 15}`
+        is a deterministic matrix and :math:`\boldsymbol{a}_1, \boldsymbol{a}_2, \boldsymbol{a}_3 \in \mathbb{R}^{15}`
+        are three deterministic vectors.
+
+        We assume that :math:`X_1, \ldots, X_{15} \sim \mathcal{N}(0, 1)` where
+        :math:`\mathcal{N}` is the Gaussian distribution.
 
         The input random variables are independent.
 
@@ -35,7 +42,7 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
         The Sobol' sensitivity indices are estimate with as
         much accuracy as possible.
 
-        The model was first introduced in (Oakley, O'Hagan, 2004).
+        The model was first introduced in (Oakley & O'Hagan, 2004).
 
         The reference Sobol' indices were computed from a sparse
         polynomial chaos.

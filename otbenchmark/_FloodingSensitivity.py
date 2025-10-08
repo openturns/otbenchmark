@@ -18,18 +18,44 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
 
         .. math::
 
-            g(x) = (\frac{Q}{K_s B \sqrt{\frac{Z_m-Z_v}{L}}})^{\frac{3}{5}}+Z_v-Z_b-H_d
+            g(\boldsymbol{x}) = \left(\frac{Q}{K_s B \sqrt{\frac{Z_m - Z_v}{L}}}\right)^{\frac{3}{5}} + Z_v - Z_b - H_d
 
         with:
 
-        - Q : maximum annual flowrate (m3/s)
-        - Ks : Strickler coefficient
-        - Zv : downstream riverbed level (m)
-        - Zm : upstream riverbed level (m)
-        - L : Length of the river in meters
-        - B : Width of the river in meters
-        - Hd : height of the dyke (m)
-        - Zb : the height of the bank (m)
+        - :math:`Q` : maximum annual flowrate (m³/s);
+        - :math:`K_s` : Strickler coefficient;
+        - :math:`Zv` : downstream riverbed level (m);
+        - :math:`Z_m` : upstream riverbed level (m);
+        - :math:`L` : Length of the river in meters;
+        - :math:`B` : Width of the river in meters;
+        - :math:`H_d` : height of the dyke (m);
+        - :math:`Z_b` : the height of the bank (m).
+
+        The next table presents the marginal distributions of
+        each random variable in the model.
+
+        .. table::
+          :widths: auto
+
+          +---------------+---------------------+------------------------------------------+
+          | Variable      | Distribution        | Parameters                               |
+          +===============+=====================+==========================================+
+          | :math:`Q`     | Truncated Gumbel    | β = 558, γ = 1013, lower bound = 0       |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`K_s`   | Truncated Normal    | μ = 30, σ = 7.5, lower bound = 0         |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`Z_v`   | Uniform             | a = 49, b = 51                           |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`H_d`   | Uniform             | a = 7, b = 9                             |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`Z_m`   | Uniform             | a = 54, b = 56                           |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`Z_b`   | Triangular          | a = 55, m = 55.5, b = 56                 |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`L`     | Triangular          | a = 4990, m = 5000, b = 5010             |
+          +---------------+---------------------+------------------------------------------+
+          | :math:`B`     | Triangular          | a = 295, m = 300, b = 305                |
+          +---------------+---------------------+------------------------------------------+
 
         The input random variables are independent.
 
@@ -62,7 +88,7 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
         The sparse polynomial chaos expansion used an hyperbolic enumeration
         rule and a polynomial degree 8.
         The coefficients were estimated from regression.
-        With 1000  points in the validation set, the Q2 was greater than 99.9%.
+        With 1000  points in the validation set, the Q² was greater than 99.9%.
         There are 2 significant digits in the reference results.
 
         References

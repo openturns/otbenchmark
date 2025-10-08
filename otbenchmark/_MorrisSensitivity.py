@@ -1,6 +1,7 @@
 """
 The non-monotonic function of Morris f: R^20 -> R.
 """
+
 from ._SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
 import openturns as ot
 import warnings
@@ -125,30 +126,44 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
     """Class to define the Morris sensitivity benchmark problem."""
 
     def __init__(self, random_parameters=False):
-        """
+        r"""
         Define the Morris sensitivity benchmark problem.
 
-        The function g is from [0,1]^20 to R.
+        The function :math:`g` is defined on :math:`[0,1]^{20}` and takes
+        values in :math:`\mathbb{R}`.
 
-        Its input distribution are Uniform([0, 1]) random variables.
-        The input random variables are independent.
+        Its inputs are independent random variables with distribution
+        :math:`\mathcal{U}(0,1)`.
 
-        It is defined as the sum:
+        It is defined as:
 
-        g(x) = beta_0
-        + sum_i beta[i] * w[i](x)
-        + sum_{ij} beta[i, j] * w[i](x) * w[j](x)
-        + sum_{ijk} beta[i, j, k] * w[i](x) * w[j](x) * w[k](x)
-        + sum_{ijkl} beta[i, j, k, l] * w[i](x) * w[j](x) * w[k](x) * w[l](x)
+        .. math::
 
-        where
+           g(\boldsymbol{x}) & = \beta_0
+                  + \sum_{i} \beta_i\, w_i(x) \\
+                & \quad + \sum_{i<j} \beta_{i,j}\, w_i(x)\, w_j(x) \\
+                & \quad + \sum_{i<j<k} \beta_{i,j,k}\, w_i(x)\, w_j(x)\, w_k(x) \\
+                & \quad + \sum_{i<j<k<\ell} \beta_{i,j,k,\ell}\, w_i(x)\, w_j(x)\, w_k(x)\, w_\ell(x)
 
-        w[i](x) = 2 * (x[i] - 0.5) for 𝑖=1,2,4,6,8,...,20
+        for any :math:`\boldsymbol{x} \in [0,1]^{20}` where:
 
-        and
+        .. math::
 
-        w[i](x) = 2 * (1.1 * x[i] / (x[i] + 1) - 0.5) for 𝑖=3,5,7.
+           w_i(x) = 2\,(x_i - 0.5)
 
+        for :math:`i \in \{1, 2, 4, 6, 8, \dots, 20\}`, and:
+
+        .. math::
+
+           w_i(x) = 2\,\left(\frac{1.1\, x_i}{x_i + 1} - 0.5\right)
+
+        for :math:`i \in \{3, 5, 7\}`.
+        The parameters :math:`(\beta_i)_{1 \leq i \leq 20}`,
+        :math:`(\beta_{i,j})_{1 \leq i, j \leq 20}`,
+        :math:`(\beta_{i,j, k})_{1 \leq i, j, k\leq 20}`,
+        :math:`(\beta_{i,j, k, \ell})_{1 \leq i, j, k, \ell \leq 20}`
+        are presented below, in the **Notes** section.
+        In (Morris, 1991)'s paper, these parameters are random.
         In order to get consistent results, the default value of the
         random_parameters parameter is so that the parameters beta
         are constant, deterministic, values.
@@ -168,13 +183,16 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         The dimension of this problem is equal to 20 and cannot be changed.
 
         The function is the sum of five functions.
-        * The first is constant and equal to beta_0.
-        * The second is a linear combination of w[i] coefficients.
-        * The third is a order 2 combination of w[i] coefficients.
-        * The fourth is a order 3 combination of w[i] coefficients.
-        * The fifth is a order 4 combination of w[i] coefficients.
 
-        Therefore, Morris's function is an order 4 polynomial.
+        * The first function is constant and equal to :math:`\beta_0`.
+        * The second is a linear combination of :math:`\boldsymbol{w}` coefficients.
+        * The third is a order 2 combination of :math:`\boldsymbol{w}` coefficients.
+        * The fourth is a order 3 combination of :math:`\boldsymbol{w}` coefficients.
+        * The fifth is a order 4 combination of :math:`\boldsymbol{w}` coefficients.
+
+        Therefore, Morris's function is a modification of an order 4 polynomial,
+        where the small non-linearity comes from the :math:`\boldsymbol{w}`
+        coefficients.
 
         This code was taken from otmorris/python/src/Morris.i.
 
@@ -185,13 +203,58 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         The sparse polynomial chaos expansion used an hyperbolic enumeration
         rule and a polynomial degree 4.
         The coefficients were estimated from regression.
-        With 500 points in the validation set, the Q2 was greater than 98%.
+        With 500 points in the validation set, the Q² was greater than 98%.
         There are 2 significant digits in the reference results.
+
+        **Morris Function Parameters**
+
+        Let :math:`\mathcal{N}(0,1)` be a random Gaussian variable with zero
+        mean and unit standard deviation.
+
+        The first order coefficients of the Morris function are:
+
+        .. math::
+
+            \beta_i =
+            \begin{cases}
+            20 & \text{if } i = 1,\ldots,10, \\
+            \mathcal{N}(0,1) & \text{otherwise}.
+            \end{cases}
+
+        The second order coefficients are:
+
+        .. math::
+
+            \beta_{i,j} =
+            \begin{cases}
+            -15 & \text{if } i,j \in \{1,\ldots,6\}, \\
+            \mathcal{N}(0,1) & \text{otherwise}.
+            \end{cases}
+
+        The third order coefficients are:
+
+        .. math::
+
+            \beta_{i,j,\ell} =
+            \begin{cases}
+            -10 & \text{if } i,j,\ell \in \{1,\ldots,5\},\\
+            0 & \text{otherwise}.
+            \end{cases}
+
+        The fourth order coefficients are:
+
+        .. math::
+
+            \beta_{i,j,\ell,s} =
+            \begin{cases}
+            5 & \text{if } i,j,\ell,s \in \{1,\ldots,4\},\\
+            0 & \text{otherwise}.
+            \end{cases}
 
         References
         ----------
-        M. D. Morris, 1991, Factorial sampling plans for preliminary
-        computational experiments,Technometrics, 33, 161--174.
+        * M. D. Morris, 1991, Factorial sampling plans for preliminary
+          computational experiments, Technometrics, 33, 161--174.
         """
         # Define the function
         dimension = 20

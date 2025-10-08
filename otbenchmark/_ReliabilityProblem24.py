@@ -12,14 +12,21 @@ import openturns as ot
 
 class ReliabilityProblem24(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=[10.0] * 2, sigma=[3.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP24.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        g(x1, x2) = 2.5 - 0.2357 * (x1 - x2) + 0.00463 * (x1 + x2 - 20)^4
+        .. math::
 
-        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
+            g(x_1, x_2) = 2.5 - 0.2357 (x_1 - x_2) + 0.00463 (x_1 + x_2 - 20)^4
+
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2`.
+
+        We have:
+
+        * x1 ~ Normal(mu[0], sigma[0]) and
+        * x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------

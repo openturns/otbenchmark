@@ -152,6 +152,7 @@ print("    T = ", computed_total_order)
 
 # %%
 # We consider the following accuracy metrics:
+#
 # * the vector or log relative errors for a given index (first order or total order),
 # * the mean log relative error, as the mean of the LRE vector (first order or total order),
 # * the average mean log relative error, as the mean of the first and total order mean log relative error.

@@ -11,24 +11,32 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
     """Class to define the g-Sobol' sensitivity benchmark problem."""
 
     def __init__(self, a=[0.0, 9.0, 99.0]):
-        """
+        r"""
         Create the g-Sobol sensitivity problem.
 
-        The model is:
+        .. math::
 
-        g(x) = prod_{i=0,..., d-1} g_i(x_i)
+           g(\boldsymbol{x}) = \prod_{i=1}^d g_i(x_i)
 
-        where d is the dimension and
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^d` where:
 
         .. math::
-            g_i(x_i) = (|4 * x_i - 2.0| + a_i)/ (1 + a_i)
 
-        x_i = Uniform(0.0, 1.0)
+           g_i(x_i) = \frac{\lvert 4 x_i - 2\rvert + a_i}{1 + a_i}
 
-        for i = 0, ..., d-1.
+        for :math:`i \in \{ 1, \dots, d\}`.
+        The input random variables have the Uniform distribution:
+
+        .. math::
+
+           X_i \sim \mathcal{U}(0,1)
+
+        for :math:`i \in \{ 1, \dots, d\}` where :math:`\mathcal{U}` is the Uniform
+        distribution.
+
         The input random variables are independent.
 
-        The default dimension is equal to 3.
+        The default dimension is equal to :math:`d=3`.
 
         Parameters
         ----------
@@ -44,41 +52,44 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
         -----
 
         The dimension of the problem can be changed.
-        The exact sensitivity indices are computed from the vector a.
+        The exact sensitivity indices are computed from the vector :math:`\boldsymbol{a}`.
 
-        The function g has no derivative at X=(1/2,..., 1/2).
-        The function g is symmetric with respect to X=(1/2,..., 1/2).
+        The function g has no derivative at :math:`\boldsymbol{x} = (1/2, \dots, 1/2)^\top`.
 
-        When a[i] increases, the variable X[i] has a first order
-        indice closer to zero.
+        The function g is symmetric with respect to :math:`\boldsymbol{x} = (1/2, \dots, 1/2)^\top`.
 
-        The detailed analysis is the following:
-        * if a[i] = 0, then the variable X[i] is ”important”,
-        since 0 ≤ gi (x) ≤ 2.
-        * if a[i] = 9, then the variable X[i] is ”non important”,
-        since 0.90 ≤ gi (x) ≤ 1.10.
-        * if a[i] = 99, then the variable X[i] is ”non significant”,
-        since 0.99 ≤ gi (x) ≤ 1.01.
+        When :math:`a_i` increases, the variable :math:`X_i` has a first-order index closer to zero.
 
-        The model was first introduced in (Saltelli, Sobol', 1995).
+        A detailed analysis follows:
+
+        * If :math:`a_i = 0`, then the variable :math:`X_i` is important,
+          since :math:`0 \le g_i(x) \le 2`.
+
+        * If :math:`a_i = 9`, then the variable :math:`X_i` is non-important,
+          since :math:`0.90 \le g_i(x) \le 1.10`.
+
+        * If :math:`a_i = 99`, then the variable :math:`X_i` is non-significant,
+          since :math:`0.99 \le g_i(x) \le 1.01`.
+
+        The model was first introduced in (Saltelli & Sobol', 1995).
 
         References
         ----------
-        Saltelli, A., & Sobol', I. Y. M. (1994).
-        Sensitivity analysis for nonlinear mathematical models: numerical experience.
-        Matematicheskoe Modelirovanie, 7(11), 16-28.
+        * Saltelli, A., & Sobol', I. Y. M. (1994).
+          Sensitivity analysis for nonlinear mathematical models: numerical experience.
+          Matematicheskoe Modelirovanie, 7(11), 16-28.
 
-        Saltelli, A., & Sobol', I. M. (1995). About the use of rank transformation
-        in sensitivity analysis of model output.
-        Reliability Engineering & System Safety, 50(3), 225-239.
+        * Saltelli, A., & Sobol', I. M. (1995). About the use of rank transformation
+          in sensitivity analysis of model output.
+          Reliability Engineering & System Safety, 50(3), 225-239.
 
-        Marrel, A., Iooss, B., Van Dorpe, F., & Volkova, E. (2008).
-        An efficient methodology for modeling complex computer codes with
-        Gaussian processes.
-        Computational Statistics & Data Analysis, 52(10), 4731-4744.
+        * Marrel, A., Iooss, B., Van Dorpe, F., & Volkova, E. (2008).
+          An efficient methodology for modeling complex computer codes with
+          Gaussian processes.
+          Computational Statistics & Data Analysis, 52(10), 4731-4744.
 
-        Saltelli, A., Chan, K., & Scott, E. M. (Eds.). (2000).
-        Sensitivity analysis (Vol. 134). New York: Wiley.
+        * Saltelli, A., Chan, K., & Scott, E. M. (Eds.). (2000).
+          Sensitivity analysis (Vol. 134). New York: Wiley.
         """
 
         dimension = len(a)

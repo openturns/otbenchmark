@@ -37,7 +37,9 @@ from .SensitivityLibrary import SensitivityBenchmarkProblemList
 from ._FORM import FORM
 from ._SORM import SORM
 from ._SubsetSampling import SubsetSampling
-from ._ProbabilitySimulationAlgorithmFactory import ProbabilitySimulationAlgorithmFactory
+from ._ProbabilitySimulationAlgorithmFactory import (
+    ProbabilitySimulationAlgorithmFactory,
+)
 from ._LHS import LHS
 from ._ReliabilityBenchmarkMetaAlgorithm import ReliabilityBenchmarkMetaAlgorithm
 from ._ReliabilityBenchmarkResult import ReliabilityBenchmarkResult

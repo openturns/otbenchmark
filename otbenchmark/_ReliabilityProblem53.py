@@ -16,14 +16,19 @@ import openturns as ot
 
 class ReliabilityProblem53(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu1=1.5, sigma1=1.0, mu2=2.5, sigma2=1.0):
-        """
+        r"""
         Creates a reliability problem RP53.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        g(X1, X2) = sin(5 * X1 / 2) + 2 - (X1^2 + 4) * (X2 - 1) / 20
+        .. math::
 
-        We have X1 ~ Normal(mu1, sigma1) and X2 ~ Normal(mu2, sigma2).
+            g(X_1, X_2) = \sin(5 X_1 / 2) + 2 - (X_1^2 + 4) (X_2 - 1) / 20
+
+        We have:
+
+        * X1 ~ Normal(mu1, sigma1) and
+        * X2 ~ Normal(mu2, sigma2).
 
         Parameters
         ----------

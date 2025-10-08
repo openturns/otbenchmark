@@ -1,6 +1,7 @@
 """
 Manage sensitivity problems.
 """
+
 import openturns as ot
 import otbenchmark as otb
 
@@ -12,6 +13,7 @@ class SensitivityBenchmarkMetaAlgorithm:
         Get the available sample-based estimators.
 
         This currently involves four estimators:
+
         * ot.SaltelliSensitivityAlgorithm
         * ot.MartinezSensitivityAlgorithm
         * ot.JansenSensitivityAlgorithm
@@ -56,8 +58,8 @@ class SensitivityBenchmarkMetaAlgorithm:
         Runs the sampling sensitivity estimator and get the results.
 
         We may let the user select the estimator by taking
-        e.g. the SaltelliSensitivityAlgorithm() as input argument,
-        and use setDesign(), but this currently fails:
+        e.g. the :class:`ot.SaltelliSensitivityAlgorithm` as input argument,
+        and use :meth:`ot.SaltelliSensitivityAlgorithm.setDesign`, but this currently fails:
         https://github.com/openturns/openturns/issues/1884
         This is why the estimator input argument is currently a string.
 

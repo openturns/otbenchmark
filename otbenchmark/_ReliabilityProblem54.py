@@ -12,14 +12,17 @@ import openturns as ot
 
 class ReliabilityProblem54(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, expo=1):
-        """
+        r"""
         Creates a reliability problem RP54.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        X = (x1, x2, ..., x20)
+        .. math::
+          g(\boldsymbol{x}) = x_1 + x_2 + ... + x_{20} - 8.951
 
-        g(X) = (x1 + x2 + ... + x20) - 8.951
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^{20}`.
+
+        Each random variable has the Exponential distribution.
 
         Parameters
         ----------

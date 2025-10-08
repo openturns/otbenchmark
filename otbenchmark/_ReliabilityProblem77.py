@@ -21,25 +21,25 @@ class ReliabilityProblem77(ReliabilityBenchmarkProblem):
         mu3=4.0,
         sigma3=1.0,
     ):
-        """
+        r"""
         Creates a reliability problem RP77.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        X = (x1, x2, x3)
+        .. math::
+            g(\boldsymbol{x}) =
+            \begin{cases}
+            x_1 - x_2 - x_3 & \text{ if } x_3 \leq 5.0, \\
+            x_3 - x_2 & \text{otherwise},
+            \end{cases}
 
-        if (x3 <= 5.0):
-            g(x1, x2, x3) = x1 - x2 - x3
-
-        else :
-            g(x1, x2, x3) = x3 - x2
-
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^{3}`.
         We have :
-            x1 ~ Normal(mu1, sigma1)
 
-            x2 ~ Normal(mu2, sigma2)
-
-            x3 ~ Normal(mu3, sigma3)
+        .. math::
+            & X_1 \sim \mathcal{N}(\mu_1, \sigma_1^2), \\
+            & X_2 \sim \mathcal{N}(\mu_2, \sigma_2^2), \\
+            & X_3 \sim \mathcal{N}(\mu_3, \sigma_3^2).
 
         Parameters
         ----------
@@ -59,11 +59,7 @@ class ReliabilityProblem77(ReliabilityBenchmarkProblem):
             The standard deviation of the X3 gaussian distribution.
         """
         equations = [
-            "if (x3 <= 5.0)",
-            "var g1 := x1 - x2 - x3;",
-            "else",
-            "  g1 := x3 - x2;",
-            "gsys := g1;",
+            "gsys := (x3 <= 5.0) ? x1 - x2 - x3 : x3 - x2;",
         ]
         program = "\n".join(equations)
 

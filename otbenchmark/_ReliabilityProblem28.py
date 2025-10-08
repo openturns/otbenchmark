@@ -14,16 +14,22 @@ class ReliabilityProblem28(ReliabilityBenchmarkProblem):
     def __init__(
         self, threshold=146.14, mu1=78064.0, sigma1=11710.0, mu2=0.0104, sigma2=0.00156
     ):
-        """
+        r"""
         Creates a reliability problem RP28.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        g(x1, x2) = x1 * x2 - threshold
+        .. math::
 
-        with threshold = 146.14.
+          g(x_1, x_2) = x_1 x_2 - \text{threshold}
 
-        We have x1 ~ Normal(mu1, sigma1) and x2 ~ Normal(mu2, sigma2).
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2`
+        where :math:`\text{threshold} = 146.14`.
+
+        We have:
+
+        * x1 ~ Normal(mu1, sigma1) and
+        * x2 ~ Normal(mu2, sigma2).
 
         Parameters
         ----------

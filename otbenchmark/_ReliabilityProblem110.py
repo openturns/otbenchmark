@@ -12,18 +12,36 @@ import openturns as ot
 
 class ReliabilityProblem110(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP110.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        g(x1, x2) = min(g1, g2) with :
+        .. math::
+            g(\boldsymbol{x}) = \min(g_1(\boldsymbol{x}), g_2(\boldsymbol{x}))
 
-        g1 = 0.85 - 0.1 * x1 if x1 <= 3.5 else g1 = 4 - x1
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2` with :
 
-        g2 = 2.3 - x2 if x2 <= 2 else g2 = 0.5 - 0.1 * x2
+        .. math::
+            g_1(\boldsymbol{x}) =
+            \begin{cases}
+            0.85 - 0.1 x_1 & \text{ if } x_1 \leq 3.5, \\
+            4 - x_1 & \text{otherwise,}
+            \end{cases}
 
-        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
+        and:
+
+        .. math::
+            g_2(\boldsymbol{x}) =
+            \begin{cases}
+            2.3 - x_2  & \text{ if }  x_2 \leq 2, \\
+            0.5 - 0.1 x_2 & \text{otherwise,}
+            \end{cases}
+
+        We have:
+
+        * :math:`X_1 \sim \mathcal{N}(\mu_1, \sigma_1^2)` and
+        * :math:`X_2 \sim \mathcal{N}(\mu_2, \sigma_2^2)`.
 
         Parameters
         ----------
@@ -36,14 +54,8 @@ class ReliabilityProblem110(ReliabilityBenchmarkProblem):
             the gaussian distributions.
         """
         equations = [
-            "if (x0 <= 3.5)",
-            "var g1 := 0.85 - 0.1 * x0;",
-            "else",
-            "  g1 := 4 - x0;",
-            "if (x1 <= 2.0)",
-            "  var g2 := 2.3 - x1;",
-            "else",
-            "  g2 := 0.5 - 0.1 * x1;",
+            "var g1 := (x0 <= 3.5) ? 0.85 - 0.1 * x0 : 4 - x0;",
+            "var g2 := (x1 <= 2.0) ? 2.3 - x1 : 0.5 - 0.1 * x1;",
             "gsys := min(g1, g2);",
         ]
         program = "\n".join(equations)

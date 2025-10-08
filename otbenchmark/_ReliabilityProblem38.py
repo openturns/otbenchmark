@@ -30,32 +30,30 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
         mu7=0.036,
         sigma7=0.0036,
     ):
-        """
+        r"""
         Creates a reliability problem RP38.
 
-        The event is {g(X) < threshold} where
-
-        X = (x1, x2, x3, x4, x5, x6, x7)
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
         .. math::
-            g(X) = 15.59 * 1e4 - x1 *x2^3 / (2 * x3^3)
-            * ((x4^2 - 4 * x5 * x6 * x7^2 +x4 * (x6 + 4 * x5 + 2 *x6 * x7))
-            / (x4 * x5 * (x4 + x6 + 2 *x6 *x7)))
+            g(\boldsymbol{x}) = \alpha - \frac{x_1 x_2^3}{2 x_3^3}
+            \frac{x_4^2 - 4 x_5 x_6 x_7^2 + x_4 (x_6 + 4 x_5 + 2 x_6 x_7)}{x_4 x_5 (x_4 + x_6 + 2 x_6 x_7)}
+
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^7` where :math:`\alpha`
+        is a parameter:
+
+        .. math::
+          \alpha = 15.59 \times 10^4
 
         We have :
-        x1 ~ Normal(mu1, sigma1)
 
-        x2 ~ Normal(mu2, sigma2)
-
-        x3 ~ Normal(mu3, sigma3)
-
-        x4 ~ Normal(mu4, sigma4)
-
-        x5 ~ Normal(mu5, sigma5)
-
-        x6 ~ Normal(mu6, sigma6)
-
-        x7 ~ Normal(mu7, sigma7)
+        * x1 ~ Normal(mu1, sigma1),
+        * x2 ~ Normal(mu2, sigma2),
+        * x3 ~ Normal(mu3, sigma3),
+        * x4 ~ Normal(mu4, sigma4),
+        * x5 ~ Normal(mu5, sigma5),
+        * x6 ~ Normal(mu6, sigma6),
+        * x7 ~ Normal(mu7, sigma7).
 
         Parameters
         ----------
@@ -90,7 +88,6 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
         sigma7 : float
             The standard deviation of the X7 Normal distribution.
         """
-
         formula = "15.59 * 1e4 - x1 *x2^3 / (2 * x3^3) *"
         formula += "((x4^2 - 4 * x5 * x6 * x7^2 + "
         formula += (

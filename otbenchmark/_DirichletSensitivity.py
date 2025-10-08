@@ -11,7 +11,7 @@ import sys
 
 class DirichletFunction(ot.OpenTURNSPythonFunction):
     """
-    The non-monotonic function of Morris f: R^20 -> R
+    The Dirichlet test function
 
     References
     ----------
@@ -106,29 +106,29 @@ class DirichletSensitivity(SensitivityBenchmarkProblem):
         The function is defined by the equation:
 
         .. math::
-            g(x) = prod_{i=1}^p (1 + g_i(x[i]))
+            g(\boldsymbol{x}) = \prod_{i=1}^p (1 + g_i(x_i))
 
-        where:
+        for any :math:`\boldsymbol{x} \in [0,1]^d` where:
 
         .. math::
             g_i(x) = \alpha_i d_i(x)
 
-        for any x in [0, 1], where d_i is the Dirichlet kernel:
+        for any :math:`x \in [0, 1]`, where :math:`d_i` is the Dirichlet kernel:
 
         .. math::
-            d_i(x) = \frac{1}{\sqrt{2i}} \frac{\sin{2i + 1} \pi x}{\sin{\pi x} - 1}
+            d_i(x) = \frac{1}{\sqrt{2i}} \frac{\sin\left((2i + 1) \pi x\right)}{\sin(\pi x) - 1}
 
-        for i=1, 2, ..., p.
-
+        for :math:`i \in \{1, 2, ..., p\}`.
         By continuity, we set:
 
         .. math::
-            d_i(0) = \frac{1}{\sqrt{2i}} \forall i=1, 2, ..., p.
+            d_i(0) = \frac{1}{\sqrt{2i}}
 
+        for :math:`i \in \{1, 2, ..., p\}`.
         The Dirichlet kernel has the properties:
 
         .. math::
-            \int_0^1 d_i(x) dx = 0,
+            \int_0^1 d_i(x) dx = 0, \qquad
             \int_0^1 d_i(x)^2 dx = 0.
 
         The input random variables are independent.

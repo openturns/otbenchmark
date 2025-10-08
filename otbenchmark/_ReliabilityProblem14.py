@@ -26,25 +26,25 @@ class ReliabilityProblem14(ReliabilityBenchmarkProblem):
         mu5=250000.0,
         sigma5=35000.0,
     ):
-        """
+        r"""
         Creates a reliability problem RP14.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        X = (x1, x2, x3, x4, x5)
+        .. math::
 
-        g(X) = x1 - 32 / (pi * x2^3) * sqrt(x3^2 * x4^2 / 16 + x5^2)
+          g(\boldsymbol{x}) = x_1 - \frac{32}{\pi x_2^3} \sqrt{\frac{x_3^2 x_4^2}{16} + x_5^2}
+
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^5`.
+
 
         We have :
-            x1 ~ Uniform(a, b)
 
-            x2 ~ Normal(mu2, sigma2)
-
-            x3 ~ Gumbel-max(mu3, sigma3)
-
-            x4 ~ Normal(mu4, sigma4)
-
-            x5 ~ Normal(mu5, sigma5)
+        *    x1 ~ Uniform(a, b)
+        *    x2 ~ Normal(mu2, sigma2)
+        *    x3 ~ Gumbel-max(mu3, sigma3)
+        *    x4 ~ Normal(mu4, sigma4)
+        *    x5 ~ Normal(mu5, sigma5)
 
         Parameters
         ----------

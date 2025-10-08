@@ -1,6 +1,7 @@
 """
 Perform a convergence study of a sensitivity analysis estimator.
 """
+
 import openturns as ot
 import numpy as np
 import time
@@ -94,7 +95,7 @@ class SensitivityConvergence:
         return None
 
     def computeError(self, sample_size):
-        """
+        r"""
         Compute the absolute error for the problem with Monte-Carlo sample.
 
         Uses Saltelli estimator.
@@ -104,9 +105,12 @@ class SensitivityConvergence:
         We compute the absolute error between the reference Sobol'
         indices and the computed Sobol' indices:
 
-            AE(i) = abs(S_computed(i) - S_reference(i))
+        .. math::
 
-        for i = 1, ..., p where p is the dimension of the problem.
+            \text{AE}_i = \left|S_{\text{computed},i} - S_{\text{reference}, i}\right|
+
+        for :math:`i \in \{1, ..., \inputDim\}` where :math:`\inputDim` is the
+        dimension of the problem.
 
         Parameters
         ----------

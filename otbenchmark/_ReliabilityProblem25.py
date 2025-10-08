@@ -12,14 +12,21 @@ import openturns as ot
 
 class ReliabilityProblem25(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP25.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        g(x1, x2) = max(x1^2 - 8 * x2 + 16, -16 * x1 + x2 + 32)
+        .. math::
 
-        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
+            g(x_1, x_2) = \max(x_1^2 - 8 x_2 + 16, -16 x_1 + x_2 + 32)
+
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2`.
+
+        We have:
+
+        * x1 ~ Normal(mu[0], sigma[0]) and
+        * x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------

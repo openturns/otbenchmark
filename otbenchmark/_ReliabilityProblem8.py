@@ -27,27 +27,25 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         mu6=40.0,
         sigma6=8.0,
     ):
-        """
+        r"""
         Creates a reliability problem RP8.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        X = (x1, x2, x3, x4, x5, x6)
+        .. math::
 
-        g(X) = x1 + 2 * x2 + 2 * x3 + x4 - 5 * x5 - 5 * x6
+            g(\boldsymbol{x}) = x_1 + 2 x_2 + 2 x_3 + x_4 - 5 x_5 - 5 x_6
+
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^6`.
 
         We have :
-            x1 ~ LogNormalMuSigma(mu1, sigma1)
 
-            x2 ~ LogNormalMuSigma(mu2, sigma2)
-
-            x3 ~ LogNormalMuSigma(mu3, sigma3)
-
-            x4 ~ LogNormalMuSigma(mu4, sigma4)
-
-            x5 ~ LogNormalMuSigma(mu5, sigma5)
-
-            x6 ~ LogNormalMuSigma(mu6, sigma6)
+        * x1 ~ LogNormalMuSigma(mu1, sigma1),
+        * x2 ~ LogNormalMuSigma(mu2, sigma2),
+        * x3 ~ LogNormalMuSigma(mu3, sigma3),
+        * x4 ~ LogNormalMuSigma(mu4, sigma4),
+        * x5 ~ LogNormalMuSigma(mu5, sigma5),
+        * x6 ~ LogNormalMuSigma(mu6, sigma6).
 
         Parameters
         ----------

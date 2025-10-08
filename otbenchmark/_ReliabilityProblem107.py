@@ -12,16 +12,23 @@ import openturns as ot
 
 class ReliabilityProblem107(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=0, sigma=1):
-        """
+        r"""
         Creates a reliability problem RP107.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        X = (x1, x2, ...., x10)
+        .. math::
 
-        g(X) = 5*sqrt(10) -(x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10).
+          g(X) = 5 \sqrt{10} - (x_1 + x_2 + x_3 + x_4 + x_5 + x_6 + x_7 + x_8 + x_9 + x_{10}).
 
-        We have xi ~ Normal(0, 1) for i in {1, 2, ...,10}
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^{10}`.
+
+        We have:
+
+        .. math::
+            X_i \sim \mathcal{N}(0, 1)
+
+        for :math:`i \in \{1, 2, ...,10\}`.
 
         Parameters
         ----------

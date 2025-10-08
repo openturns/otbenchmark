@@ -13,6 +13,10 @@ def ComputeReferenceProbability(problem, verbose=False):
     """
     Compute the probability of a reliability problem using computeCDF().
 
+    Translate the formula into an string expression, then use
+    distribution arithmetic.
+    This method works only for a limited number of simple reliability problems.
+
     Parameters
     ----------
     problem : ot.ReliabilityProblem

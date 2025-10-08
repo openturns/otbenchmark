@@ -25,32 +25,36 @@ class ReliabilityProblem91(ReliabilityBenchmarkProblem):
         mu5=-684.0,
         sigma5=11.0,
     ):
-        """
+        r"""
         Creates a reliability problem RP91.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        X = (x1, x2, x3, x4, x5)
+        .. math::
 
-        g1 = 0.847 + 0.96 * x2 + 0.986 * x3- 0.216 * x4 + 0.077 * x2^2 + 0.11
-        * x3^2 + (7 / 378) * x4^2- x3 * x2 - 0.106 * x2 * x4 - 0.11 * x3 * x4
+            g(\boldsymbol{x}) = \min(g_1(\boldsymbol{x}), g_2(\boldsymbol{x}),
+                g_3(\boldsymbol{x}))
 
-        g2 = 84000 * x1 / sqrt(x3^2 + x4^2 - x3 * x4 + 3 * x5^2) - 1
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^{5}`.
 
-        g3 = 84000 * x1 / abs(x4) - 1
+        .. math::
 
-        g(X) = min(g1, g2, g3)
+            g_1(\boldsymbol{x}) & = 0.847 + 0.96 x_2 + 0.986 x_3 - 0.216 x_4 \\
+                &\quad + 0.077 x_2^2 + 0.11 x_3^2 + \frac{7}{378} x_4^2 \\
+                &\quad - x_3 x_2 - 0.106 x_2 x_4 - 0.11 x_3 x_4
+
+            g_2(\boldsymbol{x}) & = \frac{84000 x_1}{\sqrt{x_3^2 + x_4^2 - x_3 x_4 + 3 x_5^2}} - 1
+
+            g_3(\boldsymbol{x}) & = \frac{84000 x_1}{|x_4|} - 1
+
 
         We have :
-            x1 ~ Normal(mu1, sigma1)
 
-            x2 ~ Normal(mu2, sigma2)
-
-            x3 ~ Normal(mu3, sigma3)
-
-            x4 ~ Normal(mu4, sigma4)
-
-            x5 ~ Normal(mu5, sigma5)
+        * x1 ~ Normal(mu1, sigma1),
+        * x2 ~ Normal(mu2, sigma2),
+        * x3 ~ Normal(mu3, sigma3),
+        * x4 ~ Normal(mu4, sigma4),
+        * x5 ~ Normal(mu5, sigma5).
 
         Parameters
         ----------
