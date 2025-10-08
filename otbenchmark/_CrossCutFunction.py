@@ -1,6 +1,7 @@
 """
 Create a drawable cross-cut function.
 """
+
 import openturns as ot
 import pylab as pl
 import openturns.viewer as otv

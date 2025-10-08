@@ -18,41 +18,51 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
         The function is defined by the equation:
 
         .. math::
-            g(x) = fs - 3*ks*\sqrt{\pi*S0/(4.*xis*omegas^3)*
-                xi_a*xis/(xip*xis*(4.*xi_a^2+theta^2)+gamma*xi_a^2)*
-                (xip*omegap^3+xis*omegas^3)*omegap/(4.*xi_a*omegaa^4)}
+            g(\boldsymbol{x}) = f_s - 3 k_s \sqrt{
+                \frac{\pi S_0}{4\, \xi_s\, \omega_s^{3}}
+                \cdot
+                \frac{\xi_a\, \xi_s}{
+                    \xi_p\, \xi_s (4 \xi_a^{2} + \theta^{2})
+                    + \gamma\, \xi_a^{2}
+                }
+                \cdot
+                \frac{( \xi_p\, \omega_p^{3} + \xi_s\, \omega_s^{3} ) \omega_p}{4\, \xi_a\, \omega_a^{4}}
+                }
 
-        where
-        * omegap = np.sqrt(kp/mp)
-        * omegas = np.sqrt(ks/ms)
-        * omegaa = 0.5*(omegap+omegas)
-        * gamma = ms/mp
-        * xi_a = 0.5*(xip+xis)
-        * theta = 1./omegaa*(omegap-omegas)
+        where:
+
+        * :math:`\omega_p = \sqrt{k_p / m_p}`
+        * :math:`\omega_s = \sqrt{k_s / m_s}`
+        * :math:`\omega_a = \frac{1}{2} (\omega_p + \omega_s)`
+        * :math:`\gamma = m_s / m_p`
+        * :math:`\xi_a = \frac{1}{2} (\xi_p + \xi_s)`
+        * :math:`\theta = \frac{1}{\omega_a (\omega_p - \omega_s)}`
 
         The input random variables are independent.
 
         The aim is to assess reliability of a two-degree-of-freedom
         primary-secondary system under a white noise base acceleration.
 
-        The basic variables characterizing the physical behavior are
-        * the masses mp and ms
-        * spring stiffnesses kp and ks
-        * natural frequencies ωp and ωs
-        * damping ratios ξp and ξs
+        The basic variables characterizing the physical behavior are:
 
-        where the subscripts p and s respectively refer to
+        * the masses :math:`m_p` and :math:`m_s`;
+        * spring stiffnesses :math:`k_p` and :math:`k_s`;
+        * natural frequencies :math:`\omega_p` and :math:`\omega_s`;
+        * damping ratios :math:`\xi_p` and :math:`\xi_s`;
+
+        where the subscripts :math:`p` and :math:`s` respectively refer to
         the primary and secondary oscillators.
 
         The variables in the model are:
-        * Fs : the force capacity of the secondary spring,
-        * S0 is the intensity of the white noise,
-        * ωp=(kp/mp)1/2,
-        * ωs=(ks/ms)1/2,
-        * ωa=(ωp+ωs)/2 the average frequency ratio,
-        * γ=ms/mp the mass ratio,
-        * ξa=(ξp+ξs)/2 the average damping ratio and
-        * r=(ωp−ωs)/ωa a tuning parameter.
+
+        * :math:`F_s` : the force capacity of the secondary spring,
+        * :math:`S_0` is the intensity of the white noise,
+        * :math:`\omega_p = \frac{1}{2} (k_p / m_p)`,
+        * :math:`\omega_s = \frac{1}{2} (k_s / m_s)`,
+        * :math:`\omega_a = \frac{1}{2} (\omega_p + \omega_s)` the average frequency ratio,
+        * :math:`\gamma = m_s / m_p` the mass ratio,
+        * :math:`\xi_a = (\xi_p + \xi_s)/2` the average damping ratio and
+        * :math:`r = (\omega_p - \omega_s) / \omega_a` a tuning parameter.
 
         Parameters
         ----------

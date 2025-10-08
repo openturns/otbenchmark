@@ -1,6 +1,7 @@
 """
 Manage reliability problems.
 """
+
 import otbenchmark as otb
 import numpy as np
 import sys

@@ -9,8 +9,27 @@ import openturns as ot
 
 class FourBranchSerialSystemReliability(ReliabilityBenchmarkProblem):
     def __init__(self):
-        """
+        r"""
         Creates the four-branch serial system from Waarts.
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
+
+        .. math::
+
+            g(X_1, X_2) = \min(Y_1, Y_2, Y_3, Y_4)
+
+        with:
+
+        .. math::
+
+            Y_1 &= 3 + 0.1 (X_1 - X_2)^2 - \frac{X_1 + X_2}{\sqrt{2}} \\
+            Y_2 &= 3 + 0.1 (X_1 - X_2)^2 + \frac{X_1 + X_2}{\sqrt{2}} \\
+            Y_3 &= X_1 - X_2 + \frac{7}{\sqrt{2}} \\
+            Y_4 &= X_2 - X_1 + \frac{7}{\sqrt{2}}
+
+        We have:
+
+        * :math:`X_1 \sim \mathcal{N}(\mu_1, \sigma_1)` and
+        * :math:`X_2 \sim \mathcal{N}(\mu_2, \sigma_2)`.
 
         References
         ----------

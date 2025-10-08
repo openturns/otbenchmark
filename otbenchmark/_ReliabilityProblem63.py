@@ -12,16 +12,24 @@ import openturns as ot
 
 class ReliabilityProblem63(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=0, sigma=1):
-        """
+        r"""
         Creates a reliability problem RP63.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        X = (x1, x2, ...., x100)
+        .. math::
 
-        g(X) = 0.1 * (x2^2 + x3^2 + .... + x99^2 + x100^2) - x1 - 4.5
+            g(\boldsymbol{x}) = 0.1 \left(x_2^2 + x_3^2 + .... + x_{99}^2 + x_{100}^2\right) - x_1 - 4.5
 
-        We have xi ~ Normal(0, 1) for i in {1, 2, ...,100}
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^{10}`.
+
+        We have:
+
+        .. math::
+
+            X_i \sim \mathcal{N}(0, 1)
+
+        for :math:`i \in \{1, 2, ...,100\}`.
 
         Parameters
         ----------

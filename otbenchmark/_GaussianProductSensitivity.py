@@ -11,27 +11,50 @@ class GaussianProductSensitivity(SensitivityBenchmarkProblem):
     """Class to define a linear sum sensitivity benchmark problem."""
 
     def __init__(self, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Create a gaussian product sensitivity problem.
 
-        The model is:
+        .. math::
 
-        g(x) = x[0] * x[1] * ... * x[d-1]
+           g(\boldsymbol{x}) = x_1 \, x_2 \, \cdots \, x_d
 
-        where d is the dimension and
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^d`.
+        We assume that the input random variables have Gaussian distributions:
 
-        x[i] = Normal(mu[i], sigma[i])
+        .. math::
 
-        for i = 0, ..., d-1.
+           X_i \sim \mathcal{N}\left(\mu_i,\ \sigma_i^2\right)
 
-        The default dimension is equal to 2.
+        for :math:`i \in \{1, \dots, d\}`.
+
+        The default dimension is :math:`d = 2`.
+
+        The variance of the model output is:
+
+        .. math::
+
+            \text{Var}(Y) = \prod_{i=1}^{d} \left(\mu_i^2 + \sigma_i^2\right)
+                - \prod_{i=1}^{d} \mu_i^2
+
+        The first order Sobol' index for the :math:`i`-th variable is:
+
+        .. math::
+
+            S_i = \frac{\sigma_i^2 \prod_{j=1, j \neq i}^{d} \mu_j^2}{\text{Var}(Y)}
+
+        The total order Sobol' index for the :math:`i`-th variable is:
+
+        .. math::
+
+            S_{T_i} = 1 - \frac{\mu_i^2
+                \prod_{j=1, j \neq i}^{d} \left(\mu_j^2 + \sigma_j^2\right)
+                    - \prod_{j=1}^{d} \mu_j^2}{\text{Var}(Y)}
 
         This case is interesting because interactions matters.
 
         References
         ----------
-        * "Sensitivity analysis examples with NISP"
-          Michael Baudin (INRIA), Jean-Marc Martinez (CEA)
+        * "Sensitivity analysis examples with NISP", Michael Baudin (INRIA), Jean-Marc Martinez (CEA)
 
         Parameters
         ----------

@@ -12,14 +12,20 @@ import openturns as ot
 
 class ReliabilityProblem89(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP89.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        g(x1, x2) = min(-x1^2 - x2 + 8, -x1 / 5 - x2 + 6)
+        .. math::
 
-        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
+            g(x_1, x_2) = \min(-x_1^2 - x_2 + 8, -x_1 / 5 - x_2 + 6)
+
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2`.
+        We have:
+
+        * x1 ~ Normal(mu[0], sigma[0]) and
+        * x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------

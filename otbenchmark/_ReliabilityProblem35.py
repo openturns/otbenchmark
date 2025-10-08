@@ -12,18 +12,31 @@ import openturns as ot
 
 class ReliabilityProblem35(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP35.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        g(x1, x2) = min(g1, g2) with
+        .. math::
 
-        g1 = 2 - x2 + exp(-0.1 * x1^2) + (0.2 * x1) ^ 4
+          g(x_1, x_2) = \min(g_1, g_2)
 
-        g2 = 4.5 - x1 * x2
+        where:
 
-        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
+        .. math::
+
+          g_1(x_1, x_2) = 2 - x2 + \exp(-0.1 x_1^2) + (0.2 x_1)^4
+
+        and:
+
+        .. math::
+
+          g_2(x_1, x_2) = 4.5 - x_1 x_2
+
+        We have:
+
+        * x1 ~ Normal(mu[0], sigma[0]) and
+        * x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------

@@ -11,20 +11,30 @@ import openturns as ot
 
 class ReliabilityProblem57(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP57.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where:
 
-        g(x1, x2) = min(max(g1, g2), g3) with
+        .. math::
+          g(\boldsymbol{x}) = \min(\max(g_1(\boldsymbol{x}), g_2(\boldsymbol{x})),
+            g_3(\boldsymbol{x}))
 
-        g1 = -x1^2 + x2^3 + 3
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2`
+        with:
 
-        g2 = 2 - x1 - 8 * x2
+        .. math::
 
-        g3 = (x1 + 3)^2 + (x2 + 3)^2 - 4
+          g_1(\boldsymbol{x}) &= -x_1^2 + x_2^3 + 3
 
-        We have x1 ~ Normal(mu[0], sigma[0]) and x2 ~ Normal(mu[1], sigma[1]).
+          g_2(\boldsymbol{x}) &= 2 - x_1 - 8 x_2
+
+          g_3(\boldsymbol{x}) &= (x_1 + 3)^2 + (x_2 + 3)^2 - 4
+
+        We have:
+
+        * x1 ~ Normal(mu[0], sigma[0]) and
+        * x2 ~ Normal(mu[1], sigma[1]).
 
         Parameters
         ----------

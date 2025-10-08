@@ -25,47 +25,49 @@ class ReliabilityProblem60(ReliabilityBenchmarkProblem):
         mu5=1200,
         sigma5=480,
     ):
-        """
+        r"""
         Creates a reliability problem RP60.
 
-        The event is {g(X) < threshold} with:
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` with:
 
-            X = (x1, x2, x3, x4, x5)
+        .. math::
 
-            g1 = x1 - x5
+            g(\boldsymbol{x}) = \min(g_1(\boldsymbol{x}), g_{11}(\boldsymbol{x}))
 
-            g2 = x2 - x5 / 2
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^{5}` where:
 
-            g3 = x3 - x5 / 2
+        .. math::
 
-            g4 = x4 - x5 / 2
+            g_1(\boldsymbol{x}) &= x_1 - x_5
 
-            g5 = x2 - x5
+            g_2(\boldsymbol{x}) &= x_2 - \frac{x_5}{2}
 
-            g6 = x3 - x5
+            g_3(\boldsymbol{x}) &= x_3 - \frac{x_5}{2}
 
-            g7 = x4 - x5
+            g_4(\boldsymbol{x}) &= x_4 - \frac{x_5}{2}
 
-            g8 = min(g5, g6)
+            g_5(\boldsymbol{x}) &= x_2 - x_5
 
-            g9 = max(g7, g8)
+            g_6(\boldsymbol{x}) &= x_3 - x_5
 
-            g10 = min(g2, g3, g4)
+            g_7(\boldsymbol{x}) &= x_4 - x_5
 
-            g11 = max(g10, g9)
+            g_8(\boldsymbol{x}) &= \min(g_5(\boldsymbol{x}), g_6(\boldsymbol{x}))
 
-            g(X) = min(g1, g11)
+            g_9(\boldsymbol{x}) &= \max(g_7(\boldsymbol{x}), g_8(\boldsymbol{x}))
+
+            g_{10}(\boldsymbol{x}) &= \min(g_2(\boldsymbol{x}), g_3(\boldsymbol{x}), g_4(\boldsymbol{x}))
+
+            g_{11}(\boldsymbol{x}) &= \max(g_{10}(\boldsymbol{x}), g_9(\boldsymbol{x}))
+
 
         We have :
-            x1 ~ LogNormalMuSigma(mu1, sigma1)
 
-            x2 ~ LogNormalMuSigma(mu2, sigma2)
-
-            x3 ~ LogNormalMuSigma(mu3, sigma3)
-
-            x4 ~ LogNormalMuSigma(mu4, sigma4)
-
-            x5 ~ LogNormalMuSigma(mu5, sigma5)
+        * x1 ~ LogNormalMuSigma(mu1, sigma1),
+        * x2 ~ LogNormalMuSigma(mu2, sigma2),
+        * x3 ~ LogNormalMuSigma(mu3, sigma3),
+        * x4 ~ LogNormalMuSigma(mu4, sigma4),
+        * x5 ~ LogNormalMuSigma(mu5, sigma5).
 
         Parameters
         ----------

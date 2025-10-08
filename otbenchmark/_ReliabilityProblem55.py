@@ -10,24 +10,36 @@ import openturns as ot
 
 class ReliabilityProblem55(ReliabilityBenchmarkProblem):
     def __init__(self, threshold=0.0, a=[-1.0] * 2, b=[1.0] * 2):
-        """
+        r"""
         Creates a reliability problem RP55.
 
-        The event is {g(X) < threshold} where
+        The event is :math:`\{g(\boldsymbol{X}) < \text{threshold}\}` where
 
-        X = (x1, x2)
+        .. math::
 
-        g1 = 0.2 + 0.6 * (x1 - x2)^4 - (x1 - x2) / sqrt(2)
+        g(\boldsymbol{x}) = \min(g_1(\boldsymbol{x}), g_2(\boldsymbol{x}),
+          g_3(\boldsymbol{x}), g_4(\boldsymbol{x}))
 
-        g2 = 0.2 + 0.6 * (x1 - x2)^4 + (x1 - x2) / sqrt(2)
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^2`
+        where:
 
-        g3 = (x1 - x2) + 5 / sqrt(2) - 2.2
+        .. math::
 
-        g4 = (x2 - x1) + 5 / sqrt(2) - 2.2
+          g_1(\boldsymbol{x}) & = 0.2 + 0.6 (x_1 - x_2)^4
+            - \frac{x_1 - x_2}{\sqrt{2}}
 
-        g(X) = min(g1, g2, g3, g4)
 
-        We have x1 ~ Uniform(a[0], b[0]) and x2 ~ Uniform(a[1], b[1]).
+          g_2(\boldsymbol{x}) & = 0.2 + 0.6 (x_1 - x_2)^4
+            + \frac{x_1 - x_2}{\sqrt{2}}
+
+          g_3(\boldsymbol{x}) & = (x_1 - x_2) + \frac{5}{\sqrt{2}} - 2.2
+
+          g_4(\boldsymbol{x}) & = (x_2 - x_1) + \frac{5}{\sqrt{2}} - 2.2
+
+        We have:
+
+        * x1 ~ Uniform(a[0], b[0]) and
+        * x2 ~ Uniform(a[1], b[1]).
 
         Parameters
         ----------

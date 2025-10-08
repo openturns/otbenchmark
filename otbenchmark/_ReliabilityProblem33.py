@@ -17,24 +17,32 @@ class ReliabilityProblem33(ReliabilityBenchmarkProblem):
         mu=[0.0] * 3,
         sigma=[1.0] * 3,
     ):
-        """
+        r"""
         Creates a reliability problem RP33.
 
-        The limit-state g is defined by:
+        The limit-state g function is defined by:
 
-            g(x1, x2, x3) = min(g1, g2) with
+        .. math::
 
-            g1 = -x1 - x2 - x3 + 3 * sqrt(3)
+            g(x_1, x_2, x_3) = \min(g_1, g_2)
 
-            g2 = -x3 + 3
+        with:
+
+        .. math::
+
+            g_1(x_1, x_2, x_3) = -x_1 - x_2 - x_3 + 3 \sqrt{3}
+
+        and:
+
+        .. math::
+
+            g_2(x_1, x_2, x_3) = -x_3 + 3
 
         We have:
 
-            x1 ~ Normal(mu[0], sigma[0])
-
-            x2 ~ Normal(mu[1], sigma[1])
-
-            x3 ~ Normal(mu[2], sigma[2]).
+        * x1 ~ Normal(mu[0], sigma[0]),
+        * x2 ~ Normal(mu[1], sigma[1]),
+        * x3 ~ Normal(mu[2], sigma[2]).
 
         Parameters
         ----------

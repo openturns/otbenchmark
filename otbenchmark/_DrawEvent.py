@@ -1,6 +1,7 @@
 """
 Static methods to plot reliability problems.
 """
+
 import openturns as ot
 import pylab as pl
 import openturns.viewer as otv

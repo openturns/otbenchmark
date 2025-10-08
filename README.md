@@ -21,10 +21,29 @@ Most of the reliability problems were adapted from the RPRepo
 
 https://rprepo.readthedocs.io/en/latest/
 
-This module allows you to create a problem, run an algorithm and 
-compare the computed probability with a reference probability: 
+This module makes it possible to create a problem, run an algorithm and 
+compare the computed probability with a reference probability. 
 Moreover, we can loop over all problems and run several methods on these 
 problems.
+
+## Example
+The next example shows how to use the R-S reliability problem.
+```python
+import otbenchmark as otb
+import openturns as ot
+
+problem = otb.RminusSReliability()
+event = problem.getEvent()
+reference_pf = problem.getProbability() # exact probability
+# Create the Monte-Carlo algorithm
+algoProb = ot.ProbabilitySimulationAlgorithm(event)
+algoProb.setMaximumOuterSampling(1000)
+algoProb.setMaximumCoefficientOfVariation(0.01)
+algoProb.run()
+resultAlgo = algoProb.getResult()
+computed_pf = resultAlgo.getProbabilityEstimate()
+absoluteError = abs(computed_pf - reference_pf)
+```
 
 ## Authors
 

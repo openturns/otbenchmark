@@ -11,32 +11,44 @@ class GaussianSumSensitivity(SensitivityBenchmarkProblem):
     """Class to define a gaussian sum sensitivity benchmark problem."""
 
     def __init__(self, a=[1.0] * 3, mu=[0.0] * 2, sigma=[1.0] * 2):
-        """
+        r"""
         Create a gaussian sum sensitivity problem.
 
         The model is:
 
-        g(x) = a[0] + a[1] * x[0] + a[2] * x[1] + ... + a[d] * x[d-1]
+        .. math::
 
-        where d is the dimension and
+           g(\boldsymbol{x}) = a_0 + a_1 x_1 + a_2 x_2
+               + \dots + a_d x_d
 
-        x[i] = Normal(mu[i], sigma[i])
+        for any :math:`\boldsymbol{x} \in \mathbb{R}^d` where
+        :math:`a_0, a_1, a_2, \ldots, a_d \in \mathbb{R}` are
+        constant parameters.
+        We assume that the input random variables have Gaussian distributions:
 
-        for i = 0, ..., d-1.
+        .. math::
 
-        The default dimension is equal to 2.
+           X_i \sim \mathcal{N}\left(\mu_i,\ \sigma_i^2\right)
 
-        The variance of the output is
+        for :math:`i \in \{1, \dots, d\}`.
 
-        V(Y) = a[1]^2 * sigma[0]^2 + ... + a[d]^2 * sigma[d-1]^2
+        The output variance is:
 
-        The first order indices are
+        .. math::
 
-        S[i] = (a[i + 1]^2 * sigma[i]^2) / V(Y)
+           \operatorname{Var}(Y) = a_1^2 \, \sigma_1^2
+               + a_2^2 \, \sigma_2^2
+               + \dots + a_d^2 \, \sigma_d^2
 
-        for i=0,1,...,dimension.
+        The first-order Sobol' indices are:
 
-        The total sensitivity indices are equal to the
+        .. math::
+
+           S_i = \frac{a_{i}^{2}\, \sigma_{i}^{2}}{\operatorname{Var}(Y)}
+
+        for :math:`i = 1, \dots, d`.
+
+        The total Sobol' sensitivity indices are equal to the
         first order indices.
 
         Parameters
