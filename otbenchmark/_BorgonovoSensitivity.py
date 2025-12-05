@@ -17,9 +17,9 @@ class BorgonovoSensitivity(SensitivityBenchmarkProblem):
         The function is defined by the equation:
 
         .. math::
-            g(x) = x1 * x2 + x3
+            g(x) = x_1 x_2 + x_3
 
-        where x1, x2, x3 ~ U(0, 1).
+        where :math:`x1, x2, x3 \sim \mathcal{U}(0, 1)`.
 
         The input random variables are independent.
 
