@@ -1,6 +1,7 @@
 """
 Perform a convergence study of a sensitivity analysis estimator.
 """
+
 import openturns as ot
 import numpy as np
 import time

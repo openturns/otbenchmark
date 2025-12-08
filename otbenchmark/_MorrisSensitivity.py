@@ -1,6 +1,7 @@
 """
 The non-monotonic function of Morris f: R^20 -> R.
 """
+
 from ._SensitivityBenchmarkProblem import SensitivityBenchmarkProblem
 import openturns as ot
 import warnings

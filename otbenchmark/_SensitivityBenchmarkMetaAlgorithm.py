@@ -1,6 +1,7 @@
 """
 Manage sensitivity problems.
 """
+
 import openturns as ot
 import otbenchmark as otb
 
