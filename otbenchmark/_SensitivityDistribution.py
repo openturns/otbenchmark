@@ -9,7 +9,7 @@ class SensitivityDistribution:
     """
     Checks the distribution of the sensitivity indices estimators.
 
-    We comapre the asymptotic distribution with an empirical sample of Sobol'
+    We compare the asymptotic distribution with an empirical sample of Sobol'
     indices estimates.
 
     We want to check that the distribution computed by the library is OK.
@@ -35,10 +35,13 @@ class SensitivityDistribution:
         sampleSize,
         numberOfRepetitions=10,
         estimator="Saltelli",
-        sampling_method="MonteCarlo",
+        samplingMethod="MonteCarlo",
     ):
         """
         Checks the distribution of the Sobol' estimator.
+
+        Caution: This changes the "SobolIndicesExperiment-SamplingMethod"
+        resource, which is used by the sampling estimators.
 
         Parameters
         ----------
@@ -53,7 +56,7 @@ class SensitivityDistribution:
         estimator : str
             The estimator.
             Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko".
-        sampling_method : str
+        samplingMethod : str
             The sampling method.
             Must be "MonteCarlo" or "LHS" or "QMC".
 
@@ -67,25 +70,24 @@ class SensitivityDistribution:
         self.metaSAAlgorithm = metaSAAlgorithm
         self.sampleSize = sampleSize
         self.numberOfRepetitions = numberOfRepetitions
-        if (
-            estimator != "Saltelli"
-            and estimator != "Jansen"
-            and estimator != "Martinez"
-            and estimator != "MauntzKucherenko"
-        ):
+        self.validEstimators = {
+            "Saltelli",
+            "Jansen",
+            "Martinez",
+            "MauntzKucherenko",
+        }
+        if estimator not in self.validEstimators:
             raise ValueError("Unknown value of estimator %s" % (estimator))
         self.estimator = estimator
-        if (
-            sampling_method != "MonteCarlo"
-            and sampling_method != "LHS"
-            and sampling_method != "QMC"
-        ):
-            raise ValueError(
-                "Unknown value of sampling method : %s" % (sampling_method)
-            )
-        self.sampling_method = sampling_method
+        self.validSamplingMethods = {"MonteCarlo", "LHS", "QMC"}
+        if samplingMethod not in self.validSamplingMethods:
+            raise ValueError("Unknown value of sampling method : %s" % (samplingMethod))
+        self.samplingMethod = samplingMethod
+        ot.ResourceMap.SetAsString(
+            "SobolIndicesExperiment-SamplingMethod", self.samplingMethod
+        )
 
-    def compute_sample_indices(self):
+    def computeSampleIndices(self):
         """
         Generate a sample of first order and total order Sobol' indices.
 
@@ -93,11 +95,11 @@ class SensitivityDistribution:
         -------
         sampleFirst : ot.Sample(numberOfRepetitions, dimension)
             A sample of first order Sobol' indices.
-        sampleTotal : TYPE
+        sampleTotal : ot.Sample(numberOfRepetitions, dimension)
             A sample of total order Sobol' indices.
         distributionFirst : ot.Distribution
             The distribution of the first order Sobol' indices..
-        distributionTotal : TYPE
+        distributionTotal : ot.Distribution
             The distribution of the total order Sobol' indices..
         """
 
@@ -109,22 +111,9 @@ class SensitivityDistribution:
 
         experiment = ot.SobolIndicesExperiment(distribution, self.sampleSize)
 
-        # loi asymptotique
-        is_first_simulation = True
+        isFirstSimulation = True
 
         for i in range(self.numberOfRepetitions):
-            if (
-                self.sampling_method == "MonteCarlo"
-                or self.sampling_method == "LHS"
-                or self.sampling_method == "QMC"
-            ):
-                ot.ResourceMap.SetAsString(
-                    "SobolIndicesExperiment-SamplingMethod", self.sampling_method
-                )
-            else:
-                raise ValueError(
-                    "Unknown value of sampling method : %s" % (self.sampling_method)
-                )
             inputDesign = experiment.generate()
             outputDesign = model(inputDesign)
             if self.estimator == "Saltelli":
@@ -138,16 +127,14 @@ class SensitivityDistribution:
             else:
                 raise ValueError("Unknown value of estimator %s" % (self.estimator))
             sobolAlgorithm.setDesign(inputDesign, outputDesign, self.sampleSize)
-            first_order = sobolAlgorithm.getFirstOrderIndices()
-            total_order = sobolAlgorithm.getTotalOrderIndices()
-            sampleFirst[i] = first_order
-            sampleTotal[i] = total_order
+            sampleFirst[i] = sobolAlgorithm.getFirstOrderIndices()
+            sampleTotal[i] = sobolAlgorithm.getTotalOrderIndices()
 
             # Get the distribution
-            if is_first_simulation:
+            if isFirstSimulation:
                 distributionFirst = sobolAlgorithm.getFirstOrderIndicesDistribution()
                 distributionTotal = sobolAlgorithm.getTotalOrderIndicesDistribution()
-                is_first_simulation = False
+                isFirstSimulation = False
 
         return (
             sampleFirst,
@@ -158,15 +145,9 @@ class SensitivityDistribution:
 
     def draw(
         self,
-        mean_distribution=False,
     ):
         """
         Plot the distribution of the estimator and the distribution of the indices.
-
-        Parameters
-        ----------
-        mean_distribution : TYPE, optional
-            DESCRIPTION. The default is False.
 
         Returns
         -------
@@ -178,51 +159,51 @@ class SensitivityDistribution:
             sampleTotal,
             distributionFirst,
             distributionTotal,
-        ) = self.compute_sample_indices()
+        ) = self.computeSampleIndices()
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()
         grid = ot.GridLayout(2, dimension)
-        exact_first_order = self.problem.getFirstOrderIndices()
-        exact_total_order = self.problem.getTotalOrderIndices()
+        exactFirstOrder = self.problem.getFirstOrderIndices()
+        exactTotalOrder = self.problem.getTotalOrderIndices()
 
         # For each estimator, compare the distribution and the sample distribution
-        for marginal_index in range(dimension):
-            for first_order_sobol_estimator in [True, False]:
-                if first_order_sobol_estimator:
-                    label = "$S_{%d}$" % (marginal_index)
+        for marginalIndex in range(dimension):
+            for firstOrderSobolEstimator in [True, False]:
+                if firstOrderSobolEstimator:
+                    label = f"$S_{{{marginalIndex}}}$"
                 else:
-                    label = "$T_{%d}$" % (marginal_index)
+                    label = f"$T_{{{marginalIndex}}}$"
                 graph = ot.Graph("", label, "PDF", True, "topright")
                 # Distribution of estimator
-                if first_order_sobol_estimator:
-                    sampleJ = sampleFirst[:, marginal_index]
+                if firstOrderSobolEstimator:
+                    sampleJ = sampleFirst[:, marginalIndex]
                 else:
-                    sampleJ = sampleTotal[:, marginal_index]
+                    sampleJ = sampleTotal[:, marginalIndex]
                 sampleDistribution = ot.KernelSmoothing().build(sampleJ)
                 curve = sampleDistribution.drawPDF()
                 curve.setLegends(["Sample"])
                 graph.add(curve)
                 # Distribution computed by estimator
-                if first_order_sobol_estimator:
-                    marginalDistribution = distributionFirst.getMarginal(marginal_index)
+                if firstOrderSobolEstimator:
+                    marginalDistribution = distributionFirst.getMarginal(marginalIndex)
                 else:
-                    marginalDistribution = distributionTotal.getMarginal(marginal_index)
+                    marginalDistribution = distributionTotal.getMarginal(marginalIndex)
                 curve = marginalDistribution.drawPDF()
                 curve.setLegends(["Computed"])
                 graph.add(curve)
                 # Plot exact Sobol' index on the X axis
-                if first_order_sobol_estimator:
-                    data = exact_first_order[marginal_index]
+                if firstOrderSobolEstimator:
+                    data = exactFirstOrder[marginalIndex]
                 else:
-                    data = exact_total_order[marginal_index]
+                    data = exactTotalOrder[marginalIndex]
                 cloud = ot.Cloud([[data]], [[0.0]])
                 cloud.setLegend("Exact")
                 graph.add(cloud)
                 # Graphics options
                 graph.setColors(ot.DrawableImplementation.BuildDefaultPalette(3))
-                if first_order_sobol_estimator:
-                    row_index = 0
+                if firstOrderSobolEstimator:
+                    rowIndex = 0
                 else:
-                    row_index = 1
-                grid.setGraph(row_index, marginal_index, graph)
+                    rowIndex = 1
+                grid.setGraph(rowIndex, marginalIndex, graph)
         return grid

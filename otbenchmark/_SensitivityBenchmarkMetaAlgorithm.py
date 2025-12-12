@@ -52,7 +52,7 @@ class SensitivityBenchmarkMetaAlgorithm:
         return None
 
     def runSamplingEstimator(
-        self, sample_size, estimator="Saltelli", sampling_method="MonteCarlo"
+        self, sampleSize, estimator="Saltelli", samplingMethod="MonteCarlo"
     ):
         """
         Runs the sampling sensitivity estimator and get the results.
@@ -65,42 +65,42 @@ class SensitivityBenchmarkMetaAlgorithm:
 
         Parameters
         ----------
-        sample_size: int
+        sampleSize: int
             The sample size.
         estimator : str
             The estimator.
-            Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko", "Janon".
-        sampling_method : str
+            Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko".
+        samplingMethod : str
             The sampling method.
             Must be "MonteCarlo" or "LHS" or "QMC".
 
         Returns
         -------
-        first_order: ot.Point(dimension)
+        firstOrder: ot.Point(dimension)
             The Sobol' first order indices.
-        total_order: ot.Point(dimension)
+        totalOrder: ot.Point(dimension)
             The Sobol' total order indices.
         """
         if (
-            sampling_method == "MonteCarlo"
-            or sampling_method == "LHS"
-            or sampling_method == "QMC"
+            samplingMethod == "MonteCarlo"
+            or samplingMethod == "LHS"
+            or samplingMethod == "QMC"
         ):
             ot.ResourceMap.SetAsString(
-                "SobolIndicesExperiment-SamplingMethod", sampling_method
+                "SobolIndicesExperiment-SamplingMethod", samplingMethod
             )
         else:
             raise ValueError(
-                "Unknown value of sampling method : %s" % (sampling_method)
+                f"Unknown value of sampling method : {samplingMethod}"
             )
         distribution = self.problem.getInputDistribution()
         model = self.problem.getFunction()
-        experiment = ot.SobolIndicesExperiment(distribution, sample_size)
+        experiment = ot.SobolIndicesExperiment(distribution, sampleSize)
         inputDesign = experiment.generate()
         outputDesign = model(inputDesign)
         if estimator == "Janon":
             sobolAlgorithm = otb.JanonSensitivityAlgorithm(
-                inputDesign, outputDesign, sample_size
+                inputDesign, outputDesign, sampleSize
             )
         else:
             if estimator == "Saltelli":
@@ -112,18 +112,19 @@ class SensitivityBenchmarkMetaAlgorithm:
             elif estimator == "MauntzKucherenko":
                 sobolAlgorithm = ot.MauntzKucherenkoSensitivityAlgorithm()
             else:
-                raise ValueError("Unknown value of estimator %s" % (estimator))
-            sobolAlgorithm.setDesign(inputDesign, outputDesign, sample_size)
-        first_order = sobolAlgorithm.getFirstOrderIndices()
-        total_order = sobolAlgorithm.getTotalOrderIndices()
-        return first_order, total_order
+                raise ValueError(f"Unknown value of estimator {estimator}")
+            sobolAlgorithm.setDesign(inputDesign, outputDesign, sampleSize)
+        firstOrder = sobolAlgorithm.getFirstOrderIndices()
+        totalOrder = sobolAlgorithm.getTotalOrderIndices()
+        return firstOrder, totalOrder
 
     def runPolynomialChaosEstimator(
         self,
-        sample_size_train=100,
-        sample_size_test=100,
-        total_degree=2,
-        hyperbolic_quasinorm=0.5,
+        sampleSizeTrain=100,
+        sampleSizeTest=100,
+        totalDegree=2,
+        hyperbolicQuasiNorm=0.5,
+        sparse=True,
     ):
         """
         Estimate Sobol' sensitivity indices from sparse polynomial chaos.
@@ -136,28 +137,31 @@ class SensitivityBenchmarkMetaAlgorithm:
 
         Parameters
         ----------
-        sample_size_train : int, optional
+        sampleSizeTrain : int, optional
             The training sample size. The default is 100.
-        sample_size_test : int, optional
+        sampleSizeTest : int, optional
             The test sample size. The default is 100.
-        total_degree : int, optional
+        totalDegree : int, optional
             The total polynomial degree. The default is 2.
-        hyperbolic_quasinorm : float, optional
+        hyperbolicQuasiNorm : float, optional
             The hyperbolic quasi-norm. The default is 0.5.
+        sparse : bool, optional
+            Whether to use sparse polynomial chaos. The default is True.
 
         Returns
         -------
-        first_order: ot.Point(dimension)
+        firstOrder: ot.Point(dimension)
             The Sobol' first order indices.
-        total_order: ot.Point(dimension)
+        totalOrder: ot.Point(dimension)
             The Sobol' total order indices.
         """
         sparse_sa = otb.SparsePolynomialChaosSensitivityAnalysis(
             self.problem,
-            sample_size_train=sample_size_train,
-            sample_size_test=sample_size_test,
-            total_degree=total_degree,
-            hyperbolic_quasinorm=hyperbolic_quasinorm,
+            sampleSizeTrain=sampleSizeTrain,
+            sampleSizeTest=sampleSizeTest,
+            totalDegree=totalDegree,
+            hyperbolicQuasiNorm=hyperbolicQuasiNorm,
+            sparse=sparse,
         )
         result = sparse_sa.run()
-        return result.first_order_indices, result.total_order_indices
+        return result.firstOrderIndices, result.totalOrderIndices

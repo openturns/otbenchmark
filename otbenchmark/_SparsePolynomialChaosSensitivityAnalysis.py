@@ -8,21 +8,21 @@ import openturns as ot
 
 class SparsePolynomialChaosSensitivityResult:
     def __init__(
-        self, predictivity_coefficient, first_order_indices, total_order_indices
+        self, predictivityCoefficient, firstOrderIndices, totalOrderIndices
     ):
         """
         The result of the sensitivity analysis from polynomial chaos.
 
         Parameters
         ----------
-        predictivity_coefficient : float
+        predictivityCoefficient : float
             The predictivity coefficient. Always lower or equal to 1.
             Close to 1 is better.
             Lower than 0.5 means that the polynomial chaos metamodel
             cannot be trusted.
-        first_order_indices : ot.Point(d)
+        firstOrderIndices : ot.Point(d)
             The first order sensitivity indices.
-        total_order_indices : ot.Point(d)
+        totalOrderIndices : ot.Point(d)
             The total order sensitivity indices.
 
         Returns
@@ -30,19 +30,20 @@ class SparsePolynomialChaosSensitivityResult:
         None.
 
         """
-        self.predictivity_coefficient = predictivity_coefficient
-        self.first_order_indices = first_order_indices
-        self.total_order_indices = total_order_indices
+        self.predictivityCoefficient = predictivityCoefficient
+        self.firstOrderIndices = firstOrderIndices
+        self.totalOrderIndices = totalOrderIndices
 
 
 class SparsePolynomialChaosSensitivityAnalysis:
     def __init__(
         self,
         sensitivityBenchmarkProblem,
-        sample_size_train=100,
-        sample_size_test=100,
-        total_degree=2,
-        hyperbolic_quasinorm=0.5,
+        sampleSizeTrain=100,
+        sampleSizeTest=100,
+        totalDegree=2,
+        hyperbolicQuasiNorm=0.5,
+        sparse=True,
     ):
         """
         Estimate Sobol' sensitivity indices from sparse polynomial chaos.
@@ -57,14 +58,18 @@ class SparsePolynomialChaosSensitivityAnalysis:
         ----------
         sensitivityBenchmarkProblem : otb.SensitivityBenchmarkProblem
             The problem.
-        sample_size_train : int, optional
+        sampleSizeTrain : int, optional
             The training sample size. The default is 100.
-        sample_size_test : int, optional
+        sampleSizeTest : int, optional
             The test sample size. The default is 100.
-        total_degree : int, optional
+        totalDegree : int, optional
             The total polynomial degree. The default is 2.
-        hyperbolic_quasinorm : float, optional
+        hyperbolicQuasiNorm : float, optional
             The hyperbolic quasi-norm. The default is 0.5.
+        sparse : bool, optional
+            Set to True to compute a sparse PCE.
+            Set to False to compute all coefficients.
+            Default is True.
 
         Returns
         -------
@@ -72,10 +77,11 @@ class SparsePolynomialChaosSensitivityAnalysis:
 
         """
         self.problem = sensitivityBenchmarkProblem
-        self.sample_size_train = sample_size_train
-        self.sample_size_test = sample_size_test
-        self.total_degree = total_degree
-        self.hyperbolic_quasinorm = hyperbolic_quasinorm
+        self.sampleSizeTrain = sampleSizeTrain
+        self.sampleSizeTest = sampleSizeTest
+        self.totalDegree = totalDegree
+        self.hyperbolicQuasiNorm = hyperbolicQuasiNorm
+        self.sparse = sparse
 
     def run(self, verbose=False):
         """
@@ -96,22 +102,24 @@ class SparsePolynomialChaosSensitivityAnalysis:
         model = self.problem.getFunction()
         dimension = distribution.getDimension()
         if verbose:
-            print("Generate train experiment")
+            print(f"Generate train experiment, N={self.sampleSizeTrain}")
         sequence = ot.SobolSequence(dimension)
         experiment = ot.LowDiscrepancyExperiment(
-            sequence, distribution, self.sample_size_train
+            sequence, distribution, self.sampleSizeTrain
         )
         inputTrain = experiment.generate()
         outputTrain = model(inputTrain)
 
-        # Create sparse chaos
+        # Create polynomial chaos expansion
         if verbose:
-            print("Create sparse chaos")
+            print("Create polynomial chaos expansion..")
         distributionList = [distribution.getMarginal(i) for i in range(dimension)]
-        multivariateBasis = ot.OrthogonalProductPolynomialFactory(distributionList)
-        approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
+        if self.sparse:
+            selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
+        else:
+            selectionAlgorithm = ot.PenalizedLeastSquaresAlgorithmFactory()
         projectionStrategy = ot.LeastSquaresStrategy(
-            inputTrain, outputTrain, approximationAlgorithm
+            inputTrain, outputTrain, selectionAlgorithm
         )
 
         polyColl = [
@@ -119,47 +127,58 @@ class SparsePolynomialChaosSensitivityAnalysis:
             for i in range(dimension)
         ]
         enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(
-            dimension, self.hyperbolic_quasinorm
+            dimension, self.hyperbolicQuasiNorm
         )
         multivariateBasis = ot.OrthogonalProductPolynomialFactory(
             polyColl, enumerateFunction
         )
-
-        enumfunc = multivariateBasis.getEnumerateFunction()
-        P = enumfunc.getStrataCumulatedCardinal(self.total_degree)
-        adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
-        chaosalgo = ot.FunctionalChaosAlgorithm(
+        basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(self.totalDegree)
+        if verbose:
+            print(f"> Sparse = {self.sparse}")
+            print(f"> Total degree = {self.totalDegree}")
+            print(f"> Basis dimension = {basisDimension}")
+        if basisDimension >= self.sampleSizeTrain:
+            raise ValueError(
+                f"The number of candidate coefficients is {basisDimension} "
+                f"is larger or equal to the sample size {self.sampleSizeTrain}"
+            )
+        adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisDimension)
+        chaosAlgorithm = ot.FunctionalChaosAlgorithm(
             inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy
         )
         if verbose:
-            print("Fit")
-        chaosalgo.run()
-        chaosResult = chaosalgo.getResult()
+            print("> Fit")
+        chaosAlgorithm.run()
+        chaosResult = chaosAlgorithm.getResult()
+        number_of_coefficients = chaosResult.getCoefficients().getSize()
+        if verbose:
+            print(f"> Number of selected coefficients: {number_of_coefficients}")
 
         # Validation
         if verbose:
-            print("Validation")
+            print("> Validation...")
+            print(f"> Generate test experiment, N={self.sampleSizeTest}")
         metamodel = chaosResult.getMetaModel()  # get the metamodel
-        experiment = ot.MonteCarloExperiment(distribution, self.sample_size_test)
+        experiment = ot.MonteCarloExperiment(distribution, self.sampleSizeTest)
         inputTest = experiment.generate()
         outputTest = model(inputTest)
         predictions = metamodel(inputTest)
         val = ot.MetaModelValidation(outputTest, predictions)
-        predictivity_coefficient = val.computeR2Score()[0]
+        predictivityCoefficient = val.computeR2Score()[0]
         if verbose:
-            print("Q2=%.2f%%" % (100 * predictivity_coefficient))
+            print(f"> Q2={100 * predictivityCoefficient:0.2f}%")
 
         # S.A.
         if verbose:
-            print("S.A.")
+            print("> Sensitivity Analysis...")
         chaosSI = ot.FunctionalChaosSobolIndices(chaosResult)
-        first_order_indices = ot.Point(
+        firstOrderIndices = ot.Point(
             [chaosSI.getSobolIndex(i) for i in range(dimension)]
         )
-        total_order_indices = ot.Point(
+        totalOrderIndices = ot.Point(
             [chaosSI.getSobolTotalIndex(i) for i in range(dimension)]
         )
         result = SparsePolynomialChaosSensitivityResult(
-            predictivity_coefficient, first_order_indices, total_order_indices
+            predictivityCoefficient, firstOrderIndices, totalOrderIndices
         )
         return result

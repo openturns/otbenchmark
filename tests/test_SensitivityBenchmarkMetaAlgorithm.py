@@ -11,32 +11,31 @@ class CheckSensitivityBenchmarkMetaAlgorithm(unittest.TestCase):
     def test_SensitivityBenchmarkMetaAlgorithm(self):
         ot.Log.Show(ot.Log.NONE)
         problem = otb.IshigamiSensitivity()
-        exact_first_order = problem.getFirstOrderIndices()
-        exact_total_order = problem.getTotalOrderIndices()
+        exactFirstOrder = problem.getFirstOrderIndices()
+        exactTotalOrder = problem.getTotalOrderIndices()
         metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
-        sample_size = 100000
+        sampleSize = 100000
         # By Monte-Carlo
-        for sampling_method in ["MonteCarlo", "LHS", "QMC"]:
-            print("sampling_method=", sampling_method)
+        for samplingMethod in ["MonteCarlo", "LHS", "QMC"]:
+            print("samplingMethod=", samplingMethod)
             (
-                computed_first_order,
-                computed_total_order,
+                computedFirstOrder,
+                computedTotalOrder,
             ) = metaSAAlgorithm.runSamplingEstimator(
-                sample_size, sampling_method=sampling_method
+                sampleSize, samplingMethod=samplingMethod
             )
-            print(exact_first_order - computed_first_order)
-            print(exact_total_order - computed_total_order)
-            if sampling_method == "QMC":
-                atol = 1.0e2 / sample_size
+            print(exactFirstOrder - computedFirstOrder)
+            print(exactTotalOrder - computedTotalOrder)
+            if samplingMethod == "QMC":
+                atol = 1.0e2 / sampleSize
             else:
-                atol = 1.0e1 / np.sqrt(sample_size)
+                atol = 1.0e1 / np.sqrt(sampleSize)
             np.testing.assert_allclose(
-                exact_first_order, computed_first_order, atol=atol
+                exactFirstOrder, computedFirstOrder, atol=atol
             )
             np.testing.assert_allclose(
-                exact_total_order, computed_total_order, atol=atol
+                exactTotalOrder, computedTotalOrder, atol=atol
             )
-        # By Martinez
         for estimator in [
             "Saltelli",
             "Jansen",
@@ -46,18 +45,18 @@ class CheckSensitivityBenchmarkMetaAlgorithm(unittest.TestCase):
         ]:
             print("estimator=", estimator)
             (
-                computed_first_order,
-                computed_total_order,
-            ) = metaSAAlgorithm.runSamplingEstimator(sample_size, estimator=estimator)
-            atol = 1.0e1 / np.sqrt(sample_size)
+                computedFirstOrder,
+                computedTotalOrder,
+            ) = metaSAAlgorithm.runSamplingEstimator(sampleSize, estimator=estimator)
+            atol = 1.0e1 / np.sqrt(sampleSize)
             np.testing.assert_allclose(
-                exact_first_order, computed_first_order, atol=atol
+                exactFirstOrder, computedFirstOrder, atol=atol
             )
             np.testing.assert_allclose(
-                exact_total_order, computed_total_order, atol=atol
+                exactTotalOrder, computedTotalOrder, atol=atol
             )
-            print(exact_first_order - computed_first_order)
-            print(exact_total_order - computed_total_order)
+            print(exactFirstOrder - computedFirstOrder)
+            print(exactTotalOrder - computedTotalOrder)
 
 
 if __name__ == "__main__":

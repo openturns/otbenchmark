@@ -7,6 +7,7 @@ Convergence of estimators on Ishigami
 # In this example, we present the convergence of the sensitivity indices of the Ishigami test function.
 #
 # We compare different estimators.
+#
 # * Sampling methods with different estimators: Saltelli, Mauntz-Kucherenko, Martinez, Jansen,
 # * Sampling methods with different design of experiments: Monte-Carlo, LHS, Quasi-Monte-Carlo,
 # * Polynomial chaos.
@@ -18,6 +19,8 @@ import otbenchmark as otb
 import openturns.viewer as otv
 import numpy as np
 
+# %%
+maximumElapsedTime = 0.5
 
 # %%
 # When we estimate Sobol' indices, we may encounter the following warning messages:
@@ -39,10 +42,10 @@ model = problem.getFunction()
 
 # %%
 # Exact first and total order
-exact_first_order = problem.getFirstOrderIndices()
-print(exact_first_order)
-exact_total_order = problem.getTotalOrderIndices()
-print(exact_total_order)
+exactFirstOrder = problem.getFirstOrderIndices()
+print(exactFirstOrder)
+exactTotalOrder = problem.getTotalOrderIndices()
+print(exactTotalOrder)
 
 # %%
 # Perform sensitivity analysis
@@ -58,8 +61,8 @@ outputDesign = model(inputDesign)
 # %%
 # Compute first order indices using the Saltelli estimator
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
-computed_first_order = sensitivityAnalysis.getFirstOrderIndices()
-computed_total_order = sensitivityAnalysis.getTotalOrderIndices()
+computedFirstOrder = sensitivityAnalysis.getFirstOrderIndices()
+computedTotalOrder = sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
 # Compare with exact results
@@ -67,37 +70,39 @@ print("Sample size : ", size)
 # First order
 # Compute absolute error (the LRE cannot be computed,
 # because S can be zero)
-print("Computed first order = ", computed_first_order)
-print("Exact first order    = ", exact_first_order)
+print("Computed first order = ", computedFirstOrder)
+print("Exact first order    = ", exactFirstOrder)
 # Total order
-print("Computed total order = ", computed_total_order)
-print("Exact total order    = ", exact_total_order)
+print("Computed total order = ", computedTotalOrder)
+print("Exact total order    = ", exactTotalOrder)
 
 # %%
 dimension = distribution.getDimension()
 
 # %%
 # Compute componentwise absolute error.
-first_order_AE = ot.Point(np.abs(exact_first_order - computed_first_order))
-total_order_AE = ot.Point(np.abs(exact_total_order - computed_total_order))
+firstOrderAE = ot.Point(np.abs(exactFirstOrder - computedFirstOrder))
+totalOrderAE = ot.Point(np.abs(exactTotalOrder - computedTotalOrder))
 
 # %%
 print("Absolute error")
 for i in range(dimension):
     print(
-        "AE(S%d) = %.4f, AE(T%d) = %.4f" % (i, first_order_AE[i], i, total_order_AE[i])
+        "AE(S%d) = %.4f, AE(T%d) = %.4f" % (i, firstOrderAE[i], i, totalOrderAE[i])
     )
 
 # %%
 metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
+
+# %%
 for estimator in ["Saltelli", "Martinez", "Jansen", "MauntzKucherenko", "Janon"]:
     print("Estimator:", estimator)
     benchmark = otb.SensitivityConvergence(
         problem,
         metaSAAlgorithm,
         numberOfRepetitions=4,
-        maximum_elapsed_time=2.0,
-        sample_size_initial=20,
+        maximumElapsedTime=maximumElapsedTime,
+        sampleSizeInitial=20,
         estimator=estimator,
     )
     grid = benchmark.plotConvergenceGrid(verbose=False)
@@ -113,59 +118,76 @@ benchmark = otb.SensitivityConvergence(
     problem,
     metaSAAlgorithm,
     numberOfRepetitions=4,
-    maximum_elapsed_time=2.0,
-    sample_size_initial=20,
+    maximumElapsedTime=maximumElapsedTime,
+    sampleSizeInitial=20,
     estimator="Saltelli",
-    sampling_method="MonteCarlo",
+    samplingMethod="MonteCarlo",
 )
 graph = benchmark.plotConvergenceCurve()
-_ = otv.View(graph)
+graph.setLegendPosition("upper left")
+graph.setLegendCorner((1.0, 1.0))
+_ = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
 
 # %%
 grid = ot.GridLayout(1, 3)
-maximum_absolute_error = 1.0
-minimum_absolute_error = 1.0e-5
-sampling_method_list = ["MonteCarlo", "LHS", "QMC"]
-for sampling_method_index in range(3):
-    sampling_method = sampling_method_list[sampling_method_index]
+maximumAbsoluteError = 1.0
+minimumAbsoluteError = 1.0e-5
+samplingMethodList = ["MonteCarlo", "LHS", "QMC"]
+estimator = "Saltelli"
+for samplingMethodIndex, samplingMethod in enumerate(samplingMethodList):
+    samplingMethod = samplingMethodList[samplingMethodIndex]
     benchmark = otb.SensitivityConvergence(
         problem,
         metaSAAlgorithm,
         numberOfRepetitions=4,
-        maximum_elapsed_time=2.0,
-        sample_size_initial=20,
-        estimator="Saltelli",
-        sampling_method=sampling_method,
+        maximumElapsedTime=maximumElapsedTime,
+        sampleSizeInitial=20,
+        estimator=estimator,
+        samplingMethod=samplingMethod,
     )
     graph = benchmark.plotConvergenceCurve()
     # Change bounding box
     box = graph.getBoundingBox()
     bound = box.getLowerBound()
-    bound[1] = minimum_absolute_error
+    bound[1] = minimumAbsoluteError
     box.setLowerBound(bound)
     bound = box.getUpperBound()
-    bound[1] = maximum_absolute_error
+    bound[1] = maximumAbsoluteError
     box.setUpperBound(bound)
     graph.setBoundingBox(box)
-    grid.setGraph(0, sampling_method_index, graph)
-_ = otv.View(grid)
+    if samplingMethodIndex < len(samplingMethodList) - 1:
+        graph.setLegends([""])
+    else:
+        graph.setLegendPosition("upper left")
+        graph.setLegendCorner((1.0, 1.0))
+    if samplingMethodIndex > 0:
+        graph.setYTitle("")
+    graph.setTitle(f"{samplingMethod}")
+    grid.setGraph(0, samplingMethodIndex, graph)
+grid.setTitle(f"Ishigami, {estimator}")
+_ = otv.View(grid, figure_kw={"figsize": (8.0, 4.0)})
 
 # %%
 # Use polynomial chaos.
+sparse = True  # Otherwise, the PCE estimator is too slow for this example.
 benchmark = otb.SensitivityConvergence(
     problem,
     metaSAAlgorithm,
     numberOfExperiments=12,
     numberOfRepetitions=1,
-    maximum_elapsed_time=5.0,
-    sample_size_initial=20,
-    use_sampling=False,
-    total_degree=20,
-    hyperbolic_quasinorm=1.0,
+    maximumElapsedTime=5.0,
+    sampleSizeInitial=80,
+    useSampling=False,
+    totalDegree=8,
+    hyperbolicQuasiNorm=1.0,
+    sampleSizeFactor=1.5,
+    sparse=sparse,
 )
 graph = benchmark.plotConvergenceCurve(verbose=True)
-graph.setLegendPosition("bottomleft")
-_ = otv.View(graph)
+graph.setLegendPosition("upper left")
+graph.setLogScale(ot.GraphImplementation.LOGX)
+graph.setLegendCorner((1.0, 1.0))
+_ = otv.View(graph, figure_kw={"figsize": (4.0, 3.0)})
 
 # %%
 otv.View.ShowAll()
