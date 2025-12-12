@@ -43,6 +43,7 @@ class SparsePolynomialChaosSensitivityAnalysis:
         sample_size_test=100,
         total_degree=2,
         hyperbolic_quasinorm=0.5,
+        sparse=True,
     ):
         """
         Estimate Sobol' sensitivity indices from sparse polynomial chaos.
@@ -65,6 +66,10 @@ class SparsePolynomialChaosSensitivityAnalysis:
             The total polynomial degree. The default is 2.
         hyperbolic_quasinorm : float, optional
             The hyperbolic quasi-norm. The default is 0.5.
+        sparse : bool, optional
+            Set to True to compute a sparse PCE.
+            Set to False to compute all coefficients.
+            Default is True.
 
         Returns
         -------
@@ -76,6 +81,7 @@ class SparsePolynomialChaosSensitivityAnalysis:
         self.sample_size_test = sample_size_test
         self.total_degree = total_degree
         self.hyperbolic_quasinorm = hyperbolic_quasinorm
+        self.sparse = sparse
 
     def run(self, verbose=False):
         """
@@ -96,7 +102,7 @@ class SparsePolynomialChaosSensitivityAnalysis:
         model = self.problem.getFunction()
         dimension = distribution.getDimension()
         if verbose:
-            print("Generate train experiment")
+            print(f"Generate train experiment, N={self.sample_size_train}")
         sequence = ot.SobolSequence(dimension)
         experiment = ot.LowDiscrepancyExperiment(
             sequence, distribution, self.sample_size_train
@@ -104,14 +110,17 @@ class SparsePolynomialChaosSensitivityAnalysis:
         inputTrain = experiment.generate()
         outputTrain = model(inputTrain)
 
-        # Create sparse chaos
+        # Create polynomial chaos expansion
         if verbose:
-            print("Create sparse chaos")
+            print("Create polynomial chaos expansion..")
         distributionList = [distribution.getMarginal(i) for i in range(dimension)]
         multivariateBasis = ot.OrthogonalProductPolynomialFactory(distributionList)
-        approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
+        if self.sparse:
+            selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
+        else:
+            selectionAlgorithm = ot.PenalizedLeastSquaresAlgorithmFactory()
         projectionStrategy = ot.LeastSquaresStrategy(
-            inputTrain, outputTrain, approximationAlgorithm
+            inputTrain, outputTrain, selectionAlgorithm
         )
 
         polyColl = [
@@ -126,19 +135,32 @@ class SparsePolynomialChaosSensitivityAnalysis:
         )
 
         enumfunc = multivariateBasis.getEnumerateFunction()
-        P = enumfunc.getStrataCumulatedCardinal(self.total_degree)
-        adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
+        basis_dimension = enumfunc.getBasisSizeFromTotalDegree(self.total_degree)
+        if verbose:
+            print(f"> Sparse = {self.sparse}")
+            print(f"> Total degree = {self.total_degree}")
+            print(f"> Basis dimension = {basis_dimension}")
+            if basis_dimension >= self.sample_size_train:
+                raise ValueError(
+                    f"The number of candidate coefficients is {basis_dimension} "
+                    f"is larger or equal to the sample size {self.sample_size_train}"
+                )
+        adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basis_dimension)
         chaosalgo = ot.FunctionalChaosAlgorithm(
             inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy
         )
         if verbose:
-            print("Fit")
+            print("> Fit")
         chaosalgo.run()
         chaosResult = chaosalgo.getResult()
+        number_of_coefficients = chaosResult.getCoefficients().getSize()
+        if verbose:
+            print(f"> Number of selected coefficients: {number_of_coefficients}")
 
         # Validation
         if verbose:
-            print("Validation")
+            print("> Validation...")
+            print(f"> Generate test experiment, N={self.sample_size_test}")
         metamodel = chaosResult.getMetaModel()  # get the metamodel
         experiment = ot.MonteCarloExperiment(distribution, self.sample_size_test)
         inputTest = experiment.generate()
@@ -147,11 +169,11 @@ class SparsePolynomialChaosSensitivityAnalysis:
         val = ot.MetaModelValidation(outputTest, predictions)
         predictivity_coefficient = val.computeR2Score()[0]
         if verbose:
-            print("Q2=%.2f%%" % (100 * predictivity_coefficient))
+            print(f"> Q2={100 * predictivity_coefficient:0.2f}%")
 
         # S.A.
         if verbose:
-            print("S.A.")
+            print("> Sensitivity Analysis...")
         chaosSI = ot.FunctionalChaosSobolIndices(chaosResult)
         first_order_indices = ot.Point(
             [chaosSI.getSobolIndex(i) for i in range(dimension)]
