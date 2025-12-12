@@ -14,10 +14,10 @@ total_degree = 8
 hyperbolic_quasinorm = 0.5  # the q-quasi-norm parameter
 sparse_sa = otb.SparsePolynomialChaosSensitivityAnalysis(
     problem,
-    sample_size_train=sample_size_train,
-    sample_size_test=sample_size_test,
-    total_degree=total_degree,
-    hyperbolic_quasinorm=hyperbolic_quasinorm,
+    sampleSizeTrain=sample_size_train,
+    sampleSizeTest=sample_size_test,
+    totalDegree=total_degree,
+    hyperbolicQuasiNorm=hyperbolic_quasinorm,
 )
 result = sparse_sa.run(True)
 
