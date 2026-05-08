@@ -52,7 +52,7 @@ class BorgonovoSensitivity(SensitivityBenchmarkProblem):
 
         # Define the distribution
         distributionList = [ot.Uniform(0.0, 1.0)] * dimension
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "Borgonovo"
 

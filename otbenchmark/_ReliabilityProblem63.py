@@ -182,7 +182,7 @@ class ReliabilityProblem63(ReliabilityBenchmarkProblem):
 
         X = [ot.Normal(mu, sigma) for i in range(100)]
 
-        myDistribution = ot.ComposedDistribution(X)
+        myDistribution = ot.JointDistribution(X)
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

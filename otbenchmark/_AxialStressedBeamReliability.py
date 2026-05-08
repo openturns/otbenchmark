@@ -43,7 +43,7 @@ class AxialStressedBeamReliability(ReliabilityBenchmarkProblem):
         F_dist.setName("Traction load")
         F_dist.setDescription("F")
 
-        myDistribution = ot.ComposedDistribution([R_dist, F_dist])
+        myDistribution = ot.JointDistribution([R_dist, F_dist])
 
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(

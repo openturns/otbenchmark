@@ -169,7 +169,7 @@ class IshigamiSensitivity(SensitivityBenchmarkProblem):
         # Define the distribution
         inputDimension = 3
         distributionList = [ot.Uniform(-np.pi, np.pi)] * inputDimension
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "Ishigami"
 

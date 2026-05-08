@@ -132,7 +132,7 @@ class FloodingSensitivity(SensitivityBenchmarkProblem):
         B = ot.Triangular(295.0, 300.0, 305.0)  # B = 300.0
         B.setDescription(["B (m)"])
 
-        distribution = ot.ComposedDistribution((Q, Ks, Zv, Zm, Hd, Zb, L, B))
+        distribution = ot.JointDistribution((Q, Ks, Zv, Zm, Hd, Zb, L, B))
 
         name = "Flooding"
 

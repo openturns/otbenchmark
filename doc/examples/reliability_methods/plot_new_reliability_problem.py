@@ -67,7 +67,7 @@ class OscillatorProblem(otb.ReliabilityBenchmarkProblem):
         for i, (mu, cov) in enumerate(zip(mean_list, cov_list)):
             parameters = ot.LogNormalMuSigma(mu, mu * cov, 0.0)
             myCollection[i] = ot.ParametrizedDistribution(parameters)
-        distribution = ot.ComposedDistribution(myCollection)
+        distribution = ot.JointDistribution(myCollection)
         inputRandomVector = ot.RandomVector(distribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

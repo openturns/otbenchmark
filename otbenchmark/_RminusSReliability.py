@@ -50,7 +50,7 @@ class RminusSReliability(ReliabilityBenchmarkProblem):
         S = ot.Normal(muS, sigmaS)
         S.setDescription("S")
 
-        myDistribution = ot.ComposedDistribution([R, S])
+        myDistribution = ot.JointDistribution([R, S])
 
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(

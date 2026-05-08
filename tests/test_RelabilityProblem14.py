@@ -42,7 +42,7 @@ class CheckReliabilityProblem14(unittest.TestCase):
         X5.setDescription(["X5"])
         # Here we can use IteratedQuadrature with different underlying 1D algorithms
         # We use a SymbolicFunction, much more efficient than a PythonFunction
-        Xreduced = ot.ComposedDistribution([X2, X3, X4, X5])
+        Xreduced = ot.JointDistribution([X2, X3, X4, X5])
 
         bet, gam = param3.getDistribution().getParameter()
         formula = "max(0, min(1, 32/(pi_*x2^3)*sqrt(x3^2*x4^2/16+x5^2)/10 - 7))*"

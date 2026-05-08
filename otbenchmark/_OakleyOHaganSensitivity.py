@@ -81,7 +81,7 @@ class OakleyOHaganSensitivity(SensitivityBenchmarkProblem):
 
         # Define the distribution
         distributionList = [ot.Normal(0.0, 1.0)] * dimension
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "Oakley-O'Hagan"
 

@@ -101,7 +101,7 @@ class ReliabilityProblem8(ReliabilityBenchmarkProblem):
         X6 = ot.ParametrizedDistribution(parameters6)
         X6.setDescription(["X6"])
 
-        myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5, X6])
+        myDistribution = ot.JointDistribution([X1, X2, X3, X4, X5, X6])
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

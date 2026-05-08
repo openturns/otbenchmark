@@ -362,7 +362,7 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         function = ot.Function(MorrisFunction(b0, b1, b2))
         # Define the distribution
         distributionList = [ot.Uniform(0.0, 1.0) for i in range(dimension)]
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "Morris"
 
