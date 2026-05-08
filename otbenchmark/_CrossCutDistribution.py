@@ -5,7 +5,6 @@ Created on Sun Jun 21 17:23:25 2020
 """
 
 import openturns as ot
-import openturns.experimental as otexp
 import pylab as pl
 import openturns.viewer as otv
 
@@ -60,7 +59,7 @@ class CrossCutDistribution:
                     crossCutIndices.append(k)
                     crossCutReferencePoint.append(referencePoint[k])
             conditionalDistribution = ot.Distribution(
-                otexp.PointConditionalDistribution(
+                ot.PointConditionalDistribution(
                     self.distribution, crossCutIndices, crossCutReferencePoint
                 )
             )
@@ -84,7 +83,7 @@ class CrossCutDistribution:
                         crossCutIndices.append(k)
                         crossCutReferencePoint.append(referencePoint[k])
                 conditionalDistribution = ot.Distribution(
-                    otexp.PointConditionalDistribution(
+                    ot.PointConditionalDistribution(
                         self.distribution, crossCutIndices, crossCutReferencePoint
                     )
                 )
