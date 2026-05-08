@@ -66,7 +66,7 @@ class ReliabilityProblem54(ReliabilityBenchmarkProblem):
 
         X = [ot.Exponential(expo) for i in range(20)]
 
-        myDistribution = ot.ComposedDistribution(X)
+        myDistribution = ot.JointDistribution(X)
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

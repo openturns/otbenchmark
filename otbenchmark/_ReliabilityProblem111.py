@@ -58,7 +58,7 @@ class ReliabilityProblem111(ReliabilityBenchmarkProblem):
         X2 = ot.Normal(mu[1], sigma[1])
         X2.setDescription(["X2"])
 
-        myDistribution = ot.ComposedDistribution([X1, X2])
+        myDistribution = ot.JointDistribution([X1, X2])
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

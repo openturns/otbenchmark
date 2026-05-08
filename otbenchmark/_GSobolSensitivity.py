@@ -109,7 +109,7 @@ class GSobolSensitivity(SensitivityBenchmarkProblem):
 
         # Define the distribution
         distributionList = [ot.Uniform(0.0, 1.0) for i in range(dimension)]
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "GSobol"
 

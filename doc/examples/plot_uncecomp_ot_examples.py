@@ -33,12 +33,12 @@ X1 = ot.Uniform(0.0, 1.0)
 
 # %%
 # Define an independent joint distribution
-X_ind = ot.ComposedDistribution([X0, X1])
+X_ind = ot.JointDistribution([X0, X1])
 
 # %%
 # Define a dependent joint distribution using a copula (e.g., Frank copula)
 copula = ot.FrankCopula(5)
-X_dep = ot.ComposedDistribution([X0, X1], copula)
+X_dep = ot.JointDistribution([X0, X1], copula)
 
 # %%
 # Generate a sample of each joint distribution

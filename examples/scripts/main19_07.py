@@ -9,7 +9,7 @@ from simulation_methods import run_MonteCarlo
 # Distributions d'entrée
 # ~ dist_X1 = ot.Normal(0., 1.)
 # ~ dist_X2 = ot.Normal(0., 1.)
-# ~ myDistribution = ot.ComposedDistribution([dist_X1, dist_X2])
+# ~ myDistribution = ot.JointDistribution([dist_X1, dist_X2])
 parameters1 = ot.LogNormalMuSigma(120, 12, 0.0)
 dist_X1 = ot.ParametrizedDistribution(parameters1)
 
@@ -28,7 +28,7 @@ dist_X5 = ot.ParametrizedDistribution(parameters5)
 parameters6 = ot.LogNormalMuSigma(40, 8, 0.0)
 dist_X6 = ot.ParametrizedDistribution(parameters6)
 
-myDistribution = ot.ComposedDistribution(
+myDistribution = ot.JointDistribution(
     [dist_X1, dist_X2, dist_X3, dist_X4, dist_X5, dist_X6]
 )
 myRandomVector = ot.RandomVector(myDistribution)

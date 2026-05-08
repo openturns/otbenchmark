@@ -48,7 +48,7 @@ full_description.append(outputDesign.getDescription()[0])
 full_sample.setDescription(full_description)
 
 # %%
-marginal_distribution = ot.ComposedDistribution(
+marginal_distribution = ot.JointDistribution(
     [
         ot.KernelSmoothing().build(full_sample.getMarginal(i))
         for i in range(1 + dimension)

@@ -18,7 +18,7 @@ class CheckReliabilityBenchmarkProblem(unittest.TestCase):
         threshold = 0.0
         R = ot.Normal(muR, sigmaR)
         S = ot.Normal(muS, sigmaS)
-        myDistribution = ot.ComposedDistribution([R, S])
+        myDistribution = ot.JointDistribution([R, S])
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector
