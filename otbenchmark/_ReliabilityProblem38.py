@@ -112,7 +112,7 @@ class ReliabilityProblem38(ReliabilityBenchmarkProblem):
         X7 = ot.Normal(mu7, sigma7)
         X7.setDescription(["X7"])
 
-        myDistribution = ot.ComposedDistribution([X1, X2, X3, X4, X5, X6, X7])
+        myDistribution = ot.JointDistribution([X1, X2, X3, X4, X5, X6, X7])
         inputRandomVector = ot.RandomVector(myDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

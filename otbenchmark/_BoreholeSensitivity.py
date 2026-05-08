@@ -113,7 +113,7 @@ class BoreholeSensitivity(SensitivityBenchmarkProblem):
             ot.Uniform(1120.0, 1680.0),
             ot.Uniform(9855.0, 12045.0),
         ]
-        distribution = ot.ComposedDistribution(coll)
+        distribution = ot.JointDistribution(coll)
         distribution.setDescription(input_names)
 
         name = "Borehole"

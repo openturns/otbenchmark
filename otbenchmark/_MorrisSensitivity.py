@@ -23,30 +23,142 @@ class MorrisFunction(ot.OpenTURNSPythonFunction):
     >>> import openturns as ot
     >>> ot.RandomGenerator.SetSeed(123)
     >>> b0 = ot.DistFunc.rNormal()
-    >>> alpha = ot.DistFunc.rNormal(10)
-    >>> beta =  ot.DistFunc.rNormal(6*14)
-    >>> gamma =  ot.DistFunc.rNormal(20*14)
-    >>> f = ot.Function( MorrisFunction(alpha, beta, gamma, b0) )
-    >>> input_sample = ot.ComposedDistribution([ot.Uniform(0,1)] * 20).getSample(20)
+    >>> b1 = ot.DistFunc.rNormal(10)
+    >>> b2 =  ot.DistFunc.rNormal(175)
+    >>> f = ot.Function(MorrisFunction(alpha, beta, gamma, b0))
+    >>> input_sample = ot.JointDistribution([ot.Uniform(0,1)] * 20).getSample(20)
     >>> output_sample = f(input_sample)
     """
 
+    @staticmethod
+    def fmt(x):
+        """Format floating point constants for ExprTk."""
+        return format(float(x), ".17g")
+
+    @staticmethod
+    def build_morris_exprtk_expression(b0_random, b1_random, b2_random):
+        """
+        Build an ExprTk program equivalent to MorrisFunction.
+        """
+
+        if len(b1_random) != 10:
+            raise ValueError(f"b1_random must have length 10, got {len(b1_random)}")
+
+        if len(b2_random) != 175:
+            raise ValueError(f"b2_random must have length 175, got {len(b2_random)}")
+
+        b0 = MorrisFunction.fmt(b0_random)
+
+        # b1[0:10] = 20, b1[10:20] = b1_random
+        b1 = [20.0] * 10 + list(b1_random)
+
+        b1_expr = ",".join(MorrisFunction.fmt(v) for v in b1)
+        b2_expr = ",".join(MorrisFunction.fmt(v) for v in b2_random)
+
+        expr = f"""
+    var x[20] := {{
+    x0,x1,x2,x3,x4,x5,x6,x7,x8,x9,
+    x10,x11,x12,x13,x14,x15,x16,x17,x18,x19
+    }};
+
+    var b0 := {b0};
+
+    var b1[20] := {{
+        {b1_expr}
+    }};
+
+    var b2_random[175] := {{
+        {b2_expr}
+    }};
+
+    var y := b0;
+
+    /* --- build w --- */
+    var w[20];
+
+    for (var i := 0; i < 20; i += 1)
+    {{
+        w[i] := 2 * (x[i] - 0.5);
+    }};
+
+    /* nonlinear indices: Python indices 2, 4, 6 */
+    w[2] := 2 * (1.1 * x[2] / (x[2] + 0.1) - 0.5);
+    w[4] := 2 * (1.1 * x[4] / (x[4] + 0.1) - 0.5);
+    w[6] := 2 * (1.1 * x[6] / (x[6] + 0.1) - 0.5);
+
+    /* --- linear term --- */
+    for (var i := 0; i < 20; i += 1)
+    {{
+        y += b1[i] * w[i];
+    }};
+
+    /* --- quadratic term --- */
+    var random_index := 0;
+
+    for (var i := 0; i < 20; i += 1)
+    {{
+        for (var j := i + 1; j < 20; j += 1)
+        {{
+            if ((i < 6) and (j < 6))
+            {{
+                y += -15.0 * w[i] * w[j];
+            }}
+            else
+            {{
+                y += b2_random[random_index] * w[i] * w[j];
+                random_index += 1;
+            }};
+        }};
+    }};
+
+    /* --- cubic term: i < j < k, first 5 variables only --- */
+    for (var i := 0; i < 5; i += 1)
+    {{
+        for (var j := i + 1; j < 5; j += 1)
+        {{
+            for (var k := j + 1; k < 5; k += 1)
+            {{
+                y += -10.0 * w[i] * w[j] * w[k];
+            }};
+        }};
+    }};
+
+    /* --- quartic term: i < j < k < ell, first 4 variables only --- */
+    for (var i := 0; i < 4; i += 1)
+    {{
+        for (var j := i + 1; j < 4; j += 1)
+        {{
+            for (var k := j + 1; k < 4; k += 1)
+            {{
+                for (var ell := k + 1; ell < 4; ell += 1)
+                {{
+                    y += 5.0 * w[i] * w[j] * w[k] * w[ell];
+                }};
+            }};
+        }};
+    }};
+
+    y
+    """
+        return expr
+
     def __init__(
-        self, alpha=ot.Point(10), beta=ot.Point(14 * 6), gamma=ot.Point(20 * 14), b0=0.0
+        self,
+        b0_random=0.0,
+        b1_random=ot.Point(20),
+        b2_random=ot.Point(175),
     ):
         """
         Create the Morris function
 
         Parameters
         ----------
-        alpha : ot.Point(10), optional
-            The linear part. The default is ot.Point(10).
-        beta : ot.Point(14 * 6), optional
-            A segment of the quadratic coefficients. The default is ot.Point(14 * 6).
-        gamma : ot.Point(20 * 14), optional
-            A segment of the quadratic coefficients. The default is ot.Point(20 * 14).
-        b0 : float, optional
+        b0_random : float, optional
             The constant part. The default is 0.0.
+        b1_random : ot.Point(10), optional
+            The linear part. The default is ot.Point(10).
+        b2_random : ot.Point(175), optional
+            The quadratic part. The default is ot.Point(175).
 
         Returns
         -------
@@ -54,72 +166,52 @@ class MorrisFunction(ot.OpenTURNSPythonFunction):
 
         """
         ot.OpenTURNSPythonFunction.__init__(self, 20, 1)
-        self.b0 = float(b0)
-        # Check alpha dimension
-        assert len(alpha) == 10
-        self.b1 = [20.0] * 10 + list(alpha)
-        # Check beta and gamma dimension
-        assert len(beta) == 6 * 14
-        assert len(gamma) == 20 * 14
-        self.b2 = [[0.0] * 20] * 20
-        for i in range(6):
-            for j in range(6):
-                self.b2[i][j] = -15.0
-        # Take into account beta
-        k = 0
-        for i in range(6):
-            for j in range(14):
-                self.b2[i][j + 6] = beta[k]
-                k = k + 1
-        # Take into account gamma
-        k = 0
-        for i in range(6, 20):
-            for j in range(20):
-                self.b2[i][j] = gamma[k]
 
-        # b3
-        self.b3 = [[[0.0] * 20] * 20] * 20
-        for i in range(5):
-            for j in range(5):
-                for k in range(5):
-                    self.b3[i][j][k] = -10.0
-        # b4
-        self.b4 = [[[[0.0] * 20] * 20] * 20] * 20
-        for i in range(4):
-            for j in range(4):
-                for k in range(4):
-                    for ell in range(4):
-                        self.b4[i][j][k][ell] = 5.0
+        if not isinstance(b0_random, float):
+            raise ValueError(f"b0_random must be float, got {type(b0_random)}")
+
+        if len(b1_random) != 10:
+            raise ValueError(f"b1_random must have length 10, got {len(b1_random)}")
+
+        if len(b2_random) != 175:
+            raise ValueError(f"b2_random must have length 175, got {len(b2_random)}")
+
+        self.b0_random = b0_random
+        self.b1_random = b1_random
+        self.b2_random = b2_random
+
+        input_vars = [
+            "x0",
+            "x1",
+            "x2",
+            "x3",
+            "x4",
+            "x5",
+            "x6",
+            "x7",
+            "x8",
+            "x9",
+            "x10",
+            "x11",
+            "x12",
+            "x13",
+            "x14",
+            "x15",
+            "x16",
+            "x17",
+            "x18",
+            "x19",
+        ]
+
+        expr = MorrisFunction.build_morris_exprtk_expression(
+            b0_random, b1_random, b2_random
+        )
+
+        self.g = ot.SymbolicFunction(input_vars, [expr])
 
     def _exec(self, x):
-        assert len(x) == 20
-        b1 = self.b1
-        b2 = self.b2
-        b3 = self.b3
-        b4 = self.b4
-        # X is a list, transform it into array
-        X = ot.Point(x)
-        w = (X - [0.5] * 20) * 2
-        for k in [2, 4, 6]:
-            w[k] = 2.0 * (1.1 * X[k] / (X[k] + 0.1) - 0.5)
-        y = self.b0
-        y = w.dot(b1)
-        # Morris function
-        for i in range(19):
-            for j in range(i + 1, 20):
-                y += b2[i][j] * w[i] * w[j]
-        for i in range(18):
-            for j in range(i + 1, 19):
-                for k in range(j + 1, 20):
-                    y += b3[i][j][k] * w[i] * w[j] * w[k]
-
-        for i in range(17):
-            for j in range(i + 1, 18):
-                for k in range(j + 1, 20):
-                    for ell in range(k + 1, 20):
-                        y += b4[i][j][k][ell] * w[i] * w[j] * w[k] * w[ell]
-
-        return [y]
+        y = self.g(x)
+        return y
 
 
 class MorrisSensitivity(SensitivityBenchmarkProblem):
@@ -194,17 +286,15 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         where the small non-linearity comes from the :math:`\boldsymbol{w}`
         coefficients.
 
-        This code was taken from otmorris/python/src/Morris.i.
-
-        The reference Sobol' indices were computed from a sparse
-        polynomial chaos.
+        The reference Sobol' indices were computed from
+        polynomial chaos expansion.
         A Sobol' low discrepancy design of experiments was generated
-        with 500 training points.
-        The sparse polynomial chaos expansion used an hyperbolic enumeration
-        rule and a polynomial degree 4.
-        The coefficients were estimated from regression.
-        With 500 points in the validation set, the Q² was greater than 98%.
-        There are 2 significant digits in the reference results.
+        with 16384 training points.
+        The full polynomial chaos expansion used an hyperbolic enumeration
+        rule (using quasi-norm parameter 0.7) and a polynomial degree 6.
+        The coefficients were estimated from least squares.
+        With 16384 points in the validation set, the Q² was 99.47%.
+        There are 3 significant digits in the reference results.
 
         **Morris Function Parameters**
 
@@ -260,69 +350,68 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
         dimension = 20
         if random_parameters:
             b0 = ot.DistFunc.rNormal()
-            alpha = ot.DistFunc.rNormal(10)
-            beta = ot.DistFunc.rNormal(6 * 14)
-            gamma = ot.DistFunc.rNormal(20 * 14)
+            b1 = ot.DistFunc.rNormal(10)
+            b2 = ot.DistFunc.rNormal(175)
             warnings.warn(
                 "The parameters were changed, but the reference Sobol' "
                 "indices are not updated."
             )
         else:
-            b0, alpha, beta, gamma = self._get_parameters()
+            b0, b1, b2 = self._get_parameters()
 
-        function = ot.Function(MorrisFunction(alpha, beta, gamma, b0))
+        function = ot.Function(MorrisFunction(b0, b1, b2))
         # Define the distribution
         distributionList = [ot.Uniform(0.0, 1.0) for i in range(dimension)]
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "Morris"
 
         firstOrderIndices = ot.Point(
             [
-                0.08,
-                0.08,
-                0.06,
-                0.08,
-                0.06,
-                0.13,
-                0.06,
-                0.13,
-                0.13,
-                0.12,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
+                0.0061257,
+                0.0068268,
+                0.0148127,
+                0.0097981,
+                0.0125528,
+                0.0000141,
+                0.0559007,
+                0.1419089,
+                0.1174405,
+                0.1236114,
+                0.0000047,
+                0.0000306,
+                0.0014462,
+                0.0044277,
+                0.0001056,
+                0.0002988,
+                0.0018635,
+                0.0000012,
+                0.0000932,
+                0.0006815,
             ]
         )
         totalOrderIndices = ot.Point(
             [
-                0.11,
-                0.11,
-                0.06,
-                0.11,
-                0.06,
-                0.13,
-                0.06,
-                0.13,
-                0.13,
-                0.12,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
-                0.00,
+                0.2454044,
+                0.2451133,
+                0.1058652,
+                0.2494050,
+                0.1038293,
+                0.0912750,
+                0.0575356,
+                0.1444652,
+                0.1198208,
+                0.1264613,
+                0.0016405,
+                0.0014999,
+                0.0028601,
+                0.0068092,
+                0.0018924,
+                0.0029526,
+                0.0032192,
+                0.0018433,
+                0.0015019,
+                0.0019601,
             ]
         )
         super(MorrisSensitivity, self).__init__(
@@ -333,7 +422,7 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
 
     def _get_parameters(self):
         b0 = 0.60820165121876457
-        alpha = ot.Point(
+        b1 = ot.Point(
             [
                 -1.26617310,
                 -0.43826562,
@@ -347,7 +436,7 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
                 -0.47052560,
             ]
         )
-        beta = ot.Point(
+        b2 = ot.Point(
             [
                 0.26,
                 -2.29,
@@ -433,10 +522,6 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
                 0.64,
                 -0.09,
                 -0.86,
-            ]
-        )
-        gamma = ot.Point(
-            [
                 1.3,
                 -0.2,
                 1.3,
@@ -528,195 +613,6 @@ class MorrisSensitivity(SensitivityBenchmarkProblem):
                 -0.1,
                 0.4,
                 0.5,
-                -1.5,
-                -0.7,
-                0.7,
-                -1.4,
-                -0.0,
-                -0.6,
-                -0.3,
-                2.1,
-                1.2,
-                -1.5,
-                -0.8,
-                -0.3,
-                0.4,
-                -0.8,
-                0.9,
-                -0.9,
-                -0.9,
-                1.2,
-                0.3,
-                0.5,
-                0.5,
-                -0.8,
-                -0.7,
-                -0.1,
-                -1.0,
-                -1.2,
-                1.4,
-                -0.6,
-                -1.7,
-                0.8,
-                3.0,
-                1.7,
-                -1.6,
-                -1.0,
-                0.8,
-                -0.5,
-                -0.0,
-                -0.4,
-                -0.3,
-                -0.9,
-                -2.5,
-                -0.1,
-                -0.0,
-                0.6,
-                0.1,
-                -0.7,
-                -0.5,
-                0.6,
-                -0.5,
-                -2.2,
-                -0.4,
-                0.3,
-                -0.4,
-                1.1,
-                -0.0,
-                0.5,
-                -0.6,
-                -1.6,
-                -0.5,
-                -0.3,
-                0.0,
-                0.6,
-                0.8,
-                0.9,
-                1.5,
-                0.7,
-                1.4,
-                0.6,
-                1.9,
-                0.9,
-                -0.9,
-                -0.5,
-                -0.6,
-                1.3,
-                -2.3,
-                0.4,
-                -1.0,
-                -1.1,
-                0.1,
-                0.7,
-                -1.1,
-                -0.0,
-                0.6,
-                -0.0,
-                0.1,
-                -0.2,
-                -1.3,
-                -1.0,
-                -1.7,
-                0.9,
-                -0.5,
-                -1.0,
-                -1.4,
-                1.9,
-                0.8,
-                1.1,
-                0.7,
-                -0.5,
-                0.6,
-                0.7,
-                0.7,
-                0.5,
-                -0.4,
-                1.5,
-                -0.4,
-                0.5,
-                1.5,
-                -0.3,
-                -1.4,
-                1.3,
-                -0.5,
-                -0.3,
-                -0.3,
-                -0.8,
-                1.7,
-                0.9,
-                1.3,
-                -0.6,
-                -0.0,
-                1.9,
-                0.4,
-                -1.3,
-                -1.2,
-                -0.4,
-                -0.8,
-                -0.7,
-                0.4,
-                -0.6,
-                -0.6,
-                0.1,
-                -0.1,
-                0.8,
-                -0.7,
-                0.7,
-                0.6,
-                -2.2,
-                -0.8,
-                -0.7,
-                -0.1,
-                0.6,
-                0.7,
-                0.7,
-                -1.2,
-                0.9,
-                1.0,
-                0.1,
-                0.5,
-                -1.7,
-                0.4,
-                0.7,
-                -0.5,
-                -0.5,
-                1.3,
-                1.6,
-                1.9,
-                0.4,
-                0.2,
-                0.2,
-                0.6,
-                -0.4,
-                0.6,
-                -2.2,
-                0.4,
-                0.8,
-                -0.5,
-                -0.3,
-                -1.2,
-                0.0,
-                -1.2,
-                0.1,
-                0.7,
-                -0.3,
-                -0.4,
-                0.3,
-                -1.5,
-                1.1,
-                0.4,
-                -0.2,
-                0.4,
-                0.9,
-                1.7,
-                -0.7,
-                1.7,
-                0.4,
-                -0.3,
-                0.4,
-                0.4,
-                0.2,
-                1.4,
             ]
         )
-        return b0, alpha, beta, gamma
+        return b0, b1, b2

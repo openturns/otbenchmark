@@ -155,7 +155,7 @@ class NLOscillatorSensitivity(SensitivityBenchmarkProblem):
             marginal_distribution.setDescription([description[i]])
             myCollection[i] = marginal_distribution
 
-        distribution = ot.ComposedDistribution(myCollection)
+        distribution = ot.JointDistribution(myCollection)
 
         name = "N.L. Oscillator"
 

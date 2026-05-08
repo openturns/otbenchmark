@@ -46,7 +46,7 @@ Z_m = ot.Uniform(54.0, 56.0)
 
 # 3. Create the joint distribution function,
 #    the output and the event.
-inputDistribution = ot.ComposedDistribution([Q, K_s, Z_v, Z_m])
+inputDistribution = ot.JointDistribution([Q, K_s, Z_v, Z_m])
 inputRandomVector = ot.RandomVector(inputDistribution)
 outputRandomVector = ot.CompositeRandomVector(myWrapper, inputRandomVector)
 
