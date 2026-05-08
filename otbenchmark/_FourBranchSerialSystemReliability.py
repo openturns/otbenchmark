@@ -60,7 +60,7 @@ class FourBranchSerialSystemReliability(ReliabilityBenchmarkProblem):
 
         x0 = ot.Normal(0.0, 1.0)
         x1 = ot.Normal(0.0, 1.0)
-        inputDistribution = ot.ComposedDistribution((x0, x1))
+        inputDistribution = ot.JointDistribution((x0, x1))
         inputRandomVector = ot.RandomVector(inputDistribution)
         outputRandomVector = ot.CompositeRandomVector(
             limitStateFunction, inputRandomVector

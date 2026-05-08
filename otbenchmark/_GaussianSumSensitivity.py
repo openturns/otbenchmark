@@ -97,7 +97,7 @@ class GaussianSumSensitivity(SensitivityBenchmarkProblem):
 
         # Define the distribution
         distributionList = [ot.Normal(mu[i], sigma[i]) for i in range(dimension)]
-        distribution = ot.ComposedDistribution(distributionList)
+        distribution = ot.JointDistribution(distributionList)
 
         name = "GaussianSum"
 

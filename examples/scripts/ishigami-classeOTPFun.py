@@ -28,7 +28,7 @@ distributionX1 = ot.Uniform(-pi, pi)
 distributionX2 = ot.Uniform(-pi, pi)
 
 # Create the input probability distribution
-inputDistribution = ot.ComposedDistribution(
+inputDistribution = ot.JointDistribution(
     (distributionX0, distributionX1, distributionX2)
 )
 

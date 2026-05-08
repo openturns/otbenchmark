@@ -17,7 +17,7 @@ class CheckDrawEvent(unittest.TestCase):
         S.setDescription("S")
         g = ot.SymbolicFunction(["R", "S"], ["R-S"])
         # Event
-        distribution = ot.ComposedDistribution([R, S])
+        distribution = ot.JointDistribution([R, S])
         inputRV = ot.RandomVector(distribution)
         outputRV = ot.CompositeRandomVector(g, inputRV)
         eventF = ot.ThresholdEvent(outputRV, ot.GreaterOrEqual(), 0.0)
@@ -43,7 +43,7 @@ class CheckDrawEvent(unittest.TestCase):
         S.setDescription("S")
         g = ot.SymbolicFunction(["R", "S"], ["R - S"])
         # Event
-        distribution = ot.ComposedDistribution([R, S])
+        distribution = ot.JointDistribution([R, S])
         inputRV = ot.RandomVector(distribution)
         outputRV = ot.CompositeRandomVector(g, inputRV)
         eventF = ot.ThresholdEvent(outputRV, ot.GreaterOrEqual(), 0)
@@ -66,7 +66,7 @@ class CheckDrawEvent(unittest.TestCase):
         S.setDescription("S")
         g = ot.SymbolicFunction(["R", "S"], ["R - S"])
         # Event
-        distribution = ot.ComposedDistribution([R, S])
+        distribution = ot.JointDistribution([R, S])
         inputRV = ot.RandomVector(distribution)
         outputRV = ot.CompositeRandomVector(g, inputRV)
         eventF = ot.ThresholdEvent(outputRV, ot.GreaterOrEqual(), 0)
