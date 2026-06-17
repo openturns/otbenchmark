@@ -1,6 +1,7 @@
 """
 Test for SensitivityConvergence class.
 """
+
 import otbenchmark as otb
 import unittest
 import openturns.viewer as otv
@@ -18,10 +19,10 @@ class CheckSensitivityConvergence(unittest.TestCase):
             metaSAAlgorithm,
             numberOfExperiments=12,
             numberOfRepetitions=4,
-            maximum_elapsed_time=1.0,
-            sample_size_initial=20,
+            maximumElapsedTime=1.0,
+            sampleSizeInitial=20,
             estimator="Saltelli",
-            sampling_method="MonteCarlo",
+            samplingMethod="MonteCarlo",
         )
         grid = benchmark.plotConvergenceGrid(verbose=True)
         otv.View(grid)
@@ -35,8 +36,8 @@ class CheckSensitivityConvergence(unittest.TestCase):
             metaSAAlgorithm,
             numberOfExperiments=12,
             numberOfRepetitions=4,
-            maximum_elapsed_time=1.0,
-            sample_size_initial=20,
+            maximumElapsedTime=1.0,
+            sampleSizeInitial=20,
         )
         sample_size = 40000
         first_order_AE, total_order_AE = benchmark.computeError(sample_size)
@@ -57,15 +58,15 @@ class CheckSensitivityConvergence(unittest.TestCase):
             metaSAAlgorithm,
             numberOfExperiments=12,
             numberOfRepetitions=4,
-            maximum_elapsed_time=5.0,
-            sample_size_initial=20,
+            maximumElapsedTime=5.0,
+            sampleSizeInitial=20,
         )
         (
-            sample_size_table,
-            first_order_table,
-            total_order_table,
+            _,
+            _,
+            totalOrderTable,
         ) = benchmark.computeSobolSample()
-        print(total_order_table)
+        print(totalOrderTable)
 
     def test_plotConvergenceCurveSampling(self):
         ot.Log.Show(ot.Log.NONE)
@@ -76,10 +77,10 @@ class CheckSensitivityConvergence(unittest.TestCase):
             metaSAAlgorithm,
             numberOfExperiments=12,
             numberOfRepetitions=4,
-            maximum_elapsed_time=1.0,
-            sample_size_initial=20,
+            maximumElapsedTime=1.0,
+            sampleSizeInitial=20,
             estimator="Saltelli",
-            sampling_method="MonteCarlo",
+            samplingMethod="MonteCarlo",
         )
         graph = benchmark.plotConvergenceCurve(verbose=True)
         otv.View(graph)
@@ -93,11 +94,11 @@ class CheckSensitivityConvergence(unittest.TestCase):
             metaSAAlgorithm,
             numberOfExperiments=12,
             numberOfRepetitions=1,
-            maximum_elapsed_time=2.0,
-            sample_size_initial=20,
-            use_sampling=False,
-            total_degree=10,
-            hyperbolic_quasinorm=1.0,
+            maximumElapsedTime=2.0,
+            sampleSizeInitial=80,
+            useSampling=False,
+            totalDegree=5,
+            hyperbolicQuasiNorm=1.0,
         )
         graph = benchmark.plotConvergenceCurve(verbose=True)
         graph.setLegendPosition("bottomleft")

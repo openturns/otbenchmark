@@ -5,6 +5,7 @@ Perform a convergence study of a sensitivity analysis estimator.
 import openturns as ot
 import numpy as np
 import time
+import math
 
 
 class SensitivityConvergence:
@@ -14,14 +15,16 @@ class SensitivityConvergence:
         metaSAAlgorithm,
         numberOfExperiments=1000,
         numberOfRepetitions=10,
-        maximum_elapsed_time=5.0,
-        sample_size_initial=20,
+        maximumElapsedTime=5.0,
+        sampleSizeInitial=20,
         estimator="Saltelli",
-        sampling_method="MonteCarlo",
-        use_sampling=True,
-        total_degree=2,
-        hyperbolic_quasinorm=0.5,
-        graphical_epsilon=2 * ot.SpecFunc.ScalarEpsilon,
+        samplingMethod="MonteCarlo",
+        useSampling=True,
+        totalDegree=2,
+        hyperbolicQuasiNorm=0.5,
+        graphicalEpsilon=2 * ot.SpecFunc.ScalarEpsilon,
+        sampleSizeFactor=2.0,
+        sparse=True,
     ):
         """
         Create a meta-algorithm to benchmark a sensitivity problem.
@@ -38,63 +41,99 @@ class SensitivityConvergence:
             The default is set to a very large value, so that the algorithm
             stops depending on the elapsed time criteria.
         numberOfRepetitions : int
-            Number of repetions for a given sample size.
+            Number of repetitions for a given sample size.
             The numberOfRepetitions attribute sets the number of vertical
             points in each graph.
-        maximum_elapsed_time : float
+        maximumElapsedTime : float
             The maximum number of seconds in the simulation.
-        sample_size_initial : int
+        sampleSizeInitial : int
             The initial sample size.
         estimator : str
             The estimator.
             Must be "Saltelli", "Jansen", "Martinez", "MauntzKucherenko", "Janon".
-        sampling_method : str
+        samplingMethod : str
             The sampling method.
             Must be "MonteCarlo" or "LHS" or "QMC".
-        use_sampling : bool
+        useSampling : bool
             Set to True to use sampling methods.
             Set to False to use polynomial chaos.
-        total_degree : int
+        totalDegree : int
             The total degree of the polynomial chaos.
-        hyperbolic_quasinorm : float
+        hyperbolicQuasiNorm : float
             The quasi-norm of the enumeration rule of the polynomial chaos.
-        graphical_epsilon : float
+        graphicalEpsilon : float
             The value which is set as the minimum absolute error of Sobol' indices.
             This allows to use logarithmic scale even if the absolute error is
             exactly zero.
+        sampleSizeFactor : float
+            The factor by which the sample size is multiplied at each stage of
+            the simulation.
+            The default is 2.0.
+        sparse : bool, optional
+            Whether to use sparse polynomial chaos. The default is True.
         """
-        #
+        validSamplingMethods = {"MonteCarlo", "LHS", "QMC"}
+        validEstimators = {
+            "Saltelli",
+            "Jansen",
+            "Martinez",
+            "MauntzKucherenko",
+            "Janon",
+        }
+
+        if samplingMethod not in validSamplingMethods:
+            raise ValueError(
+                f"Unknown value of sampling method: {samplingMethod}. "
+                f"Possible values are: {sorted(list(validSamplingMethods))}"
+            )
+
+        if estimator not in validEstimators:
+            raise ValueError(
+                f"Unknown value of estimator: {estimator}. "
+                f"Possible values are: {sorted(list(validEstimators))}"
+            )
+        if sampleSizeFactor <= 1.0:
+            raise ValueError(
+                f"The sample size factor must be strictly larger than 1.0, but is {sampleSizeFactor}"
+            )
+        if numberOfExperiments <= 0:
+            raise ValueError("numberOfExperiments must be strictly positive.")
+
+        if numberOfRepetitions <= 0:
+            raise ValueError("numberOfRepetitions must be strictly positive.")
+
+        if maximumElapsedTime <= 0.0:
+            raise ValueError("maximumElapsedTime must be strictly positive.")
+
+        if sampleSizeInitial <= 0:
+            raise ValueError("sampleSizeInitial must be strictly positive.")
+
+        if totalDegree < 0:
+            raise ValueError("totalDegree must be non-negative.")
+
+        if not (0.0 < hyperbolicQuasiNorm <= 1.0):
+            raise ValueError("hyperbolicQuasiNorm must be in the range (0, 1].")
+
+        if graphicalEpsilon <= 0.0:
+            raise ValueError("graphicalEpsilon must be strictly positive.")
+
+        self.estimator = estimator
         self.problem = problem
         self.metaSAAlgorithm = metaSAAlgorithm
         self.numberOfExperiments = numberOfExperiments
         self.numberOfRepetitions = numberOfRepetitions
-        self.maximum_elapsed_time = maximum_elapsed_time
-        self.sample_size_initial = sample_size_initial
-        if (
-            sampling_method != "MonteCarlo"
-            and sampling_method != "LHS"
-            and sampling_method != "QMC"
-        ):
-            raise ValueError(
-                "Unknown value of sampling method : %s" % (sampling_method)
-            )
-        self.sampling_method = sampling_method
-        if (
-            estimator != "Saltelli"
-            and estimator != "Jansen"
-            and estimator != "Martinez"
-            and estimator != "MauntzKucherenko"
-            and estimator != "Janon"
-        ):
-            raise ValueError("Unknown value of estimator %s" % (estimator))
-        self.estimator = estimator
-        self.use_sampling = use_sampling
-        self.total_degree = total_degree
-        self.hyperbolic_quasinorm = hyperbolic_quasinorm
-        self.graphical_epsilon = graphical_epsilon
+        self.maximumElapsedTime = maximumElapsedTime
+        self.sampleSizeInitial = sampleSizeInitial
+        self.samplingMethod = samplingMethod
+        self.useSampling = useSampling
+        self.totalDegree = totalDegree
+        self.hyperbolicQuasiNorm = hyperbolicQuasiNorm
+        self.graphicalEpsilon = graphicalEpsilon
+        self.sampleSizeFactor = sampleSizeFactor
+        self.sparse = sparse
         return None
 
-    def computeError(self, sample_size):
+    def computeError(self, sampleSize):
         r"""
         Compute the absolute error for the problem with Monte-Carlo sample.
 
@@ -114,50 +153,51 @@ class SensitivityConvergence:
 
         Parameters
         ----------
-        sample_size: int
+        sampleSize: int
             The sample size.
 
         Returns
         -------
-        first_order_AE : ot.Point(dimension)
+        firstOrderAE : ot.Point(dimension)
             The AE of the first order Sobol' indices.
-        total_order_AE : ot.Point(dimension)
+        totalOrderAE : ot.Point(dimension)
             The AE of the total order Sobol' indices.
         """
-        if self.use_sampling:
+        if self.useSampling:
             (
-                computed_first_order,
-                computed_total_order,
+                computedFirstOrder,
+                computedTotalOrder,
             ) = self.metaSAAlgorithm.runSamplingEstimator(
-                sample_size, self.estimator, self.sampling_method
+                sampleSize, self.estimator, self.samplingMethod
             )
         else:
             (
-                computed_first_order,
-                computed_total_order,
+                computedFirstOrder,
+                computedTotalOrder,
             ) = self.metaSAAlgorithm.runPolynomialChaosEstimator(
-                sample_size_train=sample_size,
-                sample_size_test=2,  # Bare minimum
-                total_degree=self.total_degree,
-                hyperbolic_quasinorm=self.hyperbolic_quasinorm,
+                sampleSizeTrain=sampleSize,
+                sampleSizeTest=2,  # Bare minimum
+                totalDegree=self.totalDegree,
+                hyperbolicQuasiNorm=self.hyperbolicQuasiNorm,
+                sparse=self.sparse,
             )
-        exact_first_order = self.problem.getFirstOrderIndices()
-        exact_total_order = self.problem.getTotalOrderIndices()
-        first_order_AE = ot.Point(np.abs(exact_first_order - computed_first_order))
-        total_order_AE = ot.Point(np.abs(exact_total_order - computed_total_order))
+        exactFirstOrder = self.problem.getFirstOrderIndices()
+        exactTotalOrder = self.problem.getTotalOrderIndices()
+        firstOrderAE = ot.Point(np.abs(exactFirstOrder - computedFirstOrder))
+        totalOrderAE = ot.Point(np.abs(exactTotalOrder - computedTotalOrder))
         # Set zero components to a minimum.
         # This allows to use a log-scale when the estimator is very accurate and
         # leads to a zero error.
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()
         for i in range(dimension):
-            first_order_AE[i] = max(first_order_AE[i], self.graphical_epsilon)
-            total_order_AE[i] = max(total_order_AE[i], self.graphical_epsilon)
-        return first_order_AE, total_order_AE
+            firstOrderAE[i] = max(firstOrderAE[i], self.graphicalEpsilon)
+            totalOrderAE[i] = max(totalOrderAE[i], self.graphicalEpsilon)
+        return firstOrderAE, totalOrderAE
 
     def computeSobolSample(
         self,
-        verbose=False,
+        verbose=True,
     ):
         """
         Repeat increasingly large Monte-Carlo Sobol' experiments.
@@ -177,45 +217,93 @@ class SensitivityConvergence:
 
         Returns
         -------
-        sample_size_table : ot.Sample(number_of_experiments, 1)
+        sampleSizeTable : ot.Sample(numberOfExperiments, 1)
             The sample size of each experiment.
-        first_order_table : ot.Sample(number_of_experiments, dimension)
+        firstOrderTable : ot.Sample(numberOfExperiments, dimension)
             The AE of the first order Sobol' indices.
-        total_order_table : ot.Sample(number_of_experiments, dimension)
+        totalOrderTable : ot.Sample(numberOfExperiments, dimension)
             The AE of the total order Sobol' indices.
         """
         startTime = time.time()
 
-        sample_size = self.sample_size_initial
-        sample_size_data = []
-        first_order_data = []
-        total_order_data = []
+        sampleSize = self.sampleSizeInitial
+        sampleSizeData = []
+        firstOrderData = []
+        totalOrderData = []
         for i in range(self.numberOfExperiments):
             elapsedTime = time.time() - startTime
-            if elapsedTime > self.maximum_elapsed_time:
+            if elapsedTime > self.maximumElapsedTime:
+                if verbose:
+                    print(
+                        f"Elapsed = {elapsedTime:.1f} (s) > {self.maximumElapsedTime:.1f} (s),"
+                        " stopping the simulation."
+                    )
                 break
-            sample_size *= 2
             if verbose:
-                print(
-                    "Elapsed = %.1f (s), Sample size = %d" % (elapsedTime, sample_size)
-                )
+                print(f"Elapsed = {elapsedTime:.1f} (s), Sample size = {sampleSize}")
             for j in range(self.numberOfRepetitions):
-                first_order_AE, total_order_AE = self.computeError(
-                    sample_size,
-                )
-                sample_size_data.append([sample_size])
-                first_order_data.append(first_order_AE)
-                total_order_data.append(total_order_AE)
+                try:
+                    firstOrderAE, totalOrderAE = self.computeError(
+                        sampleSize,
+                    )
+                except Exception as e:
+                    if verbose:
+                        print(
+                            f"Error in experiment {i}, repetition {j}, sample size {sampleSize}: {e}"
+                        )
+                    continue
+                sampleSizeData.append([sampleSize])
+                firstOrderData.append(firstOrderAE)
+                totalOrderData.append(totalOrderAE)
+
+            sampleSize = max(
+                sampleSize + 1,
+                math.ceil(sampleSize * self.sampleSizeFactor),
+            )
 
         elapsedTime = time.time() - startTime
         if verbose:
-            print("Elapsed = %.2f (s)" % (elapsedTime))
+            print(f"Elapsed = {elapsedTime:.2f} (s)")
 
         # Create the `Sample` from the data.
-        sample_size_table = ot.Sample(sample_size_data)
-        first_order_table = ot.Sample(first_order_data)
-        total_order_table = ot.Sample(total_order_data)
-        return sample_size_table, first_order_table, total_order_table
+        sampleSizeTable = ot.Sample(sampleSizeData)
+        firstOrderTable = ot.Sample(firstOrderData)
+        totalOrderTable = ot.Sample(totalOrderData)
+        return sampleSizeTable, firstOrderTable, totalOrderTable
+
+    def _getConvergenceData(self, verbose=False):
+        """
+        Private method to get the data for the convergence curve.
+        """
+        # Exécution des simulations
+        sampleSizeTable, firstOrderTable, totalOrderTable = self.computeSobolSample(
+            verbose=verbose
+        )
+
+        # Calcul des échelles logarithmiques pour la courbe de référence
+        sampleSizeInitial = sampleSizeTable.getMin()[0]
+        sampleSizeFinal = sampleSizeTable.getMax()[0]
+        sampleSizeLogArray = np.logspace(
+            np.log10(sampleSizeInitial), np.log10(sampleSizeFinal)
+        )
+        sampleSizeArray = [int(n) for n in sampleSizeLogArray]
+
+        # Calcul de la convergence théorique attendue
+        if self.useSampling and self.samplingMethod == "QMC":
+            expectedConvergence = [1.0 / n for n in sampleSizeArray]
+            referenceLegend = r"$1/n$"
+        else:
+            expectedConvergence = [1.0 / np.sqrt(n) for n in sampleSizeArray]
+            referenceLegend = r"$1/\sqrt{n}$"
+
+        return (
+            sampleSizeTable,
+            firstOrderTable,
+            totalOrderTable,
+            sampleSizeArray,
+            expectedConvergence,
+            referenceLegend,
+        )
 
     def plotConvergenceGrid(
         self,
@@ -226,11 +314,7 @@ class SensitivityConvergence:
 
         The goal of this function is to see how the Sobol' estimator
         converges when the sample size increases.
-        For each sample size, we repeat the experiment a given number of
-        times, in order to see the variability of the estimator.
-        At each stage of the simulation, the sample size is multiplied by 2.
-        The number of performed simulation depends on the maximum elapsed time:
-        when this time exceeds a given duration, the algorithm stops.
+        See computeSobolSample for more details.
 
         Parameters
         ----------
@@ -243,50 +327,39 @@ class SensitivityConvergence:
             The grid of convergence Graphs.
         """
         (
-            sample_size_table,
-            first_order_table,
-            total_order_table,
-        ) = self.computeSobolSample(
-            verbose=verbose,
-        )
-        # Create a table for the reference Monte-Carlo convergence rate.
-        sample_size_initial = np.min(sample_size_table)
-        sample_size_final = np.max(sample_size_table)
-        sample_size_log_array = np.logspace(
-            np.log10(sample_size_initial), np.log10(sample_size_final)
-        )
-        sampleSizeArray = [int(n) for n in sample_size_log_array]
-        expectedConvergence = [1.0 / np.sqrt(n) for n in sampleSizeArray]
+            sampleSizeTable,
+            firstOrderTable,
+            totalOrderTable,
+            sampleSizeArray,
+            expectedConvergence,
+            referenceLegend,
+        ) = self._getConvergenceData(verbose=verbose)
 
         # Create plot
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()
         grid = ot.GridLayout(2, dimension)
-        for marginal_index in range(dimension):
-            for first_order_sobol_estimator in [True, False]:
-                # If first_order_sobol_estimator, then plot asolute error of first order
+        for marginalIndex in range(dimension):
+            for firstOrderSobolEstimator in [True, False]:
+                # If firstOrderSobolEstimator, then plot absolute error of first order
                 # Sobol' index,
-                # otherwise, plot asolute error of total order Sobol' index.
-                if first_order_sobol_estimator:
-                    label = "$S_{%d}$" % (marginal_index)
+                # otherwise, plot absolute error of total order Sobol' index.
+                if firstOrderSobolEstimator:
+                    label = f"$S_{marginalIndex}$"
                 else:
-                    label = "$T_{%d}$" % (marginal_index)
+                    label = f"$T_{marginalIndex}$"
                 title = ""
                 graph = ot.Graph(
                     title,
                     "Sample size",
-                    "Absolute error of %s" % (label),
+                    f"Absolute error of {label}",
                     True,
                     "topright",
                 )
-                if first_order_sobol_estimator:
-                    cloud = ot.Cloud(
-                        sample_size_table, first_order_table[:, marginal_index]
-                    )
+                if firstOrderSobolEstimator:
+                    cloud = ot.Cloud(sampleSizeTable, firstOrderTable[:, marginalIndex])
                 else:
-                    cloud = ot.Cloud(
-                        sample_size_table, total_order_table[:, marginal_index]
-                    )
+                    cloud = ot.Cloud(sampleSizeTable, totalOrderTable[:, marginalIndex])
                 cloud.setPointStyle("fsquare")
                 cloud.setLegend("MC")
                 graph.add(cloud)
@@ -295,12 +368,12 @@ class SensitivityConvergence:
                 graph.add(curve)
                 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
                 graph.setLogScale(ot.GraphImplementation.LOGXY)
-                if first_order_sobol_estimator:
-                    row_index = 0
+                if firstOrderSobolEstimator:
+                    rowIndex = 0
                 else:
-                    row_index = 1
+                    rowIndex = 1
                 graph.setLegendPosition("bottomleft")
-                grid.setGraph(row_index, marginal_index, graph)
+                grid.setGraph(rowIndex, marginalIndex, graph)
         return grid
 
     def plotConvergenceCurve(
@@ -312,11 +385,7 @@ class SensitivityConvergence:
 
         The goal of this function is to see how the Sobol' estimator
         converges when the sample size increases.
-        For each sample size, we repeat the experiment a given number of
-        times, in order to see the variability of the estimator.
-        At each stage of the simulation, the sample size is multiplied by 2.
-        The number of performed simulation depends on the maximum elapsed time:
-        when this time exceeds a given duration, the algorithm stops.
+        See computeSobolSample for more details.
 
         Parameters
         ----------
@@ -325,76 +394,44 @@ class SensitivityConvergence:
 
         Returns
         -------
-        sample_size_table : ot.Sample(number_of_experiments, 1)
-            The sample size of each experiment.
-        first_order_table : ot.Sample(number_of_experiments, dimension)
-            The AE of the first order Sobol' indices.
-        total_order_table : ot.Sample(number_of_experiments, dimension)
-            The AE of the total order Sobol' indices.
+        graph : ot.Graph
+            The convergence Graph.
         """
         (
-            sample_size_table,
-            first_order_table,
-            total_order_table,
-        ) = self.computeSobolSample(
-            verbose=verbose,
-        )
-        # Create a table for the reference Monte-Carlo convergence rate.
-        sample_size_initial = np.min(sample_size_table)
-        sample_size_final = np.max(sample_size_table)
-        sample_size_log_array = np.logspace(
-            np.log10(sample_size_initial), np.log10(sample_size_final)
-        )
-        sampleSizeArray = [int(n) for n in sample_size_log_array]
-        sampling_method = ot.ResourceMap.GetAsString(
-            "SobolIndicesExperiment-SamplingMethod"
-        )
+            sampleSizeTable,
+            firstOrderTable,
+            totalOrderTable,
+            sampleSizeArray,
+            expectedConvergence,
+            referenceLegend,
+        ) = self._getConvergenceData(verbose=verbose)
 
         # Create plot
-        if self.use_sampling:
-            title = "%s, %s, %s" % (
-                self.problem.getName(),
-                self.estimator,
-                self.sampling_method,
-            )
+        if self.useSampling:
+            title = f"{self.problem.getName()}, {self.estimator}, {self.samplingMethod}"
         else:
-            title = "%s, P.C., Degree=%d" % (self.problem.getName(), self.total_degree)
+            title = f"{self.problem.getName()}, P.C., Degree={self.totalDegree}"
         graph = ot.Graph(title, "Sample size", "Absolute error", True, "topright")
         distribution = self.problem.getInputDistribution()
         dimension = distribution.getDimension()
         # Plot absolute error
-        for marginal_index in range(dimension):
-            for first_order_sobol_estimator in [True, False]:
-                # If first_order_sobol_estimator, then plot LRE of first order
-                # Sobol' index,
-                # otherwise, plot LRE of total order Sobol' index
-                if first_order_sobol_estimator:
-                    label = "$S_%d$" % (marginal_index)
+        for marginalIndex in range(dimension):
+            for firstOrderSobolEstimator in [True, False]:
+                if firstOrderSobolEstimator:
+                    label = f"$S_{{{marginalIndex}}}$"
                 else:
-                    label = "$T_%d$" % (marginal_index)
-                if first_order_sobol_estimator:
-                    cloud = ot.Cloud(
-                        sample_size_table, first_order_table[:, marginal_index]
-                    )
+                    label = f"$T_{{{marginalIndex}}}$"
+                if firstOrderSobolEstimator:
+                    cloud = ot.Cloud(sampleSizeTable, firstOrderTable[:, marginalIndex])
                 else:
-                    cloud = ot.Cloud(
-                        sample_size_table, total_order_table[:, marginal_index]
-                    )
+                    cloud = ot.Cloud(sampleSizeTable, totalOrderTable[:, marginalIndex])
                 cloud.setPointStyle("fsquare")
                 cloud.setLegend(label)
                 graph.add(cloud)
         # Plot expected convergence rate
-        if self.use_sampling:
-            if sampling_method == "QMC":
-                expectedConvergence = [1.0 / n for n in sampleSizeArray]
-            else:
-                expectedConvergence = [1.0 / np.sqrt(n) for n in sampleSizeArray]
+        if self.useSampling:
             curve = ot.Curve(sampleSizeArray, expectedConvergence)
-            if sampling_method == "QMC":
-                reference_legend = r"$1/n$"
-            else:
-                reference_legend = r"$1/\sqrt{n}$"
-            curve.setLegend(reference_legend)
+            curve.setLegend(referenceLegend)
             graph.add(curve)
         graph.setLogScale(ot.GraphImplementation.LOGXY)
         graph.setLegendPosition("topright")

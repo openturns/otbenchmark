@@ -24,50 +24,50 @@ model = problem.getFunction()
 
 # %%
 # Exact first and total order
-exact_first_order = problem.getFirstOrderIndices()
-exact_total_order = problem.getTotalOrderIndices()
+exactFirstOrder = problem.getFirstOrderIndices()
+exactTotalOrder = problem.getTotalOrderIndices()
 
 # %%
 # Saltelli estimator with Monte-Carlo sample
 # ------------------------------------------
 
 # %%
-sample_size = 10000
+sampleSize = 10000
 
 # %%
-inputDesign = ot.SobolIndicesExperiment(distribution, sample_size).generate()
+inputDesign = ot.SobolIndicesExperiment(distribution, sampleSize).generate()
 outputDesign = model(inputDesign)
 
 # %%
 # Compute first order indices using the Saltelli estimator
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesign, outputDesign, sample_size
+    inputDesign, outputDesign, sampleSize
 )
-computed_first_order = sensitivityAnalysis.getFirstOrderIndices()
-computed_total_order = sensitivityAnalysis.getTotalOrderIndices()
+computedFirstOrder = sensitivityAnalysis.getFirstOrderIndices()
+computedTotalOrder = sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
 # Compare with exact results
-print("Sample size : ", sample_size)
+print(f"Sample size : {sampleSize}")
 # First order
-print("Computed first order = ", computed_first_order)
-print("Exact first order = ", exact_first_order)
+print(f"Computed first order = {computedFirstOrder}")
+print(f"Exact first order = {exactFirstOrder}")
 # Total order
-print("Computed total order = ", computed_total_order)
-print("Exact total order = ", exact_total_order)
+print(f"Computed total order = {computedTotalOrder}")
+print(f"Exact total order = {exactTotalOrder}")
 
 # %%
 # Saltelli estimator with Quasi Monte-Carlo sample
 # ------------------------------------------------
 
 # %%
-sample_size = 500
+sampleSize = 500
 
 # %%
 dimension = distribution.getDimension()
 sequence = ot.SobolSequence(dimension)
 restart = True
-experiment = ot.LowDiscrepancyExperiment(sequence, distribution, sample_size, restart)
+experiment = ot.LowDiscrepancyExperiment(sequence, distribution, sampleSize, restart)
 
 # %%
 inputDesign = ot.SobolIndicesExperiment(experiment).generate()
@@ -76,20 +76,20 @@ outputDesign = model(inputDesign)
 # %%
 # Compute first order indices using the Saltelli estimator
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesign, outputDesign, sample_size
+    inputDesign, outputDesign, sampleSize
 )
 first_order = sensitivityAnalysis.getFirstOrderIndices()
 total_order = sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
 # Compare with exact results
-print("Sample size : ", sample_size)
+print(f"Sample size : {sampleSize}")
 # First order
-print("Computed first order = ", computed_first_order)
-print("Exact first order = ", exact_first_order)
+print(f"Computed first order = {computedFirstOrder}")
+print(f"Exact first order = {exactFirstOrder}")
 # Total order
-print("Computed total order = ", computed_total_order)
-print("Exact total order = ", exact_total_order)
+print(f"Computed total order = {computedTotalOrder}")
+print(f"Exact total order = {exactTotalOrder}")
 
 # %%
 # Loop over the estimators
@@ -109,42 +109,42 @@ metaSAAlgorithm = otb.SensitivityBenchmarkMetaAlgorithm(problem)
 print("Monte-Carlo sampling")
 for sobolAlgorithm in estimators_list:
     (
-        computed_first_order,
-        computed_total_order,
-    ) = metaSAAlgorithm.runSamplingEstimator(sample_size)
+        computedFirstOrder,
+        computedTotalOrder,
+    ) = metaSAAlgorithm.runSamplingEstimator(sampleSize)
     name = sobolAlgorithm.getClassName()
     print(name)
-    print("    S = ", computed_first_order)
-    print("    T = ", computed_total_order)
+    print("    S = ", computedFirstOrder)
+    print("    T = ", computedTotalOrder)
 
 # %%
 print("Quasi Monte-Carlo sampling")
 for estimator in ["Saltelli", "Martinez", "Jansen", "MauntzKucherenko"]:
     (
-        computed_first_order,
-        computed_total_order,
+        computedFirstOrder,
+        computedTotalOrder,
     ) = metaSAAlgorithm.runSamplingEstimator(
-        sample_size, estimator=estimator, sampling_method="QMC"
+        sampleSize, estimator=estimator, samplingMethod="QMC"
     )
     name = sobolAlgorithm.getClassName()
     print(name)
-    print("    S = ", computed_first_order)
-    print("    T = ", computed_total_order)
+    print(f"    S = {computedFirstOrder}")
+    print(f"    T = {computedTotalOrder}")
 
 # %%
 print("Polynomial chaos")
-sample_size = 500
+sampleSize = 500
 (
-    computed_first_order,
-    computed_total_order,
+    computedFirstOrder,
+    computedTotalOrder,
 ) = metaSAAlgorithm.runPolynomialChaosEstimator(
-    sample_size_train=sample_size,
-    sample_size_test=2,
-    total_degree=5,
-    hyperbolic_quasinorm=0.5,
+    sampleSizeTrain=sampleSize,
+    sampleSizeTest=2,
+    totalDegree=5,
+    hyperbolicQuasiNorm=0.5,
 )
-print("    S = ", computed_first_order)
-print("    T = ", computed_total_order)
+print(f"    S = {computedFirstOrder}")
+print(f"    T = {computedTotalOrder}")
 
 # %%
 # Define the metric
@@ -168,25 +168,25 @@ S_LRE = ot.Point(dimension)
 T_LRE = ot.Point(dimension)
 for i in range(dimension):
     S_LRE[i] = otb.ComputeLogRelativeError(
-        computed_first_order[i], exact_first_order[i]
+        computedFirstOrder[i], exactFirstOrder[i]
     )
     T_LRE[i] = otb.ComputeLogRelativeError(
-        computed_total_order[i], exact_total_order[i]
+        computedTotalOrder[i], exactTotalOrder[i]
     )
 
 # %%
-print("LRE S = ", S_LRE)
-print("LRE T = ", T_LRE)
+print(f"LRE S = {S_LRE}")
+print(f"LRE T = {T_LRE}")
 
 # %%
 mean_LRE_S = sum(S_LRE) / dimension
 mean_LRE_T = sum(T_LRE) / dimension
 mean_LRE = (mean_LRE_S + mean_LRE_T) / 2.0
-print("Mean LRE S = %.2f" % (mean_LRE_S))
-print("Mean LRE T = %.2f" % (mean_LRE_T))
-print("Mean LRE = %.2f" % (mean_LRE))
+print(f"Mean LRE S = {mean_LRE_S:.2f}")
+print(f"Mean LRE T = {mean_LRE_T:.2f}")
+print(f"Mean LRE = {mean_LRE:.2f}")
 
 # %%
 # The digit per point ratio measure the number of digits relatively to the sample size. A greater value is prefered.
-digit_per_point_ratio = mean_LRE / sample_size
-print("Digit / point = %.3e" % (digit_per_point_ratio))
+digitPerPointRatio = mean_LRE / sampleSize
+print(f"Digit / point = {digitPerPointRatio:.3e}")
